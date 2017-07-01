@@ -192,6 +192,12 @@
 			<artifactId>mchange-commons-java</artifactId>
 			<version>0.2.12</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.glassfish.jersey.media</groupId>
+		    <artifactId>jersey-media-json-jackson1</artifactId>
+		</dependency>
+				
 	</dependencies>
 
 	<build>

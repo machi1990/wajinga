@@ -1,6 +1,8 @@
 package com.machi.wajinga.dao.mjinga;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +16,14 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.Unique;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.joda.time.DateTime;
 
 import com.machi.wajinga.dao.maafa.Maafa;
 import com.machi.wajinga.dao.malipo.MalipoYaMwezi;
 import com.machi.wajinga.dao.mkopo.Mkopo;
 import com.machi.wajinga.dao.tools.Encryption;
+
 
 @PersistenceCapable(detachable = "true")
 @FetchGroups(value = { 
@@ -54,11 +58,14 @@ public class Mjinga implements Chambable, Principal {
 	private Long id;
 	
 	@Unique
+	@Column(allowsNull="false")
 	private String jina;
 	
+	@Column(allowsNull="false")
 	private String jinaLaUkoo; 
 	
 	@Unique
+	@Column(allowsNull="false")
 	private String baruaPepe;
 	
 	@Column(allowsNull="false")
@@ -94,8 +101,7 @@ public class Mjinga implements Chambable, Principal {
 
 	
 	public Mjinga(String jina, String jinaLaUkoo, String baruaPepe, String password, String nambaYaSimu, String kazi,
-			Cheo cheo, DateTime tareheYaKuanzaUjinga, List<MalipoYaMwezi> malipo, List<Maafa> maafa, List<Mkopo> mikopo,
-			List<Mchambo> michambo) {
+			Cheo cheo, DateTime tareheYaKuanzaUjinga ){
 		super();
 		this.jina = jina;
 		this.jinaLaUkoo = jinaLaUkoo;
@@ -104,10 +110,6 @@ public class Mjinga implements Chambable, Principal {
 		this.kazi = kazi;
 		this.cheo = cheo;
 		this.tareheYaKuanzaUjinga = tareheYaKuanzaUjinga;
-		this.malipo = malipo;
-		this.maafa = maafa;
-		this.mikopo = mikopo;
-		this.michambo = michambo;
 		this.password = encrypt(password);
 	}
 
@@ -117,11 +119,12 @@ public class Mjinga implements Chambable, Principal {
 	}
 
 	public Boolean passwordEqual(String password) {
-		if (password == null) {
+		try {
+			return Encryption.instance().validatePassword(password, this.password);
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			e.printStackTrace();
 			return false;
 		}
-		
-		return password.equals(Encryption.instance().decrypt(password));
 	}
 	
 	@Override
@@ -194,8 +197,8 @@ public class Mjinga implements Chambable, Principal {
 		this.mikopo = mikopo;
 	}
 
-	public String getMichambo() {
-		return chamba();
+	public List<Mchambo> getMichambo() {
+		return michambo;
 	}
 
 	public void setMichambo(List<Mchambo> michambo) {
@@ -327,6 +330,7 @@ public class Mjinga implements Chambable, Principal {
 				+ ", michambo=" + michambo + "]";
 	}
 
+	@JsonIgnore
 	@Override
 	public String getName() {
 		return this.getJina();

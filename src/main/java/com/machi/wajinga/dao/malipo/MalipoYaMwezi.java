@@ -26,6 +26,8 @@ public class MalipoYaMwezi {
 	@Column(allowsNull="false")
 	private DateTime tarehe;
 	
+	private DateTime mweziHusika;
+	
 	public MalipoYaMwezi() {
 		super();
 	}
@@ -119,6 +121,16 @@ public class MalipoYaMwezi {
 	@Override
 	public String toString() {
 		return "MalipoYaMwezi [id=" + id + ", mjinga=" + mjinga + ", kiasi=" + kiasi + ", tarehe=" + tarehe + "]";
+	}
+
+
+	public DateTime getMweziHusika() {
+		return mweziHusika;
+	}
+
+
+	public void setMweziHusika(DateTime mweziHusika) {
+		this.mweziHusika = mweziHusika;
 	}
 	
 }

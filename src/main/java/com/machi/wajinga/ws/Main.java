@@ -19,8 +19,17 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.glassfish.jersey.jackson1.Jackson1Feature;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+
+import com.machi.wajinga.dao.WajingaDao;
+import com.machi.wajinga.ws.filters.BasicAuthenticationFilter;
+import com.machi.wajinga.ws.filters.CustomObjectMapper;
+import com.machi.wajinga.ws.filters.EntranceFilter;
+import com.machi.wajinga.ws.filters.GzipWriteInterceptor;
+import com.machi.wajinga.ws.filters.ResponseHeaderFilter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,7 +41,7 @@ import java.util.Properties;
  *
  */
 public class Main {	
-	//private static Logger logger = Logger.getLogger(Main.class);
+	// private static Logger logger = Logger.getLogger(Main.class);
     private static final String BASE_URL = "127.0.0.1";
 
     /**
@@ -40,18 +49,23 @@ public class Main {
      * @return HTTP server.
      */
     public static void configureAndStartServer(Properties props) {
-	    	// Initialize the server
-		Server server = createServer(props);
+	   Server server = createServer(props);
 		
 		ResourceConfig resources = new ResourceConfig();
 		resources.packages(true, "com.machi.wajinga.ws.resources");
+		resources.register(Jackson1Feature.class);
+		resources.register(CustomObjectMapper.class);
+		resources.register(BasicAuthenticationFilter.class);
+		resources.register(LoggingFeature.class);
+		resources.register(EntranceFilter.class);
+		resources.register(GzipWriteInterceptor.class);
+		resources.register(ResponseHeaderFilter.class);
 		
-		// Add a servlet handler for web services (/ws/*)
 		ServletHolder servletHolder = new ServletHolder(new ServletContainer(resources));
 		ServletContextHandler webServices = new ServletContextHandler(ServletContextHandler.SESSIONS);
 		webServices.setContextPath("/ws");
 		webServices.addServlet(servletHolder, "/*");
-
+		
 		ResourceHandler staticHandler = new ResourceHandler();
 		staticHandler.setResourceBase(props.getProperty("static", "static"));
 		staticHandler.setWelcomeFiles(new String[] { "index.html" });
@@ -69,15 +83,16 @@ public class Main {
 		staticHandlerCtx.setHandler(staticHandler);
 		
 		
-		// Activate handlers
 		ContextHandlerCollection contexts = new ContextHandlerCollection();
 		contexts.setHandlers( new Handler[] { webServices, staticHandlerCtx});
 
 		server.setHandler(contexts);
-
+		
+		ServerConfiguration.register(props);
 		try {
 			server.start();
 		} catch (Exception e) {
+			
 		}
     }
 
@@ -95,6 +110,7 @@ public class Main {
 			return server;
 		}
 		
+		ALPN.debug=true;
 		HttpConfiguration http2Config = new HttpConfiguration();
         http2Config.setSecureScheme("https");
         http2Config.setSecurePort(port);
@@ -126,8 +142,6 @@ public class Main {
         http2Connector.setHost(BASE_URL);
         server.addConnector(http2Connector);
 
-        ALPN.debug=false;
-        
         return server;
 	}
 
@@ -149,6 +163,7 @@ public class Main {
     		in.close();
     		
     		try {
+    			WajingaDao.Dao().setPmf(props.getProperty("persistence", "Wajinga-Dev"));
     	        configureAndStartServer(props);
     		} catch (Exception e) {
     			throw e;

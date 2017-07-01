@@ -1,82 +1,96 @@
 package com.machi.wajinga.dao.tools;
 
-import java.security.InvalidKeyException;
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 public class Encryption {
-	private Cipher ecipher;
-	private Cipher dcipher;
-	private SecretKey key;
-	
 	private static Encryption instance;
-	
-	public static Encryption instance () {
+
+	public static Encryption instance() {
 		if (instance == null) {
 			instance = new Encryption();
 		}
-		
+
 		return instance;
 	}
-	
+
 	private Encryption() {
-		try {
-			key = KeyGenerator.getInstance("DES").generateKey();
-
-			ecipher = Cipher.getInstance("DES");
-			dcipher = Cipher.getInstance("DES");
-
-			ecipher.init(Cipher.ENCRYPT_MODE, key);
-
-			dcipher.init(Cipher.DECRYPT_MODE, key);
-
-			String encrypted = encrypt("This is a classified message!");
-
-			String decrypted = decrypt(encrypted);
-
-			System.out.println("Decrypted: " + decrypted);
-
-		} catch (NoSuchAlgorithmException e) {
-			System.out.println("No Such Algorithm:" + e.getMessage());
-			return;
-		} catch (NoSuchPaddingException e) {
-			System.out.println("No Such Padding:" + e.getMessage());
-			return;
-		} catch (InvalidKeyException e) {
-			System.out.println("Invalid Key:" + e.getMessage());
-			return;
-		}
-
 	}
 
-	public String encrypt(String str) {
-		try {
-			byte[] utf8 = str.getBytes("UTF8");
-			byte[] enc = ecipher.doFinal(utf8);
-			enc = Base64.getEncoder().encode(enc);
-			return new String(enc);
-		}
-		catch (Exception e) {
-		}
-		return null;
+	public SecretKey getSecretEncryptionKey() throws Exception {
+		KeyGenerator generator = KeyGenerator.getInstance("AES");
+		generator.init(128);
+		SecretKey secKey = generator.generateKey();
+		return secKey;
 	}
 
-	public String decrypt(String str) {
+	public String encrypt(String text)  {
 		try {
-			byte[] dec = Base64.getDecoder().decode(str.getBytes());
-			byte[] utf8 = dcipher.doFinal(dec);
-			return new String(utf8, "UTF8");
-		}
-
-		catch (Exception e) {
+			return encodePassword(text);
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			e.printStackTrace();
-		}
-		return null;
+			return null;
+		} 
+	}
+	
+	private static String encodePassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		int iterations = 1000;
+		byte[] salt = getSalt().getBytes();
+
+		PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, 64 * 8);
+		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		byte[] hash = skf.generateSecret(spec).getEncoded();
+
+		return iterations + ":" + toHex(salt) + ":" + toHex(hash);
 	}
 
+	private static String getSalt() throws NoSuchAlgorithmException {
+		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+		byte[] salt = new byte[16];
+		sr.nextBytes(salt);
+		return salt.toString();
+	}
+
+	private static String toHex(byte[] array) throws NoSuchAlgorithmException {
+		BigInteger bi = new BigInteger(1, array);
+		String hex = bi.toString(16);
+		int paddingLength = (array.length * 2) - hex.length();
+		if (paddingLength > 0) {
+			return String.format("%0" + paddingLength + "d", 0) + hex;
+		} else {
+			return hex;
+		}
+	}
+
+	public boolean validatePassword(String passwordAttempt, String encryptedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		String[] parts = encryptedPassword.split(":");
+		int iterations = Integer.parseInt(parts[0]);
+		byte[] salt = fromHex(parts[1]);
+		byte[] hash = fromHex(parts[2]);
+
+		PBEKeySpec spec = new PBEKeySpec(passwordAttempt.toCharArray(), salt, iterations, hash.length * 8);
+		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		byte[] testHash = skf.generateSecret(spec).getEncoded();
+
+		int diff = hash.length ^ testHash.length;
+		for (int i = 0; i < hash.length && i < testHash.length; i++) {
+			diff |= hash[i] ^ testHash[i];
+		}
+		return diff == 0;
+	}
+
+	private static byte[] fromHex(String hex) throws NoSuchAlgorithmException {
+		byte[] bytes = new byte[hex.length() / 2];
+		for (int i = 0; i < bytes.length; i++) {
+			bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+		}
+		return bytes;
+	}
 }
