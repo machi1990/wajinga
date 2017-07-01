@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jdo PUBLIC
+    "-//Sun Microsystems, Inc.//DTD Java Data Objects Metadata 2.0//EN"
+    "http://java.sun.com/dtd/jdo_2_0.dtd">
+<jdo>
+    <package name="com.machi.wajinga.dao.wajiboost">
+        <class
+              name="Lengo">
+            <field
+                  name="id"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="maelezoYaZiada"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="haliYaSasa"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="historia"
+                  persistence-modifier="persistent"/>
+        </class>
+    </package>
+</jdo>
