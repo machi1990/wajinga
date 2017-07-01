@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
@@ -13,6 +14,7 @@ import org.joda.time.DateTime;
 
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
+@PersistenceCapable(detachable="true")
 public class Tukio {
 	
 	public enum Aina {
