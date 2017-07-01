@@ -32,30 +32,34 @@ public class Mkopo {
 	
 	private Double deni;
 	@Column(allowsNull="false")
-	@Persistent(dependentElement="true")
 	private Mjinga mkopaji;
 	
 	@Column(allowsNull="false")
-	@Persistent(dependentElement="true")
 	private Mjinga signatori;
 
-	@Persistent(dependent="true", mappedBy="mkopo")
-	private List<Rejesho> marejesho = new ArrayList<>();
+	@Persistent(defaultFetchGroup="true", dependent="true")
+	private OmbiLaMkopo ombi;
+	
+	@Persistent(dependentElement="true", mappedBy="mkopo")
+	private List<Rejesho> marejesho = new ArrayList<Rejesho>();
 	
 	public Mkopo() {
 		super();
 	}
 
-	public Mkopo(Long kiasi, DateTime tarehe, Double riba, DateTime mwishoWaRejesho, Mjinga mkopaji, Mjinga signatori) {
+	public Mkopo(Long kiasi, DateTime tarehe, Double riba, DateTime mwishoWaRejesho, Double deni, Mjinga mkopaji,
+			Mjinga signatori, OmbiLaMkopo ombi, List<Rejesho> marejesho) {
 		super();
 		this.kiasi = kiasi;
 		this.tarehe = tarehe;
 		this.riba = riba;
 		this.mwishoWaRejesho = mwishoWaRejesho;
+		this.deni = deni;
 		this.mkopaji = mkopaji;
 		this.signatori = signatori;
+		this.ombi = ombi;
+		this.marejesho = marejesho;
 	}
-	
 
 	public Long getId() {
 		return id;
@@ -125,11 +129,18 @@ public class Mkopo {
 	}
 
 
-
 	public void setSignatori(Mjinga signatori) {
 		this.signatori = signatori;
 	}
+	
 
+	public OmbiLaMkopo getOmbi() {
+		return ombi;
+	}
+
+	public void setOmbi(OmbiLaMkopo ombi) {
+		this.ombi = ombi;
+	}
 
 	@Override
 	public int hashCode() {

@@ -25,7 +25,6 @@ public class Rejesho {
 	private Double kiasi;
 	
 	@Column(allowsNull="false")
-	@Persistent(dependentElement="true")
 	private Mkopo mkopo;
 	
 	public Rejesho() {

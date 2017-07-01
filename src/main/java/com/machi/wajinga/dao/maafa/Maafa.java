@@ -34,7 +34,6 @@ public class Maafa {
 	
 	@Column(allowsNull="false")
 	private Long kiasi;
-	@Persistent(dependentElement="true")
 	private Mjinga mjinga;
 	private Long zawadi;
 	

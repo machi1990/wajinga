@@ -98,7 +98,7 @@ public class Lengo {
 	@NotPersistent
 	private Historia haliYaSasa;
 
-	@Persistent(defaultFetchGroup="true")
+	@Persistent(defaultFetchGroup="true", dependentElement="true")
 	private List<Historia> historia = new ArrayList<Historia>();
 
 	public Lengo() {

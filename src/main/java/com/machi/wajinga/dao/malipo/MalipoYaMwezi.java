@@ -16,7 +16,7 @@ public class MalipoYaMwezi {
 	@PrimaryKey
 	private Long id;
 	
-	@Persistent(defaultFetchGroup="true", dependentElement="true")
+	@Persistent(defaultFetchGroup="true")
 	private Mjinga mjinga;
 	
 	@Column(allowsNull="false")

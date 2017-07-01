@@ -1,5 +1,6 @@
 package com.machi.wajinga.dao.mjinga;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import com.machi.wajinga.dao.mkopo.Mkopo;
 		@FetchGroup(name = "Mikopo", members = { @Persistent(name="mikopo")}),
 		@FetchGroup(name = "Michambo", members = { @Persistent(name="michambo")})
 })
-public class Mjinga implements Chambable {
+public class Mjinga implements Chambable, Principal {
 	
 	public static enum Cheo {
 		MJUMBE("Mjinga wa kawaida"),
@@ -279,5 +280,10 @@ public class Mjinga implements Chambable {
 				+ ", nambaYaSimu=" + nambaYaSimu + ", kazi=" + kazi + ", cheo=" + cheo + ", tareheYaKuanzaUjinga="
 				+ tareheYaKuanzaUjinga + ", malipo=" + malipo + ", maafa=" + maafa + ", mikopo=" + mikopo
 				+ ", michambo=" + michambo + "]";
+	}
+
+	@Override
+	public String getName() {
+		return this.getJina();
 	}
 }

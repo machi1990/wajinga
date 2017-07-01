@@ -12,6 +12,7 @@
         <class>com.machi.wajinga.dao.mjinga.Mjinga</class>
         <class>com.machi.wajinga.dao.mkopo.Mkopo</class>
         <class>com.machi.wajinga.dao.mkopo.Rejesho</class>
+        <class>com.machi.wajinga.dao.mkopo.OmbiLaMkopo</class>
         <class>com.machi.wajinga.dao.wajiboost.KipengeleChaKatiba</class>
         <class>com.machi.wajinga.dao.wajiboost.Katiba</class>
         <class>com.machi.wajinga.dao.wajiboost.Lengo</class>
@@ -38,6 +39,7 @@
         <class>com.machi.wajinga.dao.mjinga.Mchambo</class>
         <class>com.machi.wajinga.dao.mjinga.Mjinga</class>
         <class>com.machi.wajinga.dao.mkopo.Mkopo</class>
+        <class>com.machi.wajinga.dao.mkopo.OmbiLaMkopo</class>
         <class>com.machi.wajinga.dao.mkopo.Rejesho</class>
         <class>com.machi.wajinga.dao.wajiboost.KipengeleChaKatiba</class>
         <class>com.machi.wajinga.dao.wajiboost.Katiba</class>
@@ -66,6 +68,7 @@
         <class>com.machi.wajinga.dao.mjinga.Mchambo</class>
         <class>com.machi.wajinga.dao.mjinga.Mjinga</class>
         <class>com.machi.wajinga.dao.mkopo.Mkopo</class>
+        <class>com.machi.wajinga.dao.mkopo.OmbiLaMkopo</class>
         <class>com.machi.wajinga.dao.mkopo.Rejesho</class>
         <class>com.machi.wajinga.dao.wajiboost.KipengeleChaKatiba</class>
         <class>com.machi.wajinga.dao.wajiboost.Katiba</class>
