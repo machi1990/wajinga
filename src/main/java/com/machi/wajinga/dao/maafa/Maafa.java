@@ -1,7 +1,5 @@
 package com.machi.wajinga.dao.maafa;
 
-import java.sql.Timestamp;
-
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -9,32 +7,29 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import org.datanucleus.api.jdo.annotations.CreateTimestamp;
-import org.datanucleus.api.jdo.annotations.UpdateTimestamp;
-
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @PersistenceCapable(detachable = "true")
 @FetchGroup(name = "Mjinga", members = { @Persistent(name = "mjinga")})
 public class Maafa {
-	@CreateTimestamp
-    Timestamp createTime;
-	
-	@UpdateTimestamp
-    Timestamp updateTime;
-	
 	@PrimaryKey
 	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+	
 	private Long id;
 	@Column(allowsNull="false")
+	
 	private String jinaLaTeam;
+	
 	private Integer nafasi;
 	@Column(allowsNull="false")
+	
 	private String msimu;
 	
 	@Column(allowsNull="false")
 	private Long kiasi;
+	
 	private Mjinga mjinga;
+	
 	private Long zawadi;
 	
 	public Maafa() {
@@ -183,6 +178,12 @@ public class Maafa {
 			return false;
 		return true;
 	}
-	
-	
+
+
+	@Override
+	public String toString() {
+		return "Maafa [id=" + id + ", jinaLaTeam=" + jinaLaTeam + ", nafasi=" + nafasi + ", msimu=" + msimu + ", kiasi="
+				+ kiasi + ", mjinga=" + mjinga + ", zawadi=" + zawadi + "]";
+	}
+		
 }

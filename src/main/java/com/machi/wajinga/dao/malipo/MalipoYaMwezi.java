@@ -12,6 +12,7 @@ import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @PersistenceCapable(detachable="true")
 public class MalipoYaMwezi {
+	
 	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
 	@PrimaryKey
 	private Long id;

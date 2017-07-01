@@ -19,6 +19,7 @@ import org.joda.time.DateTime;
 import com.machi.wajinga.dao.maafa.Maafa;
 import com.machi.wajinga.dao.malipo.MalipoYaMwezi;
 import com.machi.wajinga.dao.mkopo.Mkopo;
+import com.machi.wajinga.dao.tools.Encryption;
 
 @PersistenceCapable(detachable = "true")
 @FetchGroups(value = { 
@@ -51,24 +52,36 @@ public class Mjinga implements Chambable, Principal {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
+	
 	@Unique
 	private String jina;
+	
 	private String jinaLaUkoo; 
+	
+	@Unique
 	private String baruaPepe;
+	
+	@Column(allowsNull="false")
 	protected  String password;
+	
 	@Column(allowsNull="false")
 	private String nambaYaSimu;
+	
 	@Column(allowsNull="false")
 	private String kazi;
+	
 	@Column(allowsNull="false")
 	private Cheo cheo;
+	
 	@Column(allowsNull="false")
 	private DateTime tareheYaKuanzaUjinga;
 	
 	@Persistent(mappedBy="mjinga")
 	private List<MalipoYaMwezi> malipo = new ArrayList<MalipoYaMwezi>();
+	
 	@Persistent(mappedBy="mjinga")
 	private List<Maafa> maafa = new ArrayList<Maafa>();
+	
 	@Persistent(mappedBy="mkopaji")
 	private List<Mkopo> mikopo = new ArrayList<Mkopo>();
 	
@@ -79,6 +92,38 @@ public class Mjinga implements Chambable, Principal {
 		super();
 	}
 
+	
+	public Mjinga(String jina, String jinaLaUkoo, String baruaPepe, String password, String nambaYaSimu, String kazi,
+			Cheo cheo, DateTime tareheYaKuanzaUjinga, List<MalipoYaMwezi> malipo, List<Maafa> maafa, List<Mkopo> mikopo,
+			List<Mchambo> michambo) {
+		super();
+		this.jina = jina;
+		this.jinaLaUkoo = jinaLaUkoo;
+		this.baruaPepe = baruaPepe;
+		this.nambaYaSimu = nambaYaSimu;
+		this.kazi = kazi;
+		this.cheo = cheo;
+		this.tareheYaKuanzaUjinga = tareheYaKuanzaUjinga;
+		this.malipo = malipo;
+		this.maafa = maafa;
+		this.mikopo = mikopo;
+		this.michambo = michambo;
+		this.password = encrypt(password);
+	}
+
+
+	private String encrypt(String password) {
+		return Encryption.instance().encrypt(password);
+	}
+
+	public Boolean passwordEqual(String password) {
+		if (password == null) {
+			return false;
+		}
+		
+		return password.equals(Encryption.instance().decrypt(password));
+	}
+	
 	@Override
 	public String chamba() {
 		return michambo.stream().map(mchambo -> mchambo.chamba()).reduce("",

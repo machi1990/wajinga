@@ -22,6 +22,9 @@
                   name="tareheYaMajibu"
                   persistence-modifier="persistent"/>
             <field
+                  name="jibu"
+                  persistence-modifier="persistent"/>
+            <field
                   name="maelezoYaJibu"
                   persistence-modifier="persistent"/>
             <field

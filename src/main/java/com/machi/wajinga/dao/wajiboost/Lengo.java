@@ -88,7 +88,7 @@ public class Lengo {
 			return true;
 		}
 	}
-	
+
 	@PrimaryKey
 	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
 	private Long id;

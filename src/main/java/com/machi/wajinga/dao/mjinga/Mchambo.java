@@ -8,6 +8,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable(detachable = "true")
 public class Mchambo implements Chambable{
+	
 	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
 	@PrimaryKey
 	private Long id;
@@ -76,4 +77,10 @@ public class Mchambo implements Chambable{
 	public String chamba() {
 		return mchambo;
 	}
+
+	@Override
+	public String toString() {
+		return "Mchambo [id=" + id + ", mchambo=" + mchambo + "]";
+	}
+	
 }

@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
 public class Katiba {
+	
 	@PrimaryKey
 	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
 	private Long id;

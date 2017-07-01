@@ -16,6 +16,7 @@
         <class>com.machi.wajinga.dao.wajiboost.KipengeleChaKatiba</class>
         <class>com.machi.wajinga.dao.wajiboost.Katiba</class>
         <class>com.machi.wajinga.dao.wajiboost.Lengo</class>
+        <class>com.machi.wajinga.dao.wajiboost.Tukio</class>
         
         <exclude-unlisted-classes/>
         <properties>

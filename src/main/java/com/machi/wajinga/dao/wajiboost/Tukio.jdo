@@ -3,38 +3,41 @@
     "-//Sun Microsystems, Inc.//DTD Java Data Objects Metadata 2.0//EN"
     "http://java.sun.com/dtd/jdo_2_0.dtd">
 <jdo>
-    <package name="com.machi.wajinga.dao.mkopo">
+    <package name="com.machi.wajinga.dao.wajiboost">
         <class
-              name="Mkopo">
+              name="Tukio">
             <field
                   name="id"
                   persistence-modifier="persistent"/>
             <field
-                  name="kiasi"
+                  name="aina"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="maoni"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="washiriki"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="kichwa"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="maelezoYaTukio"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="maelezoBaadaYaTukio"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="mahali"
                   persistence-modifier="persistent"/>
             <field
                   name="tarehe"
                   persistence-modifier="persistent"/>
             <field
-                  name="riba"
+                  name="muandaaji"
                   persistence-modifier="persistent"/>
             <field
-                  name="mwishoWaRejesho"
-                  persistence-modifier="persistent"/>
-            <field
-                  name="deni"
-                  persistence-modifier="persistent"/>
-            <field
-                  name="mkopaji"
-                  persistence-modifier="persistent"/>
-            <field
-                  name="signatori"
-                  persistence-modifier="persistent"/>
-            <field
-                  name="ombi"
-                  persistence-modifier="persistent"/>
-            <field
-                  name="marejesho"
+                  name="tareheYaKutengenezwa"
                   persistence-modifier="persistent"/>
         </class>
     </package>

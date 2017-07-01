@@ -7,12 +7,6 @@
         <class
               name="Maafa">
             <field
-                  name="createTime"
-                  persistence-modifier="persistent"/>
-            <field
-                  name="updateTime"
-                  persistence-modifier="persistent"/>
-            <field
                   name="id"
                   persistence-modifier="persistent"/>
             <field

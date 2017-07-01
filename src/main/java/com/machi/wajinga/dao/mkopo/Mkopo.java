@@ -17,16 +17,20 @@ import com.machi.wajinga.dao.mjinga.Mjinga;
 @PersistenceCapable(detachable = "true")
 @FetchGroup(name = "Maelezo", members = { @Persistent(name="signatori"), @Persistent(name = "mkopahi"), @Persistent(name="marejesho")})
 public class Mkopo {
+	
 	@PrimaryKey
 	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
 	private Long id;
 	
 	@Column(allowsNull="false")
 	private Long kiasi;
+	
 	@Column(allowsNull="false")
 	private DateTime tarehe;
+	
 	@Column(allowsNull="false")
 	private Double riba;
+	
 	@Column(allowsNull="false")
 	private DateTime mwishoWaRejesho;
 	
@@ -141,7 +145,32 @@ public class Mkopo {
 	public void setOmbi(OmbiLaMkopo ombi) {
 		this.ombi = ombi;
 	}
+	
 
+	public Boolean isUmeLipwa() {
+		if (marejesho == null) {
+			return false;
+		}
+		
+		return marejesho.stream().map( rejesho -> rejesho.getKiasi()).reduce(0.0, (acc, rejesho) -> acc + rejesho) >= deni;
+	}
+	
+	public Double getDeni() {
+		return deni;
+	}
+
+	public void setDeni(Double deni) {
+		this.deni = deni;
+	}
+
+	public List<Rejesho> getMarejesho() {
+		return marejesho;
+	}
+
+	public void setMarejesho(List<Rejesho> marejesho) {
+		this.marejesho = marejesho;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -203,29 +232,11 @@ public class Mkopo {
 		return true;
 	}
 
-	
-	public Boolean isUmeLipwa() {
-		if (marejesho == null) {
-			return false;
-		}
-		
-		return marejesho.stream().map( rejesho -> rejesho.getKiasi()).reduce(0.0, (acc, rejesho) -> acc + rejesho) >= deni;
+	@Override
+	public String toString() {
+		return "Mkopo [id=" + id + ", kiasi=" + kiasi + ", tarehe=" + tarehe + ", riba=" + riba + ", mwishoWaRejesho="
+				+ mwishoWaRejesho + ", deni=" + deni + ", mkopaji=" + mkopaji + ", signatori=" + signatori + ", ombi="
+				+ ombi + ", marejesho=" + marejesho + "]";
 	}
 	
-	public Double getDeni() {
-		return deni;
-	}
-
-	public void setDeni(Double deni) {
-		this.deni = deni;
-	}
-
-	public List<Rejesho> getMarejesho() {
-		return marejesho;
-	}
-
-	public void setMarejesho(List<Rejesho> marejesho) {
-		this.marejesho = marejesho;
-	}
-
 }
