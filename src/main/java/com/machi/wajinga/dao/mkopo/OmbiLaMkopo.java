@@ -13,7 +13,7 @@ import com.machi.wajinga.dao.mjinga.Mjinga;
 @PersistenceCapable(detachable = "true")
 public class OmbiLaMkopo {
 
-	public enum Jibu {
+	public static enum Jibu {
 		LIMEKATALIWA,
 		LIMEKUBALIWA
 	}
@@ -23,6 +23,7 @@ public class OmbiLaMkopo {
 	private Long id;
 	
 	@Persistent(defaultFetchGroup="true")
+	@Column(name="MJINGA_ID")
 	private Mjinga mjinga;
 	
 	private DateTime tarehe;
@@ -39,6 +40,10 @@ public class OmbiLaMkopo {
 	
 	@Persistent(defaultFetchGroup="true")
 	private Mjinga mjibuji;
+	
+	private Long kiasi;
+	
+	private Long kiasiKilichokubaliwa;
 
 	public OmbiLaMkopo(Mjinga mjinga, DateTime tarehe, String maelezo, DateTime tareheYaMajibu, String maelezoYaJibu,
 			Mjinga mjibuji) {
@@ -125,17 +130,39 @@ public class OmbiLaMkopo {
 		return jibu;
 	}
 
-
 	public void setJibu(Jibu jibu) {
 		this.jibu = jibu;
 	}
 	
+
+	public Long getKiasi() {
+		return kiasi;
+	}
+
+
+	public void setKiasi(Long kiasi) {
+		this.kiasi = kiasi;
+	}
+
+
+	public Long getKiasiKilichokubaliwa() {
+		return kiasiKilichokubaliwa;
+	}
+
+
+	public void setKiasiKilichokubaliwa(Long kiasiKilichokubaliwa) {
+		this.kiasiKilichokubaliwa = kiasiKilichokubaliwa;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((jibu == null) ? 0 : jibu.hashCode());
+		result = prime * result + ((kiasi == null) ? 0 : kiasi.hashCode());
+		result = prime * result + ((kiasiKilichokubaliwa == null) ? 0 : kiasiKilichokubaliwa.hashCode());
 		result = prime * result + ((maelezo == null) ? 0 : maelezo.hashCode());
 		result = prime * result + ((maelezoYaJibu == null) ? 0 : maelezoYaJibu.hashCode());
 		result = prime * result + ((mjibuji == null) ? 0 : mjibuji.hashCode());
@@ -144,6 +171,7 @@ public class OmbiLaMkopo {
 		result = prime * result + ((tareheYaMajibu == null) ? 0 : tareheYaMajibu.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -160,6 +188,16 @@ public class OmbiLaMkopo {
 		} else if (!id.equals(other.id))
 			return false;
 		if (jibu != other.jibu)
+			return false;
+		if (kiasi == null) {
+			if (other.kiasi != null)
+				return false;
+		} else if (!kiasi.equals(other.kiasi))
+			return false;
+		if (kiasiKilichokubaliwa == null) {
+			if (other.kiasiKilichokubaliwa != null)
+				return false;
+		} else if (!kiasiKilichokubaliwa.equals(other.kiasiKilichokubaliwa))
 			return false;
 		if (maelezo == null) {
 			if (other.maelezo != null)
@@ -194,10 +232,12 @@ public class OmbiLaMkopo {
 		return true;
 	}
 
+
 	@Override
 	public String toString() {
 		return "OmbiLaMkopo [id=" + id + ", mjinga=" + mjinga + ", tarehe=" + tarehe + ", maelezo=" + maelezo
 				+ ", tareheYaMajibu=" + tareheYaMajibu + ", jibu=" + jibu + ", maelezoYaJibu=" + maelezoYaJibu
-				+ ", mjibuji=" + mjibuji + "]";
+				+ ", mjibuji=" + mjibuji + ", kiasi=" + kiasi + ", kiasiKilichokubaliwa=" + kiasiKilichokubaliwa + "]";
 	}
+	
 }

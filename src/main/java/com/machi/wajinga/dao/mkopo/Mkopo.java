@@ -15,7 +15,7 @@ import org.joda.time.DateTime;
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @PersistenceCapable(detachable = "true")
-@FetchGroup(name = "Maelezo", members = { @Persistent(name="signatori"), @Persistent(name = "mkopahi"), @Persistent(name="marejesho")})
+@FetchGroup(name = "Maelezo", members = { @Persistent(name="ombi"), @Persistent(name="signatori"), @Persistent(name = "mkopaji"), @Persistent(name="marejesho")})
 public class Mkopo {
 	
 	@PrimaryKey
@@ -35,13 +35,13 @@ public class Mkopo {
 	private DateTime mwishoWaRejesho;
 	
 	private Double deni;
-	@Column(allowsNull="false")
+	@Column(allowsNull="false", name="MJINGA_ID")
 	private Mjinga mkopaji;
 	
 	@Column(allowsNull="false")
 	private Mjinga signatori;
 
-	@Persistent(defaultFetchGroup="true", dependent="true")
+	@Persistent(defaultFetchGroup="true", dependent="false")
 	private OmbiLaMkopo ombi;
 	
 	@Persistent(dependentElement="true", mappedBy="mkopo")
@@ -95,25 +95,17 @@ public class Mkopo {
 		this.tarehe = tarehe;
 	}
 
-
-
 	public Double getRiba() {
 		return riba;
 	}
-
-
 
 	public void setRiba(Double riba) {
 		this.riba = riba;
 	}
 
-
-
 	public DateTime getMwishoWaRejesho() {
 		return mwishoWaRejesho;
 	}
-
-
 
 	public void setMwishoWaRejesho(DateTime mwishoWaRejesho) {
 		this.mwishoWaRejesho = mwishoWaRejesho;
@@ -152,7 +144,7 @@ public class Mkopo {
 			return false;
 		}
 		
-		return marejesho.stream().map( rejesho -> rejesho.getKiasi()).reduce(0.0, (acc, rejesho) -> acc + rejesho) >= deni;
+		return marejesho.stream().map(Rejesho::getKiasi).reduce(0.0, (acc, rejesho) -> acc + rejesho) >= deni;
 	}
 	
 	public Double getDeni() {

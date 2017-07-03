@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Join;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -17,7 +18,7 @@ import com.machi.wajinga.dao.mjinga.Mjinga;
 @PersistenceCapable(detachable="true")
 public class Tukio {
 	
-	public enum Aina {
+	public static enum Aina {
 		TAFRIJA,
 		KIKAO
 	};
@@ -43,6 +44,7 @@ public class Tukio {
 	private List<Oni> maoni = new ArrayList<Oni>();
 	
 	@Persistent(defaultFetchGroup="true")
+	@Join
 	private List<Mjinga> washiriki = new ArrayList<Mjinga>();
 	
 	@Column(allowsNull="false")

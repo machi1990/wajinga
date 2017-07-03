@@ -18,7 +18,7 @@ public class MalipoYaMwezi {
 	private Long id;
 	
 	@Persistent(defaultFetchGroup="true")
-	@Column(allowsNull="false")
+	@Column(allowsNull="false", name="MJINGA_ID")
 	private Mjinga mjinga;
 	
 	@Column(allowsNull="false")
@@ -33,13 +33,13 @@ public class MalipoYaMwezi {
 	public MalipoYaMwezi() {
 		super();
 	}
-
 	
-	public MalipoYaMwezi(Mjinga mjinga, Long kiasi, DateTime tarehe) {
+	public MalipoYaMwezi(Mjinga mjinga, Long kiasi, DateTime tarehe, DateTime mweziHusika) {
 		super();
 		this.mjinga = mjinga;
 		this.kiasi = kiasi;
 		this.tarehe = tarehe;
+		this.mweziHusika = mweziHusika;
 	}
 
 

@@ -19,7 +19,7 @@
                   name="baruaPepe"
                   persistence-modifier="persistent"/>
             <field
-                  name="password"
+                  name="nywira"
                   persistence-modifier="persistent"/>
             <field
                   name="nambaYaSimu"
@@ -32,6 +32,12 @@
                   persistence-modifier="persistent"/>
             <field
                   name="tareheYaKuanzaUjinga"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="nywiraTokeni"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="trhOmbiLaKubadiliNywira"
                   persistence-modifier="persistent"/>
             <field
                   name="malipo"

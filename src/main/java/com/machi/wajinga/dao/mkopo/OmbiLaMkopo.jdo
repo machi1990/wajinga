@@ -30,6 +30,12 @@
             <field
                   name="mjibuji"
                   persistence-modifier="persistent"/>
+            <field
+                  name="kiasi"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="kiasiKilichokubaliwa"
+                  persistence-modifier="persistent"/>
         </class>
     </package>
 </jdo>

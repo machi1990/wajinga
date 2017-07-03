@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Join;
+import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
@@ -11,16 +13,18 @@ import org.joda.time.DateTime;
 
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
+@PersistenceCapable(detachable="true")
 public class Katiba {
 	
 	@PrimaryKey
 	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
 	private Long id;
 	
-	@Persistent(defaultFetchGroup="true", dependent="true")
+	@Persistent(defaultFetchGroup="true", dependentElement="true")
 	private List<KipengeleChaKatiba> vipengele = new ArrayList<KipengeleChaKatiba>();
 	
 	@Persistent(defaultFetchGroup="true")
+	@Join
 	private List<Mjinga> signatori = new ArrayList<Mjinga>();
 	
 	private DateTime  tarehe;

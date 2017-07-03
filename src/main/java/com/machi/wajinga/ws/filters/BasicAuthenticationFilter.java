@@ -117,7 +117,7 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 			mjinga_ = session.mjinga;
 		} else {
 			mjinga_ = dao.tafutaMjingaKwaJina(username);
-			if (mjinga_ == null || !mjinga_.passwordEqual(password)) {
+			if (mjinga_ == null || !mjinga_.nywiraSahihi(password)) {
 				requestContext.abortWith(ACCESS_DENIED);
 				return;
 			}

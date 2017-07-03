@@ -11,6 +11,7 @@ import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.Join;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -22,14 +23,14 @@ import org.joda.time.DateTime;
 import com.machi.wajinga.dao.maafa.Maafa;
 import com.machi.wajinga.dao.malipo.MalipoYaMwezi;
 import com.machi.wajinga.dao.mkopo.Mkopo;
+import com.machi.wajinga.dao.mkopo.OmbiLaMkopo;
 import com.machi.wajinga.dao.tools.Encryption;
-
 
 @PersistenceCapable(detachable = "true")
 @FetchGroups(value = { 
 		@FetchGroup(name = "Malipo", members = { @Persistent(name = "malipo")}),
 		@FetchGroup(name = "Maafa", members = { @Persistent(name="maafa")}),
-		@FetchGroup(name = "Mikopo", members = { @Persistent(name="mikopo")}),
+		@FetchGroup(name = "Mikopo", members = { @Persistent(name="mikopo"), @Persistent(name="ombiMkopo")}),
 		@FetchGroup(name = "Michambo", members = { @Persistent(name="michambo")})
 })
 public class Mjinga implements Chambable, Principal {
@@ -69,7 +70,7 @@ public class Mjinga implements Chambable, Principal {
 	private String baruaPepe;
 	
 	@Column(allowsNull="false")
-	protected  String password;
+	protected  String nywira;
 	
 	@Column(allowsNull="false")
 	private String nambaYaSimu;
@@ -83,24 +84,49 @@ public class Mjinga implements Chambable, Principal {
 	@Column(allowsNull="false")
 	private DateTime tareheYaKuanzaUjinga;
 	
+	@Unique
+	@Column(allowsNull="true")
+	private String nywiraTokeni;
+	
+	private DateTime trhOmbiLaKubadiliNywira;
+	
 	@Persistent(mappedBy="mjinga")
+	@Join
 	private List<MalipoYaMwezi> malipo = new ArrayList<MalipoYaMwezi>();
 	
+	@NotPersistent
+	private Integer idadiYaMalipo;
+	
 	@Persistent(mappedBy="mjinga")
+	@Join
 	private List<Maafa> maafa = new ArrayList<Maafa>();
+	@NotPersistent
+	private Integer idadiYaMaafa;
 	
 	@Persistent(mappedBy="mkopaji")
+	@Join
 	private List<Mkopo> mikopo = new ArrayList<Mkopo>();
+	@NotPersistent
+	private Integer idadiYaMikopo;
+	
+	@Persistent(mappedBy="mjinga")
+	@Join
+	private List<OmbiLaMkopo> ombiMkopo = new ArrayList<OmbiLaMkopo>();
+	@NotPersistent
+	private Integer idadiYaOmbiMkopo;
 	
 	@Join
 	private List<Mchambo> michambo = new ArrayList<Mchambo>();
-
+	@NotPersistent
+	private Integer idadiYaMichambo;
+	
+	
 	public Mjinga() {
 		super();
 	}
 
 	
-	public Mjinga(String jina, String jinaLaUkoo, String baruaPepe, String password, String nambaYaSimu, String kazi,
+	public Mjinga(String jina, String jinaLaUkoo, String baruaPepe, String nywira, String nambaYaSimu, String kazi,
 			Cheo cheo, DateTime tareheYaKuanzaUjinga ){
 		super();
 		this.jina = jina;
@@ -110,17 +136,17 @@ public class Mjinga implements Chambable, Principal {
 		this.kazi = kazi;
 		this.cheo = cheo;
 		this.tareheYaKuanzaUjinga = tareheYaKuanzaUjinga;
-		this.password = encrypt(password);
+		this.nywira = ficha(nywira);
 	}
 
 
-	private String encrypt(String password) {
+	private String ficha(String password) {
 		return Encryption.instance().encrypt(password);
 	}
 
-	public Boolean passwordEqual(String password) {
+	public Boolean nywiraSahihi(String password) {
 		try {
-			return Encryption.instance().validatePassword(password, this.password);
+			return Encryption.instance().validatePassword(password, this.nywira);
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			e.printStackTrace();
 			return false;
@@ -129,7 +155,7 @@ public class Mjinga implements Chambable, Principal {
 	
 	@Override
 	public String chamba() {
-		return michambo.stream().map(mchambo -> mchambo.chamba()).reduce("",
+		return michambo.stream().map(Mchambo::chamba).reduce("",
 				(previous, current) -> previous.concat(" ".concat(current)));
 	}
 
@@ -229,11 +255,73 @@ public class Mjinga implements Chambable, Principal {
 		this.tareheYaKuanzaUjinga = tareheYaKuanzaUjinga;
 	}
 	
-
-	public void setPassword(String password) {
-		this.password = password;
-	}	
+	public void wekaNywira(String nywira) {
+		this.nywira = this.ficha(nywira);
+	}
 	
+	@JsonIgnore
+	public String getNywiraTokeni() {
+		return nywiraTokeni;
+	}
+
+	@JsonIgnore
+	public void setNywiraTokeni(String nywiraTokeni) {
+		this.nywiraTokeni = nywiraTokeni;
+	}
+
+
+	@JsonIgnore
+	public DateTime getTrhOmbiLaKubadiliNywira() {
+		return trhOmbiLaKubadiliNywira;
+	}
+
+
+	@JsonIgnore
+	public void setTrhOmbiLaKubadiliNywira(DateTime trhOmbiLaKubadiliNywira) {
+		this.trhOmbiLaKubadiliNywira = trhOmbiLaKubadiliNywira;
+	}
+	
+	public Integer getIdadiYaMalipo() {
+		return idadiYaMalipo;
+	}
+
+	public Integer getIdadiYaMaafa() {
+		return idadiYaMaafa;
+	}
+
+	public Integer getIdadiYaMikopo() {
+		return idadiYaMikopo;
+	}
+
+	public Integer getIdadiYaMichambo() {
+		return idadiYaMichambo;
+	}
+	
+	
+	public Integer getIdadiYaOmbiMkopo() {
+		return idadiYaOmbiMkopo;
+	}
+
+	public Mjinga kokotoaIdadi() {		
+		idadiYaMikopo = Math.max(0, mikopo != null ? mikopo.size() : 0);
+		idadiYaOmbiMkopo = Math.max(0, ombiMkopo != null ? ombiMkopo.size(): 0);
+		idadiYaMichambo = Math.max(0, michambo != null ? michambo.size() : 0);
+		idadiYaMalipo= Math.max(0, malipo != null ? malipo.size(): 0);
+		idadiYaMaafa = Math.max(0, maafa != null ? maafa.size(): 0 );
+		
+		return this.wipe();
+	}
+	
+	public List<OmbiLaMkopo> getOmbiMkopo() {
+		return ombiMkopo;
+	}
+
+
+	public void setOmbiMkopo(List<OmbiLaMkopo> ombiMikopo) {
+		this.ombiMkopo = ombiMikopo;
+	}
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -249,7 +337,11 @@ public class Mjinga implements Chambable, Principal {
 		result = prime * result + ((michambo == null) ? 0 : michambo.hashCode());
 		result = prime * result + ((mikopo == null) ? 0 : mikopo.hashCode());
 		result = prime * result + ((nambaYaSimu == null) ? 0 : nambaYaSimu.hashCode());
+		result = prime * result + ((nywira == null) ? 0 : nywira.hashCode());
+		result = prime * result + ((nywiraTokeni == null) ? 0 : nywiraTokeni.hashCode());
+		result = prime * result + ((ombiMkopo == null) ? 0 : ombiMkopo.hashCode());
 		result = prime * result + ((tareheYaKuanzaUjinga == null) ? 0 : tareheYaKuanzaUjinga.hashCode());
+		result = prime * result + ((trhOmbiLaKubadiliNywira == null) ? 0 : trhOmbiLaKubadiliNywira.hashCode());
 		return result;
 	}
 	
@@ -314,10 +406,30 @@ public class Mjinga implements Chambable, Principal {
 				return false;
 		} else if (!nambaYaSimu.equals(other.nambaYaSimu))
 			return false;
+		if (nywira == null) {
+			if (other.nywira != null)
+				return false;
+		} else if (!nywira.equals(other.nywira))
+			return false;
+		if (nywiraTokeni == null) {
+			if (other.nywiraTokeni != null)
+				return false;
+		} else if (!nywiraTokeni.equals(other.nywiraTokeni))
+			return false;
+		if (ombiMkopo == null) {
+			if (other.ombiMkopo != null)
+				return false;
+		} else if (!ombiMkopo.equals(other.ombiMkopo))
+			return false;
 		if (tareheYaKuanzaUjinga == null) {
 			if (other.tareheYaKuanzaUjinga != null)
 				return false;
 		} else if (!tareheYaKuanzaUjinga.equals(other.tareheYaKuanzaUjinga))
+			return false;
+		if (trhOmbiLaKubadiliNywira == null) {
+			if (other.trhOmbiLaKubadiliNywira != null)
+				return false;
+		} else if (!trhOmbiLaKubadiliNywira.equals(other.trhOmbiLaKubadiliNywira))
 			return false;
 		return true;
 	}
@@ -325,9 +437,10 @@ public class Mjinga implements Chambable, Principal {
 	@Override
 	public String toString() {
 		return "Mjinga [id=" + id + ", jina=" + jina + ", jinaLaUkoo=" + jinaLaUkoo + ", baruaPepe=" + baruaPepe
-				+ ", nambaYaSimu=" + nambaYaSimu + ", kazi=" + kazi + ", cheo=" + cheo + ", tareheYaKuanzaUjinga="
-				+ tareheYaKuanzaUjinga + ", malipo=" + malipo + ", maafa=" + maafa + ", mikopo=" + mikopo
-				+ ", michambo=" + michambo + "]";
+				+ ", nywira=" + nywira + ", nambaYaSimu=" + nambaYaSimu + ", kazi=" + kazi + ", cheo=" + cheo
+				+ ", tareheYaKuanzaUjinga=" + tareheYaKuanzaUjinga + ", nywiraTokeni=" + nywiraTokeni
+				+ ", trhOmbiLaKubadiliNywira=" + trhOmbiLaKubadiliNywira + ", malipo=" + malipo + ", maafa=" + maafa
+				+ ", mikopo=" + mikopo + ", ombiMikopo=" + ombiMkopo + ", michambo=" + michambo + "]";
 	}
 
 	@JsonIgnore
@@ -342,6 +455,7 @@ public class Mjinga implements Chambable, Principal {
         setMalipo(null);
         setMichambo(null);
         setMikopo(null);
+        setOmbiMkopo(null);
 		return this;
 	}
 }

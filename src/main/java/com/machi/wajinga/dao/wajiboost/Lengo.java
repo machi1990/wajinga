@@ -106,9 +106,8 @@ public class Lengo {
 	}
 
 	
-	public Lengo(Long id, String maelezoYaZiada, Historia haliYaSasa, List<Historia> historia) {
+	public Lengo(String maelezoYaZiada, Historia haliYaSasa, List<Historia> historia) {
 		super();
-		this.id = id;
 		this.maelezoYaZiada = maelezoYaZiada;
 		this.haliYaSasa = haliYaSasa;
 		this.historia = historia;

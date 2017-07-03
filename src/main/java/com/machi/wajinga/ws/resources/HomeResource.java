@@ -1,9 +1,10 @@
 package com.machi.wajinga.ws.resources;
 
-import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -43,12 +44,32 @@ public class HomeResource {
     		return mjingaDao.tafutaMjingaKwaJina(context.getUserPrincipal().getName());
     }
     
-    @GET
-    @PermitAll
+    @POST
     @Path("badili-nywira")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response changePassword() {
+    public Response changePassword(NywiraKontena kontena) {
+    		Mjinga mjinga = mjingaDao.tafutaMjingaKwaJina(context.getUserPrincipal().getName());
+    		
+    		if (!mjinga.getBaruaPepe().equals(kontena.baruaPepe)) {
+    			throw new BadRequestException("Barua pepe imekosewa");
+    		}
+    		
+    		if (!mjinga.nywiraSahihi(kontena.nywiraYaZamani)) {
+    			throw new BadRequestException("Nywira ya zamani si sahihi");
+    		}
+    	
+    		if (kontena.nywiraMpya == null || "".equals(kontena.nywiraMpya) || kontena.nywiraMpya.matches("\\s+")) {
+    			throw new BadRequestException("Nywira mpya haiwezi kuwa tupu au kuwa na herufi zisizo sahihi");
+    		}
+    		
+    		mjingaDao.badiliNywira(mjinga, kontena.nywiraMpya);
+    		
     		return Response.noContent().build();
     }
     
+    public class NywiraKontena {
+	    	public String baruaPepe;
+	    	public String nywiraYaZamani;
+	    	public String nywiraMpya;
+    }
 }

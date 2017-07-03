@@ -11,23 +11,22 @@ import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @PersistenceCapable(detachable = "true")
 @FetchGroup(name = "Mjinga", members = { @Persistent(name = "mjinga")})
-public class Maafa {
+public class Maafa implements Comparable<Maafa> {
 	@PrimaryKey
 	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
 	
 	private Long id;
 	@Column(allowsNull="false")
-	
 	private String jinaLaTeam;
 	
 	private Integer nafasi;
 	@Column(allowsNull="false")
-	
 	private String msimu;
 	
 	@Column(allowsNull="false")
 	private Long kiasi;
 	
+	@Column(name="MJINGA_ID")
 	private Mjinga mjinga;
 	
 	private Long zawadi;
@@ -184,6 +183,19 @@ public class Maafa {
 	public String toString() {
 		return "Maafa [id=" + id + ", jinaLaTeam=" + jinaLaTeam + ", nafasi=" + nafasi + ", msimu=" + msimu + ", kiasi="
 				+ kiasi + ", mjinga=" + mjinga + ", zawadi=" + zawadi + "]";
+	}
+
+
+	/**
+	 * Descending order of msimu
+	 */
+	@Override
+	public int compareTo(Maafa o) {
+		if (o.msimu != null) {
+			return o.msimu.compareTo(msimu);
+		}
+		
+		return 0;
 	}
 		
 }

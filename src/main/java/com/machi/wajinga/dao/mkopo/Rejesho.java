@@ -24,7 +24,7 @@ public class Rejesho {
 	@Column(allowsNull="false")
 	private Double kiasi;
 	
-	@Column(allowsNull="false")
+	@Column(allowsNull="false", name="MKOPO_ID")
 	private Mkopo mkopo;
 	
 	public Rejesho() {
