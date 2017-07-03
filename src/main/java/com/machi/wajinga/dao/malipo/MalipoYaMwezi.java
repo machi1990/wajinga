@@ -18,6 +18,7 @@ public class MalipoYaMwezi {
 	private Long id;
 	
 	@Persistent(defaultFetchGroup="true")
+	@Column(allowsNull="false")
 	private Mjinga mjinga;
 	
 	@Column(allowsNull="false")
@@ -26,6 +27,7 @@ public class MalipoYaMwezi {
 	@Column(allowsNull="false")
 	private DateTime tarehe;
 	
+	@Column(allowsNull="false")
 	private DateTime mweziHusika;
 	
 	public MalipoYaMwezi() {
@@ -73,6 +75,15 @@ public class MalipoYaMwezi {
 		this.tarehe = tarehe;
 	}
 
+	public DateTime getMweziHusika() {
+		return mweziHusika;
+	}
+
+
+	public void setMweziHusika(DateTime mweziHusika) {
+		this.mweziHusika = mweziHusika;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -81,9 +92,11 @@ public class MalipoYaMwezi {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((kiasi == null) ? 0 : kiasi.hashCode());
 		result = prime * result + ((mjinga == null) ? 0 : mjinga.hashCode());
+		result = prime * result + ((mweziHusika == null) ? 0 : mweziHusika.hashCode());
 		result = prime * result + ((tarehe == null) ? 0 : tarehe.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -109,6 +122,11 @@ public class MalipoYaMwezi {
 				return false;
 		} else if (!mjinga.equals(other.mjinga))
 			return false;
+		if (mweziHusika == null) {
+			if (other.mweziHusika != null)
+				return false;
+		} else if (!mweziHusika.equals(other.mweziHusika))
+			return false;
 		if (tarehe == null) {
 			if (other.tarehe != null)
 				return false;
@@ -120,17 +138,8 @@ public class MalipoYaMwezi {
 
 	@Override
 	public String toString() {
-		return "MalipoYaMwezi [id=" + id + ", mjinga=" + mjinga + ", kiasi=" + kiasi + ", tarehe=" + tarehe + "]";
-	}
-
-
-	public DateTime getMweziHusika() {
-		return mweziHusika;
-	}
-
-
-	public void setMweziHusika(DateTime mweziHusika) {
-		this.mweziHusika = mweziHusika;
+		return "MalipoYaMwezi [id=" + id + ", mjinga=" + mjinga + ", kiasi=" + kiasi + ", tarehe=" + tarehe
+				+ ", mweziHusika=" + mweziHusika + "]";
 	}
 	
 }

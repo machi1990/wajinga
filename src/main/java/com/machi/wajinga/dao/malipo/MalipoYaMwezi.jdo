@@ -18,6 +18,9 @@
             <field
                   name="tarehe"
                   persistence-modifier="persistent"/>
+            <field
+                  name="mweziHusika"
+                  persistence-modifier="persistent"/>
         </class>
     </package>
 </jdo>
