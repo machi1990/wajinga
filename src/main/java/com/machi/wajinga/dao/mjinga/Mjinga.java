@@ -335,4 +335,13 @@ public class Mjinga implements Chambable, Principal {
 	public String getName() {
 		return this.getJina();
 	}
+
+
+	public Mjinga wipe() {
+		setMaafa(null);
+        setMalipo(null);
+        setMichambo(null);
+        setMikopo(null);
+		return this;
+	}
 }

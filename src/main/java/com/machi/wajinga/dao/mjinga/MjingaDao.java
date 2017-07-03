@@ -7,6 +7,6 @@ import com.machi.wajinga.dao.IDao;
 @Contract
 public interface MjingaDao extends IDao {
 
-	Mjinga tafutaMjungaKwaJina(String username);
+	Mjinga tafutaMjingaKwaJina(String username);
 
 }

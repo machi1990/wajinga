@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
@@ -56,19 +57,29 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 	private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
 			.entity("Forbidden to access this resource").type(MediaType.TEXT_PLAIN).build();
 
-	@Context
-	ResourceInfo resourceInfo;
-	MjingaDao dao = WajingaDao.Dao().getMjingaDao();
+	@Context private ResourceInfo resourceInfo;
+	private MjingaDao dao;
+	private ServerConfiguration config;
+	
+	@Inject
+	public BasicAuthenticationFilter(WajingaDao wajingaDao, ServerConfiguration config) {
+		dao = wajingaDao.getMjingaDao();
+		this.config = config;
+	}
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		Method method = resourceInfo.getResourceMethod();
 
+		if (method.isAnnotationPresent(PermitAll.class)) {
+			return;
+		}
+		
 		final MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
 		final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
-
-		if (authorization == null || authorization.isEmpty()) {
+		
+		if ((authorization == null || authorization.isEmpty())) {
 			requestContext.abortWith(ACCESS_DENIED);
 			return;
 		}
@@ -105,7 +116,7 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 			authorizationSid = password;
 			mjinga_ = session.mjinga;
 		} else {
-			mjinga_ = dao.tafutaMjungaKwaJina(username);
+			mjinga_ = dao.tafutaMjingaKwaJina(username);
 			if (mjinga_ == null || !mjinga_.passwordEqual(password)) {
 				requestContext.abortWith(ACCESS_DENIED);
 				return;
@@ -125,7 +136,7 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 
 			@Override
 			public boolean isSecure() {
-				return ServerConfiguration.config.isSecure();
+				return config.isSecure();
 			}
 
 			@Override
@@ -135,13 +146,9 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 
 			@Override
 			public String getAuthenticationScheme() {
-				return ServerConfiguration.config.getScheme();
+				return config.getScheme();
 			}
 		});
-
-		if (method.isAnnotationPresent(PermitAll.class)) {
-			return;
-		}
 
 		requestContext.setProperty("AuthorizationSid", authorizationSid);
 		SESSION.put(authorizationSid, new SessionObject(DateTime.now(), mjinga));

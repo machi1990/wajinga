@@ -1,6 +1,7 @@
 package com.machi.wajinga.ws.resources;
 
 import javax.annotation.security.PermitAll;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -10,7 +11,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import com.machi.wajinga.dao.WajingaDao;
 import com.machi.wajinga.dao.mjinga.Mjinga;
+import com.machi.wajinga.dao.mjinga.MjingaDao;
 
 
 /**
@@ -19,9 +22,16 @@ import com.machi.wajinga.dao.mjinga.Mjinga;
 @Path("ingia")
 public class HomeResource {
 
-	@Context SecurityContext context;
+	@Context private SecurityContext context;
+	private MjingaDao mjingaDao;
 	
-    /**
+	@Inject
+	public HomeResource(WajingaDao wajingaDao) {
+		super();
+		mjingaDao  = wajingaDao.getMjingaDao();
+	}
+
+	/**
      * Method handling HTTP GET requests. The returned object will be sent
      * to the client as "text/plain" media type.
      *
@@ -30,14 +40,7 @@ public class HomeResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Mjinga login() {
-        Mjinga mjinga = (Mjinga) context.getUserPrincipal();
-   
-        mjinga.setMaafa(null);
-        mjinga.setMalipo(null);
-        mjinga.setMichambo(null);
-        mjinga.setMikopo(null);
-        
-        return mjinga;
+    		return mjingaDao.tafutaMjingaKwaJina(context.getUserPrincipal().getName());
     }
     
     @GET

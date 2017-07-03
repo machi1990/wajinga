@@ -18,7 +18,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 	}
 
 	@Override
-	public Mjinga tafutaMjungaKwaJina(String username) {
+	public Mjinga tafutaMjingaKwaJina(String username) {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		Query query = pm.newQuery(Mjinga.class);
 		query.declareParameters("String username");
@@ -29,6 +29,6 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			return null;
 		}
 		
-		return pm.detachCopy(detached.get(0));
+		return pm.detachCopy(detached.get(0)).wipe();
 	}
 }

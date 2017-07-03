@@ -2,27 +2,29 @@ package com.machi.wajinga.ws;
 
 import java.util.Properties;
 
+import javax.inject.Inject;
+
 import org.jvnet.hk2.annotations.Service;
 
 
 @Service
 public class ServerConfiguration {
-	private String scheme = "https";
-	public static ServerConfiguration config;
+	private Properties props;
 	
+	@Inject
 	private ServerConfiguration(Properties props) {
-		this.scheme = props.getProperty("scheme", scheme);
+		this.props = props;
 	}
 	
 	public String getScheme() {
-		return scheme;
+		return props.getProperty("scheme", "http");
 	}
 	
 	public Boolean isSecure() {
-		return !scheme.equals("http");
+		return !getScheme().equals("http");
 	}
 	
-	public static void register(Properties props) {
-		config = new ServerConfiguration(props);
+	public String getPesistenceUnit() {
+		return props.getProperty("persistence", "Wajinga-Dev");
 	}
 }

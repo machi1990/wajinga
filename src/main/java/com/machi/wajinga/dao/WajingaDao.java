@@ -1,28 +1,37 @@
 package com.machi.wajinga.dao;
 
 
-import com.machi.wajinga.dao.maafa.MaafaDao;
-import com.machi.wajinga.dao.maafa.MaafaDaoImpl;
-import com.machi.wajinga.dao.malipo.MalipoYaMweziDao;
-import com.machi.wajinga.dao.malipo.MalipoYaMweziDaoImpl;
-import com.machi.wajinga.dao.mjinga.MjingaDao;
-import com.machi.wajinga.dao.mjinga.MjingaDaoImpl;
-import com.machi.wajinga.dao.mkopo.MkopoDao;
-import com.machi.wajinga.dao.mkopo.MkopoDaoImpl;
-import com.machi.wajinga.dao.wajiboost.WajiboostDao;
-import com.machi.wajinga.dao.wajiboost.WajiboostDaoImpl;
+import javax.inject.Inject;
 
+import org.jvnet.hk2.annotations.Service;
+
+import com.machi.wajinga.dao.maafa.MaafaDao;
+import com.machi.wajinga.dao.malipo.MalipoYaMweziDao;
+import com.machi.wajinga.dao.mjinga.MjingaDao;
+import com.machi.wajinga.dao.mkopo.MkopoDao;
+import com.machi.wajinga.dao.wajiboost.WajiboostDao;
+import com.machi.wajinga.ws.ServerConfiguration;
+
+@Service
 public class WajingaDao {
-	private static WajingaDao dao;
-	protected MjingaDao mjingaDao = new MjingaDaoImpl();
-	protected MaafaDao maafaDao = new MaafaDaoImpl();
-	protected MalipoYaMweziDao malipoDao = new MalipoYaMweziDaoImpl();
-	protected MkopoDao mkopoDao = new MkopoDaoImpl();
-	protected WajiboostDao wajiboostDao = new WajiboostDaoImpl();
+	private MjingaDao mjingaDao;
+	private MaafaDao maafaDao;
+	private MalipoYaMweziDao malipoDao;
+	private MkopoDao mkopoDao;
+	private WajiboostDao wajiboostDao;
 	
-	public WajingaDao() {
+	@Inject
+	public WajingaDao(MjingaDao mjingaDao, MaafaDao maafaDao, MalipoYaMweziDao malipoDao, MkopoDao mkopoDao,
+			WajiboostDao wajiboostDao, ServerConfiguration config) throws Exception {
 		super();
+		this.mjingaDao = mjingaDao;
+		this.maafaDao = maafaDao;
+		this.malipoDao = malipoDao;
+		this.mkopoDao = mkopoDao;
+		this.wajiboostDao = wajiboostDao;
+		setPmf(config.getPesistenceUnit());
 	}
+
 
 	public MaafaDao getMaafaDao() {
 		return maafaDao;
@@ -44,19 +53,11 @@ public class WajingaDao {
 		return wajiboostDao;
 	}
 
-	public void setPmf(String source) {
+	public void setPmf(String source){	
 		maafaDao.setPmf(source);
 		malipoDao.setPmf(source);
 		mkopoDao.setPmf(source);
 		wajiboostDao.setPmf(source);
 		mjingaDao.setPmf(source);
-	}
-
-	public static WajingaDao Dao() {
-		if (dao == null) {
-			dao = new WajingaDao();
-		}
-		
-		return dao;
 	}
 }
