@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.FetchGroup;
@@ -155,8 +156,7 @@ public class Mjinga implements Chambable, Principal {
 	
 	@Override
 	public String chamba() {
-		return michambo.stream().map(Mchambo::chamba).reduce("",
-				(previous, current) -> previous.concat(" ".concat(current)));
+		return michambo.stream().map(Mchambo::chamba).collect(Collectors.joining(" "));
 	}
 
 	public Long getId() {
