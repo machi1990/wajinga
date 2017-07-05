@@ -144,7 +144,7 @@ public class Mkopo {
 			return false;
 		}
 		
-		return marejesho.stream().map(Rejesho::getKiasi).reduce(0.0, (acc, rejesho) -> acc + rejesho) >= deni;
+		return marejesho.stream().mapToDouble(Rejesho::getKiasi).sum() >= deni;
 	}
 	
 	public Double getDeni() {
