@@ -2,6 +2,7 @@ package com.machi.wajinga.ws.resources;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ import org.glassfish.jersey.jackson1.Jackson1Feature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
+import org.jvnet.hk2.annotations.Service;
 
 import com.machi.wajinga.dao.WajingaDao;
 import com.machi.wajinga.dao.maafa.MaafaDao;
@@ -30,6 +32,8 @@ import com.machi.wajinga.dao.wajiboost.WajiboostDao;
 import com.machi.wajinga.dao.wajiboost.WajiboostDaoImpl;
 import com.machi.wajinga.ws.ServerConfiguration;
 import com.machi.wajinga.ws.dataset.DataSet;
+import com.machi.wajinga.ws.services.mailer.BaruaPepeService;
+import com.machi.wajinga.ws.services.mailer.EmailAttachment;
 
 public abstract class AbstractResourceTest extends JerseyTest {
 
@@ -65,6 +69,14 @@ public abstract class AbstractResourceTest extends JerseyTest {
 		
 	}
 	
+	@Service 
+	public static class BaruaPepeServiceTestImpl implements BaruaPepeService {
+		@Override
+		public Boolean tuma(List<String> emails, List<String> ccs, String subject, String message, List<EmailAttachment> attachments) {
+			return true;
+		}
+	}
+	
 	@Override
 	protected Application configure() {
 		DataJanitor.clean();
@@ -86,6 +98,7 @@ public abstract class AbstractResourceTest extends JerseyTest {
 				Properties props = new Properties();
 				props.setProperty("persistence", "Wajinga-Test");
 				bind(props).to(Properties.class);
+				bind(BaruaPepeServiceTestImpl.class).to(BaruaPepeService.class);
 			}
 		});
 	}

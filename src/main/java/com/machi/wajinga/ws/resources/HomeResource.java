@@ -1,5 +1,7 @@
 package com.machi.wajinga.ws.resources;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -17,11 +19,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import org.joda.time.DateTime;
+import org.glassfish.jersey.internal.util.Base64;
 
 import com.machi.wajinga.dao.WajingaDao;
 import com.machi.wajinga.dao.mjinga.Mjinga;
 import com.machi.wajinga.dao.mjinga.MjingaDao;
+import com.machi.wajinga.dao.wajiboost.Usanidi;
+import com.machi.wajinga.dao.wajiboost.WajiboostDao;
+import com.machi.wajinga.ws.services.mailer.BaruaPepeService;
 
 
 /**
@@ -31,12 +36,15 @@ import com.machi.wajinga.dao.mjinga.MjingaDao;
 public class HomeResource {
 
 	@Context private SecurityContext context;
+	@Inject BaruaPepeService hudumaYaBaruaPepe;
 	private MjingaDao mjingaDao;
+	private WajiboostDao wajiboostDao;
 	
 	@Inject
 	public HomeResource(WajingaDao wajingaDao) {
 		super();
 		mjingaDao  = wajingaDao.getMjingaDao();
+		wajiboostDao = wajingaDao.getWajiboostDao();
 	}
 
 	/**
@@ -95,13 +103,41 @@ public class HomeResource {
     		 */
     		String tokeni = UUID.randomUUID().toString();
     		
-    		mjinga.setNywiraTokeni(tokeni);
-    		mjinga.setTrhOmbiLaKubadiliNywira(DateTime.now());
+    		mjingaDao.wekaNywiraTokeni(mjinga.getId(), tokeni);
     		
-    		/**
-    		 * Tuma barua pepe kwa mtumiaji.
-    		 */
+    		List<String> emails = Arrays.asList(baruaPepe);
+    		
+    		String linki = wajiboostDao.tafutaUsanidi(Usanidi.SEVA) + "/mjinga/tengeneza-nywira-mpya/" + tokeni + "/" +baruaPepe+"/";
+    		hudumaYaBaruaPepe.tuma(emails, null, wajiboostDao.tafutaUsanidi(Usanidi.BADILI_NYWIRA), String.format(Usanidi.BADILI_NYWIRA_MESEJI, linki), null);
     		return Response.noContent().build();
+    }
+    
+    @GET
+    @PermitAll
+    @Path("tengeneza-nywira-mpya/{tokeni}/{barua-pepe}")
+    public Response tengenezaNywiraMpya(@PathParam("tokeni") String tokeni, @PathParam("barua-pepe") String baruaPepe) {
+    		if (baruaPepe == null) {
+    			throw new BadRequestException("Barua pepe ni muhimu");
+    		}
+    		
+    		Mjinga mjinga = mjingaDao.tafutaMjingaKwaBaruaPepe(baruaPepe);
+    		
+    		if (mjinga == null) {
+    			throw new NotFoundException("Barua pepe haipo");
+    		}
+    		
+    		if (!tokeni.equals(mjinga.getNywiraTokeni())) {
+    			throw new NotFoundException("Hakuna ombi ka hilo");
+    		}
+    		
+    		String nywiraMpya = Base64.encodeAsString(UUID.randomUUID().toString().substring(0, 10));
+    		
+    		mjingaDao.badiliNywira(mjinga, nywiraMpya);
+    		List<String> emails = Arrays.asList(baruaPepe);
+    		String linki = wajiboostDao.tafutaUsanidi(Usanidi.SEVA + "/mjinga/nywira-mpya/" + tokeni);
+    		hudumaYaBaruaPepe.tuma(emails, null, wajiboostDao.tafutaUsanidi(Usanidi.BADILI_NYWIRA), String.format(Usanidi.BADILI_NYWIRA_MESEJI, linki), null);
+    		
+    		return Response.ok().entity("<div> Nywira yako mpya ni: <strong>"+nywiraMpya+" </strong> <br> Kumbuka badili hii nywira.</div>").build();
     }
     
     public class NywiraKontena {

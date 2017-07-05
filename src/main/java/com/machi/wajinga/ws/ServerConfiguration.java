@@ -11,8 +11,7 @@ import org.jvnet.hk2.annotations.Service;
 public class ServerConfiguration {
 	private Properties props;
 	
-	@Inject
-	private ServerConfiguration(Properties props) {
+	@Inject public ServerConfiguration(Properties props) {
 		this.props = props;
 	}
 	

@@ -6,7 +6,16 @@ import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable(detachable="true")
 public class Usanidi {
-
+	public static final String JIBU_BARUA_PEPE_KWA = "JIBU_BARUA_PEPE_KWA";
+	public static final String SMTP_HOST = "SMTP.HOST";
+	public static final String SMTP_PORT = "SMTP.PORT";
+	public static final String SMTP_JINA = "SMTP.JINA";
+	public static final String SMTP_NYWIRA = "SMTP.NYWIRA";
+	public static final String MSIMU = "MSIMU";
+	public static final String SEVA = "SEVA_YETU";
+	public static final String BADILI_NYWIRA = "BADILI_NYWIRA";
+	public static final String BADILI_NYWIRA_MESEJI = "BADILI_NYWIRA_MESEJI";
+	
 	@PrimaryKey
 	private String funguo;
 	

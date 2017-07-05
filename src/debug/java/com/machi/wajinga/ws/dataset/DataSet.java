@@ -2,6 +2,7 @@ package com.machi.wajinga.ws.dataset;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
@@ -90,13 +91,13 @@ public class DataSet {
 		pm.makePersistentAll(wajinga);
 		
 		List<MalipoYaMwezi> malipo = new ArrayList<MalipoYaMwezi>();
-		for (Mjinga mjinga: wajinga) {
-			for (int i = 1; i < 6; i++) {
+		wajinga.forEach(mjinga -> {
+			IntStream.range(1, 7).forEach(i -> {
 				MalipoYaMwezi lipo = new MalipoYaMwezi(mjinga, 50000l, DateTime.now(), DateTime.now().minusMonths(i));
 				mjinga.getMalipo().add(lipo);
 				malipo.add(lipo);
-			}
-		}
+			});
+		});
 		
 		pm.makePersistentAll(wajinga);
 		pm.makePersistentAll(malipo);
@@ -108,8 +109,18 @@ public class DataSet {
 		wajinga.get(1).getOmbiMkopo().add(ombi2);
 		pm.makePersistent(wajinga.get(1));
 		
-		Usanidi msimu = new Usanidi("MSIMU", "2016/2017");
-		pm.makePersistent(msimu);
+		List<Usanidi> visanidi = new ArrayList<Usanidi>();
+		visanidi.add(new Usanidi(Usanidi.MSIMU, "2016/2017"));
+		visanidi.add(new Usanidi(Usanidi.SMTP_HOST, "localhost"));
+		visanidi.add(new Usanidi(Usanidi.SMTP_PORT, "25"));
+		visanidi.add(new Usanidi(Usanidi.SMTP_JINA, ""));
+		visanidi.add(new Usanidi(Usanidi.SMTP_NYWIRA, ""));
+		visanidi.add(new Usanidi(Usanidi.SEVA, "http://localhost:8080"));
+		visanidi.add(new Usanidi(Usanidi.BADILI_NYWIRA,  "RE: OMBI LA KUBADILI NYWIRA"));
+		visanidi.add(new Usanidi(Usanidi.BADILI_NYWIRA_MESEJI, "<div>Ombi lako la kubadili nywira lipekolewa. <br> Tembelea <a href=\"%s\"> Ukurasa wetu </a> uweze badili nywira yako. <br> <strong>Angalizo. Fanya haraka, meseji hii itakwisha muda wake ndani ya siku 2. <strong></div>"));
+		visanidi.add(new Usanidi(Usanidi.JIBU_BARUA_PEPE_KWA, "manyanda.chitimbo@gmail.com"));
+		
+		pm.makePersistentAll(visanidi);
 		
 		Tukio tukio = new Tukio(Aina.TAFRIJA, new ArrayList<Oni>(), "Mbuzi John", "Mbuzi John Day kuaga na kukaribisha mwaka", "Ilipendeza tufanye tena", "Dar Es Salaam, Mariat Hotel", DateTime.now().minusMonths(6).minusDays(15), wajinga.get(0), DateTime.now().minusMonths(8));
 		tukio.getWashiriki().addAll(wajinga);
@@ -128,14 +139,12 @@ public class DataSet {
 		
 		Katiba katiba = new Katiba(new ArrayList<>(), signatori , DateTime.now().minusMonths(7));
 		List<KipengeleChaKatiba> vipengeleVyaKatiba = new ArrayList<KipengeleChaKatiba>();
-		for (int i = 0; i < 2; i++) {
-			vipengeleVyaKatiba.add(new KipengeleChaKatiba("Kichwa - " + i , "Kichwa cha katiba"));
-		}
+		
+		IntStream.range(0, 4).forEach( i -> vipengeleVyaKatiba.add(new KipengeleChaKatiba("Kichwa - " + i , "Kichwa cha katiba")));
 		
 		katiba.getVipengele().addAll(vipengeleVyaKatiba);
 		pm.makePersistent(katiba);
 		
-
 		afa = new Maafa("Tekkers+++", 1, "2017/2018", 200000l, wajinga.get(1), 1400000l);
 		wajinga.get(1).getMaafa().add(afa);
 		pm.makePersistentAll(wajinga);

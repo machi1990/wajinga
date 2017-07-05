@@ -102,4 +102,13 @@ public interface MjingaDao extends IDao {
 	 * @return
 	 */
 	List<Maafa> tafutaMaafa(Long id);
+
+	/**
+	 * Weka tokeni ya uombaji nywira mpya
+	 * @param id
+	 * @param tokeni
+	 * @return Boolean - imewekwa 
+	 */
+	Boolean wekaNywiraTokeni(Long id, String tokeni);
+
 }

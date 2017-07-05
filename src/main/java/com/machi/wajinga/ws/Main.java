@@ -41,9 +41,10 @@ import com.machi.wajinga.ws.filters.CustomObjectMapper;
 import com.machi.wajinga.ws.filters.EntranceFilter;
 import com.machi.wajinga.ws.filters.GzipWriteInterceptor;
 import com.machi.wajinga.ws.filters.ResponseHeaderFilter;
+import com.machi.wajinga.ws.services.mailer.BaruaPepeService;
+import com.machi.wajinga.ws.services.mailer.BaruaPepeServiceImpl;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -83,6 +84,7 @@ public class Main {
 				bind(WajingaDao.class).to(WajingaDao.class);
 				bind(ServerConfiguration.class).to(ServerConfiguration.class);
 				bind(props).to(Properties.class);
+				bind(BaruaPepeServiceImpl.class).to(BaruaPepeService.class);
 			}
 		});
 
@@ -171,9 +173,9 @@ public class Main {
 	 * Main method.
 	 * 
 	 * @param args
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		InputStream in;
 		if (args.length > 0) {
 			in = new FileInputStream(args[0]);

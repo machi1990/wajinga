@@ -1,0 +1,10 @@
+version: "2"
+
+services:
+  smtp_server:
+    container_name: local_smtp_server
+    image: namshi/smtp
+    restart: always
+    ports: 
+      - '25:25'
+ 
