@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -87,14 +86,10 @@ public class HomeResource {
     @PermitAll
     @Path("tengeneza-nywira-mpya/{barua-pepe}")
     public Response tengenezaNywiraMpya(@PathParam("barua-pepe") String baruaPepe) {
-    		if (baruaPepe == null) {
-    			throw new BadRequestException("Barua pepe ni muhimu");
-    		}
-    		
     		Mjinga mjinga = mjingaDao.tafutaMjingaKwaBaruaPepe(baruaPepe);
     		
     		if (mjinga == null) {
-    			throw new NotFoundException("Barua pepe haipo");
+    			throw new BadRequestException("Barua pepe haipo");
     		}
     		
     		
@@ -116,18 +111,14 @@ public class HomeResource {
     @PermitAll
     @Path("tengeneza-nywira-mpya/{tokeni}/{barua-pepe}")
     public Response tengenezaNywiraMpya(@PathParam("tokeni") String tokeni, @PathParam("barua-pepe") String baruaPepe) {
-    		if (baruaPepe == null) {
-    			throw new BadRequestException("Barua pepe ni muhimu");
-    		}
-    		
     		Mjinga mjinga = mjingaDao.tafutaMjingaKwaBaruaPepe(baruaPepe);
     		
     		if (mjinga == null) {
-    			throw new NotFoundException("Barua pepe haipo");
+    			throw new BadRequestException("Barua pepe haipo");
     		}
     		
     		if (!tokeni.equals(mjinga.getNywiraTokeni())) {
-    			throw new NotFoundException("Hakuna ombi ka hilo");
+    			throw new BadRequestException("Hakuna ombi ka hilo");
     		}
     		
     		String nywiraMpya = Base64.encodeAsString(UUID.randomUUID().toString().substring(0, 10));
