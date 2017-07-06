@@ -60,7 +60,6 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			mjinga.setNywiraTokeni(null);
 			mjinga.setTrhOmbiLaKubadiliNywira(null);
 			mjinga.wekaNywira(nywiraMpya);
-			persistenceManager.makePersistent(mjinga);
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
