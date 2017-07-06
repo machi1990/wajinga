@@ -30,6 +30,9 @@ public class MalipoYaMwezi {
 	@Column(allowsNull="false")
 	private DateTime mweziHusika;
 	
+	@Column(allowsNull="true", jdbcType="CLOB")
+	private String maelezo;
+	
 	public MalipoYaMwezi() {
 		super();
 	}
@@ -84,19 +87,18 @@ public class MalipoYaMwezi {
 		this.mweziHusika = mweziHusika;
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((kiasi == null) ? 0 : kiasi.hashCode());
+		result = prime * result + ((maelezo == null) ? 0 : maelezo.hashCode());
 		result = prime * result + ((mjinga == null) ? 0 : mjinga.hashCode());
 		result = prime * result + ((mweziHusika == null) ? 0 : mweziHusika.hashCode());
 		result = prime * result + ((tarehe == null) ? 0 : tarehe.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -117,6 +119,11 @@ public class MalipoYaMwezi {
 				return false;
 		} else if (!kiasi.equals(other.kiasi))
 			return false;
+		if (maelezo == null) {
+			if (other.maelezo != null)
+				return false;
+		} else if (!maelezo.equals(other.maelezo))
+			return false;
 		if (mjinga == null) {
 			if (other.mjinga != null)
 				return false;
@@ -135,11 +142,10 @@ public class MalipoYaMwezi {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "MalipoYaMwezi [id=" + id + ", mjinga=" + mjinga + ", kiasi=" + kiasi + ", tarehe=" + tarehe
-				+ ", mweziHusika=" + mweziHusika + "]";
+				+ ", mweziHusika=" + mweziHusika + ", maelezo=" + maelezo + "]";
 	}
 	
 }

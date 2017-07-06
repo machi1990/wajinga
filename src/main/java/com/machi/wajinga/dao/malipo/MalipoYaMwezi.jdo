@@ -21,6 +21,9 @@
             <field
                   name="mweziHusika"
                   persistence-modifier="persistent"/>
+            <field
+                  name="maelezo"
+                  persistence-modifier="persistent"/>
         </class>
     </package>
 </jdo>
