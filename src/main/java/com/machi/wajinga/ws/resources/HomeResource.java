@@ -140,7 +140,7 @@ public class HomeResource {
     		return Response.ok().entity("<div> Nywira yako mpya ni: <strong>"+nywiraMpya+" </strong> <br> Kumbuka badili hii nywira.</div>").build();
     }
     
-    public class NywiraKontena {
+    public static class NywiraKontena {
 	    	public String baruaPepe;
 	    	public String nywiraYaZamani;
 	    	public String nywiraMpya;
