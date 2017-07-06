@@ -1,6 +1,5 @@
 package com.machi.wajinga.dao;
 
-import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
 
 public abstract class AbstractDaoImpl implements IDao {
@@ -10,13 +9,12 @@ public abstract class AbstractDaoImpl implements IDao {
 		super();
 	}
 
-	@Override
-	public PersistenceManagerFactory getPmf() {
+	protected PersistenceManagerFactory getPmf() {
 		return pmf;
 	}
 
 	@Override
-	public void setPmf(String source) {
-		pmf = JDOHelper.getPersistenceManagerFactory(source);
+	public void setPmf(PersistenceManagerFactory pmf) {
+		this.pmf = pmf;
 	}
 }

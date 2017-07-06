@@ -2,6 +2,8 @@ package com.machi.wajinga.dao;
 
 
 import javax.inject.Inject;
+import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManagerFactory;
 
 import org.jvnet.hk2.annotations.Service;
 
@@ -54,10 +56,11 @@ public class WajingaDao {
 	}
 
 	public void setPmf(String source){	
-		maafaDao.setPmf(source);
-		malipoDao.setPmf(source);
-		mkopoDao.setPmf(source);
-		wajiboostDao.setPmf(source);
-		mjingaDao.setPmf(source);
+		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory(source);
+		maafaDao.setPmf(pmf);
+		malipoDao.setPmf(pmf);
+		mkopoDao.setPmf(pmf);
+		wajiboostDao.setPmf(pmf);
+		mjingaDao.setPmf(pmf);
 	}
 }
