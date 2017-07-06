@@ -322,6 +322,14 @@ public class Mjinga implements Chambable, Principal {
 	}
 	
 
+	public Boolean anaruhusiwa() {
+		if (cheo == null) {
+			return false;
+		}
+		
+		return !Cheo.PASTOR.equals(cheo);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

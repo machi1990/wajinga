@@ -18,6 +18,15 @@
             <field
                   name="tarehe"
                   persistence-modifier="persistent"/>
+            <field
+                  name="adaYaUanachama"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="malipoYaMwezi"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="yaSasa"
+                  persistence-modifier="persistent"/>
         </class>
     </package>
 </jdo>

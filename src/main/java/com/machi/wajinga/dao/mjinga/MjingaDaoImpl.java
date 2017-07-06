@@ -289,4 +289,27 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		return true;
 	}
 
+	@Override
+	public Boolean badiliCheo(Mjinga mjinga) {
+		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
+		Transaction transaction = persistenceManager.currentTransaction();
+		try {
+			transaction.begin();
+			Mjinga mjinga_ = persistenceManager.getObjectById(Mjinga.class, mjinga.getId());
+			mjinga_.setCheo(mjinga.getCheo());
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			
+			persistenceManager.close();
+		}
+		
+		return true;
+	}
+
 }

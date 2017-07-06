@@ -43,13 +43,31 @@
                   name="malipo"
                   persistence-modifier="persistent"/>
             <field
+                  name="idadiYaMalipo"
+                  persistence-modifier="persistent"/>
+            <field
                   name="maafa"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="idadiYaMaafa"
                   persistence-modifier="persistent"/>
             <field
                   name="mikopo"
                   persistence-modifier="persistent"/>
             <field
+                  name="idadiYaMikopo"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="ombiMkopo"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="idadiYaOmbiMkopo"
+                  persistence-modifier="persistent"/>
+            <field
                   name="michambo"
+                  persistence-modifier="persistent"/>
+            <field
+                  name="idadiYaMichambo"
                   persistence-modifier="persistent"/>
         </class>
     </package>

@@ -119,6 +119,10 @@ public class DataSet {
 		visanidi.add(new Usanidi(Usanidi.BADILI_NYWIRA,  "RE: OMBI LA KUBADILI NYWIRA"));
 		visanidi.add(new Usanidi(Usanidi.BADILI_NYWIRA_MESEJI, "<div>Ombi lako la kubadili nywira lipekolewa. <br> Tembelea <a href=\"%s\"> Ukurasa wetu </a> uweze badili nywira yako. <br> <strong>Angalizo. Fanya haraka, meseji hii itakwisha muda wake ndani ya siku 2. <strong></div>"));
 		visanidi.add(new Usanidi(Usanidi.JIBU_BARUA_PEPE_KWA, "manyanda.chitimbo@gmail.com"));
+		visanidi.add(new Usanidi(Usanidi.AKAUNTI_KUFUNGWA, "AKAUNTI YAKO IMEFUNGWA"));
+		visanidi.add(new Usanidi(Usanidi.AKAUNTI_KUFUNGWA_MESEJI, "<div><strong>%s</strong> Akaunti yako ya Wajinga imefungwa kuanzia leo %s. Wasiliana na Uongozi wa Wajinga kwa taarifa zaidi</div>"));
+		visanidi.add(new Usanidi(Usanidi.AKAUNTI_KUFUNGULIWA, "AKAUNTI YAKO IMEFUNGULIWA"));
+		visanidi.add(new Usanidi(Usanidi.AKAUNTI_KUFUNGULIWA_MESEJI, "<div><strong>%s</strong> Akaunti yako ya Wajinga ipo hewani kuanzia leo %s. Tumia nywra hii <strong>%</strong> kuibadilisha. Wasiliana na Uongozi wa Wajinga kwa taarifa zaidi</div>"));
 		
 		pm.makePersistentAll(visanidi);
 		
@@ -137,7 +141,7 @@ public class DataSet {
 		signatori.add(wajinga.get(4));
 		signatori.add(wajinga.get(2));
 		
-		Katiba katiba = new Katiba(new ArrayList<>(), signatori , DateTime.now().minusMonths(7));
+		Katiba katiba = new Katiba(new ArrayList<>(), signatori , DateTime.now().minusMonths(7), 50000l, 50000l, true);
 		List<KipengeleChaKatiba> vipengeleVyaKatiba = new ArrayList<KipengeleChaKatiba>();
 		
 		IntStream.range(0, 4).forEach( i -> vipengeleVyaKatiba.add(new KipengeleChaKatiba("Kichwa - " + i , "Kichwa cha katiba")));

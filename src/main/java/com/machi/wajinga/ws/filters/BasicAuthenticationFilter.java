@@ -117,14 +117,15 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 			mjinga_ = session.mjinga;
 		} else {
 			mjinga_ = dao.tafutaMjingaKwaJina(username);
-			if (mjinga_ == null || !mjinga_.nywiraSahihi(password)) {
+			if (mjinga_ == null || !mjinga_.nywiraSahihi(password) || !mjinga_.anaruhusiwa()) {
 				requestContext.abortWith(ACCESS_DENIED);
 				return;
 			}
 			
 			authorizationSid = UUID.randomUUID().toString();
 		}
-
+		
+		
 		final Mjinga mjinga = mjinga_;
 
 		requestContext.setSecurityContext(new SecurityContext() {

@@ -35,7 +35,7 @@ import com.machi.wajinga.ws.services.mailer.BaruaPepeService;
 public class HomeResource {
 
 	@Context private SecurityContext context;
-	@Inject BaruaPepeService hudumaYaBaruaPepe;
+	@Inject private BaruaPepeService hudumaYaBaruaPepe;
 	private MjingaDao mjingaDao;
 	private WajiboostDao wajiboostDao;
 	

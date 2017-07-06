@@ -15,6 +15,11 @@ public class Usanidi {
 	public static final String SEVA = "SEVA_YETU";
 	public static final String BADILI_NYWIRA = "BADILI_NYWIRA";
 	public static final String BADILI_NYWIRA_MESEJI = "BADILI_NYWIRA_MESEJI";
+	public static final String AKAUNTI_KUFUNGWA = "AKAUNTI_KUFUNGWA";
+	public static final String AKAUNTI_KUFUNGWA_MESEJI = "AKAUNTI_KUFUNGWA_MESEJI";
+	public static final String AKAUNTI_KUFUNGULIWA = "AKAUNTI_KUFUNGULIWA";
+	public static final String AKAUNTI_KUFUNGULIWA_MESEJI = "AKAUNTI_KUFUNGULIWA_MESEJI";
+	
 	
 	@PrimaryKey
 	private String funguo;

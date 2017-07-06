@@ -18,4 +18,5 @@ public class WajiboostResource {
     public String getIt() {
         return "Home!";
     }
+    
 }

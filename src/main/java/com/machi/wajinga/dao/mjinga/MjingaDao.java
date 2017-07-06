@@ -111,4 +111,6 @@ public interface MjingaDao extends IDao {
 	 */
 	Boolean wekaNywiraTokeni(Long id, String tokeni);
 
+	Boolean badiliCheo(Mjinga mjinga);
+
 }

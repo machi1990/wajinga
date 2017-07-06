@@ -28,14 +28,26 @@ public class Katiba {
 	private List<Mjinga> signatori = new ArrayList<Mjinga>();
 	
 	private DateTime  tarehe;
+		
+	private Long adaYaUanachama;
 	
-	public Katiba(List<KipengeleChaKatiba> vipengele, List<Mjinga> signatori, DateTime tarehe) {
+	private Long malipoYaMwezi;
+	
+	private Boolean yaSasa;
+	
+		
+	
+	public Katiba(List<KipengeleChaKatiba> vipengele, List<Mjinga> signatori, DateTime tarehe, Long adaYaUanachama,
+			Long malipoYaMwezi, Boolean yaSasa) {
 		super();
 		this.vipengele = vipengele;
 		this.signatori = signatori;
 		this.tarehe = tarehe;
-	}	
-	
+		this.adaYaUanachama = adaYaUanachama;
+		this.malipoYaMwezi = malipoYaMwezi;
+		this.yaSasa = yaSasa;
+	}
+
 	public Katiba() {
 		super();
 	}
@@ -73,13 +85,23 @@ public class Katiba {
 	}
 
 	@Override
+	public String toString() {
+		return "Katiba [id=" + id + ", vipengele=" + vipengele + ", signatori=" + signatori + ", tarehe=" + tarehe
+				+ ", adaYaUanachama=" + adaYaUanachama + ", malipoYaMwezi=" + malipoYaMwezi + ", yaSasa=" + yaSasa
+				+ "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((adaYaUanachama == null) ? 0 : adaYaUanachama.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((malipoYaMwezi == null) ? 0 : malipoYaMwezi.hashCode());
 		result = prime * result + ((signatori == null) ? 0 : signatori.hashCode());
 		result = prime * result + ((tarehe == null) ? 0 : tarehe.hashCode());
 		result = prime * result + ((vipengele == null) ? 0 : vipengele.hashCode());
+		result = prime * result + ((yaSasa == null) ? 0 : yaSasa.hashCode());
 		return result;
 	}
 
@@ -92,10 +114,20 @@ public class Katiba {
 		if (getClass() != obj.getClass())
 			return false;
 		Katiba other = (Katiba) obj;
+		if (adaYaUanachama == null) {
+			if (other.adaYaUanachama != null)
+				return false;
+		} else if (!adaYaUanachama.equals(other.adaYaUanachama))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (malipoYaMwezi == null) {
+			if (other.malipoYaMwezi != null)
+				return false;
+		} else if (!malipoYaMwezi.equals(other.malipoYaMwezi))
 			return false;
 		if (signatori == null) {
 			if (other.signatori != null)
@@ -112,15 +144,11 @@ public class Katiba {
 				return false;
 		} else if (!vipengele.equals(other.vipengele))
 			return false;
+		if (yaSasa == null) {
+			if (other.yaSasa != null)
+				return false;
+		} else if (!yaSasa.equals(other.yaSasa))
+			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Katiba [id=" + id + ", vipengele=" + vipengele + ", signatori=" + signatori + ", tarehe=" + tarehe
-				+ "]";
-	}
-	
-	
-	
 }
