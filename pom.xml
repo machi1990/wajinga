@@ -217,6 +217,13 @@
 			<artifactId>jersey-media-json-jackson1</artifactId>
 		</dependency>
 
+		<!-- apache commons -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.6</version>
+		</dependency>
+				
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-email</artifactId>
@@ -249,10 +256,10 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>com.machi.wajinga.ws.Main</mainClass>
-					<arguments>
-						<argument>-Xbootclasspath/p:/Users/machi/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.11.v20170118/alpn-boot-8.1.11.v20170118.jar</argument>
-					</arguments>
+					<mainClass>com.machi.wajinga.ws.MainDev</mainClass>
+<!-- 					<arguments> -->
+<!-- 						<argument>-Xbootclasspath/p:/Users/machi/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.11.v20170118/alpn-boot-8.1.11.v20170118.jar</argument> -->
+<!-- 					</arguments> -->
 				</configuration>
 			</plugin>
 			<plugin>

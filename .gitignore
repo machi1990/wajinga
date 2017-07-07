@@ -1,7 +1,7 @@
 .classpath
 .settings
 .project
-./configuration.properties
+/configuration.properties
 *.pem
 cert.pkcs12
 target
