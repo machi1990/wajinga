@@ -6,23 +6,23 @@ import javax.inject.Inject;
 
 import org.jvnet.hk2.annotations.Service;
 
-
 @Service
 public class ServerConfiguration {
 	private Properties props;
-	
-	@Inject public ServerConfiguration(Properties props) {
+
+	@Inject
+	public ServerConfiguration(Properties props) {
 		this.props = props;
 	}
-	
+
 	public String getScheme() {
 		return props.getProperty("scheme", "http");
 	}
-	
+
 	public Boolean isSecure() {
 		return !getScheme().equals("http");
 	}
-	
+
 	public String getPesistenceUnit() {
 		return props.getProperty("persistence", "Wajinga-Dev");
 	}

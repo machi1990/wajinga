@@ -9,23 +9,23 @@ import org.jvnet.hk2.annotations.Service;
 import com.machi.wajinga.dao.AbstractDaoImpl;
 
 @Service
-public class WajiboostDaoImpl  extends AbstractDaoImpl implements WajiboostDao {
+public class WajiboostDaoImpl extends AbstractDaoImpl implements WajiboostDao {
 
 	@Override
 	public String tafutaUsanidi(String funguo) {
 		if (StringUtils.isEmpty(funguo)) {
 			return "";
 		}
-		
+
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
-		
-		try  {
+
+		try {
 			Usanidi usanidi = persistenceManager.detachCopy(persistenceManager.getObjectById(Usanidi.class, funguo));
-		
+
 			if (usanidi == null) {
 				return "";
 			}
-			
+
 			return usanidi.getKilichomo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -33,7 +33,7 @@ public class WajiboostDaoImpl  extends AbstractDaoImpl implements WajiboostDao {
 		} finally {
 			persistenceManager.close();
 		}
-		
+
 	}
 
 	@Override
@@ -41,10 +41,10 @@ public class WajiboostDaoImpl  extends AbstractDaoImpl implements WajiboostDao {
 		if (usanidi == null) {
 			return false;
 		}
-		
+
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		Transaction transaction = persistenceManager.currentTransaction();
-		
+
 		try {
 			transaction.begin();
 			persistenceManager.makePersistent(usanidi);
@@ -56,10 +56,10 @@ public class WajiboostDaoImpl  extends AbstractDaoImpl implements WajiboostDao {
 			if (transaction.isActive()) {
 				transaction.rollback();
 			}
-			
- 			persistenceManager.close();
+
+			persistenceManager.close();
 		}
-		
+
 		return true;
 	}
 

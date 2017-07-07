@@ -15,38 +15,39 @@ import org.joda.time.DateTime;
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @PersistenceCapable(detachable = "true")
-@FetchGroup(name = "Maelezo", members = { @Persistent(name="ombi"), @Persistent(name="signatori"), @Persistent(name = "mkopaji"), @Persistent(name="marejesho")})
+@FetchGroup(name = "Maelezo", members = { @Persistent(name = "ombi"), @Persistent(name = "signatori"),
+		@Persistent(name = "mkopaji"), @Persistent(name = "marejesho") })
 public class Mkopo {
-	
+
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private Long kiasi;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private DateTime tarehe;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private Double riba;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private DateTime mwishoWaRejesho;
-	
+
 	private Double deni;
-	@Column(allowsNull="false", name="MJINGA_ID")
+	@Column(allowsNull = "false", name = "MJINGA_ID")
 	private Mjinga mkopaji;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private Mjinga signatori;
 
-	@Persistent(defaultFetchGroup="true", dependent="false")
+	@Persistent(defaultFetchGroup = "true", dependent = "false")
 	private OmbiLaMkopo ombi;
-	
-	@Persistent(dependentElement="true", mappedBy="mkopo")
+
+	@Persistent(dependentElement = "true", mappedBy = "mkopo")
 	private List<Rejesho> marejesho = new ArrayList<Rejesho>();
-	
+
 	public Mkopo() {
 		super();
 	}
@@ -73,23 +74,17 @@ public class Mkopo {
 		this.id = id;
 	}
 
-
 	public Long getKiasi() {
 		return kiasi;
 	}
-
 
 	public void setKiasi(Long kiasi) {
 		this.kiasi = kiasi;
 	}
 
-
-
 	public DateTime getTarehe() {
 		return tarehe;
 	}
-
-
 
 	public void setTarehe(DateTime tarehe) {
 		this.tarehe = tarehe;
@@ -119,16 +114,13 @@ public class Mkopo {
 		this.mkopaji = mkopaji;
 	}
 
-
 	public Mjinga getSignatori() {
 		return signatori;
 	}
 
-
 	public void setSignatori(Mjinga signatori) {
 		this.signatori = signatori;
 	}
-	
 
 	public OmbiLaMkopo getOmbi() {
 		return ombi;
@@ -137,16 +129,15 @@ public class Mkopo {
 	public void setOmbi(OmbiLaMkopo ombi) {
 		this.ombi = ombi;
 	}
-	
 
 	public Boolean isUmeLipwa() {
 		if (marejesho == null) {
 			return false;
 		}
-		
+
 		return marejesho.stream().mapToDouble(Rejesho::getKiasi).sum() >= deni;
 	}
-	
+
 	public Double getDeni() {
 		return deni;
 	}
@@ -162,7 +153,7 @@ public class Mkopo {
 	public void setMarejesho(List<Rejesho> marejesho) {
 		this.marejesho = marejesho;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -230,5 +221,5 @@ public class Mkopo {
 				+ mwishoWaRejesho + ", deni=" + deni + ", mkopaji=" + mkopaji + ", signatori=" + signatori + ", ombi="
 				+ ombi + ", marejesho=" + marejesho + "]";
 	}
-	
+
 }

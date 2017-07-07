@@ -8,12 +8,15 @@ import org.glassfish.jersey.spi.Contract;
 public interface BaruaPepeService {
 	/**
 	 * Tuma barua pepe
+	 * 
 	 * @param emails
 	 * @param ccs
 	 * @param subject
 	 * @param message
-	 * @param attachments TODO
+	 * @param attachments
+	 *            TODO
 	 * @return Boolean - imetumwa au hapan
 	 */
-	Boolean tuma(List<String> emails, List<String> ccs, String subject, String message, List<EmailAttachment> attachments);
+	Boolean tuma(List<String> emails, List<String> ccs, String subject, String message,
+			List<EmailAttachment> attachments);
 }

@@ -15,14 +15,13 @@ import org.joda.time.DateTime;
 
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
-@PersistenceCapable(detachable="true")
+@PersistenceCapable(detachable = "true")
 public class Tukio {
-	
+
 	public static enum Aina {
-		TAFRIJA,
-		KIKAO
+		TAFRIJA, KIKAO
 	};
-	
+
 	public class Oni implements Serializable {
 		/**
 		 * 
@@ -32,40 +31,40 @@ public class Tukio {
 		String mtoaOni;
 		DateTime tarehe;
 	}
-	
+
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private Aina aina;
-	
-	@Persistent(defaultFetchGroup="true")
+
+	@Persistent(defaultFetchGroup = "true")
 	private List<Oni> maoni = new ArrayList<Oni>();
-	
-	@Persistent(defaultFetchGroup="true")
+
+	@Persistent(defaultFetchGroup = "true")
 	@Join
 	private List<Mjinga> washiriki = new ArrayList<Mjinga>();
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private String kichwa;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private String maelezoYaTukio;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private String maelezoBaadaYaTukio;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private String mahali;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private DateTime tarehe;
-	
-	@Persistent(defaultFetchGroup="true")
+
+	@Persistent(defaultFetchGroup = "true")
 	private Mjinga muandaaji;
-	
-	private DateTime  tareheYaKutengenezwa;
+
+	private DateTime tareheYaKutengenezwa;
 
 	public Tukio(Aina aina, List<Oni> maoni, String kichwa, String maelezoYaTukio, String maelezoBaadaYaTukio,
 			String mahali, DateTime tarehe, Mjinga muandaaji, DateTime tareheYaKutengenezwa) {
@@ -164,8 +163,7 @@ public class Tukio {
 	public void setTareheYaKutengenezwa(DateTime tareheYaKutengenezwa) {
 		this.tareheYaKutengenezwa = tareheYaKutengenezwa;
 	}
-	
-	
+
 	public List<Mjinga> getWashiriki() {
 		return washiriki;
 	}
@@ -262,7 +260,5 @@ public class Tukio {
 				+ maelezoYaTukio + ", maelezoBaadaYaTukio=" + maelezoBaadaYaTukio + ", mahali=" + mahali + ", tarehe="
 				+ tarehe + ", muandaaji=" + muandaaji + ", tareheYaKutengenezwa=" + tareheYaKutengenezwa + "]";
 	}
-	
-	
-	
+
 }

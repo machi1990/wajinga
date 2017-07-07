@@ -173,7 +173,7 @@ public class Main {
 	 * Main method.
 	 * 
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
 		InputStream in;

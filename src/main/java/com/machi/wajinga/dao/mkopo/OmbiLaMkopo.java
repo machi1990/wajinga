@@ -14,35 +14,34 @@ import com.machi.wajinga.dao.mjinga.Mjinga;
 public class OmbiLaMkopo {
 
 	public static enum Jibu {
-		LIMEKATALIWA,
-		LIMEKUBALIWA
+		LIMEKATALIWA, LIMEKUBALIWA
 	}
-	
+
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-	
-	@Persistent(defaultFetchGroup="true")
-	@Column(name="MJINGA_ID")
+
+	@Persistent(defaultFetchGroup = "true")
+	@Column(name = "MJINGA_ID")
 	private Mjinga mjinga;
-	
+
 	private DateTime tarehe;
-	
-	@Column(allowsNull="true", jdbcType="CLOB")
+
+	@Column(allowsNull = "true", jdbcType = "CLOB")
 	private String maelezo;
-	
+
 	private DateTime tareheYaMajibu;
-	
+
 	private Jibu jibu;
-	
-	@Column(allowsNull="false", jdbcType="CLOB")
+
+	@Column(allowsNull = "false", jdbcType = "CLOB")
 	private String maelezoYaJibu;
-	
-	@Persistent(defaultFetchGroup="true")
+
+	@Persistent(defaultFetchGroup = "true")
 	private Mjinga mjibuji;
-	
+
 	private Long kiasi;
-	
+
 	private Long kiasiKilichokubaliwa;
 
 	public OmbiLaMkopo(Mjinga mjinga, DateTime tarehe, String maelezo, DateTime tareheYaMajibu, String maelezoYaJibu,
@@ -56,71 +55,57 @@ public class OmbiLaMkopo {
 		this.mjibuji = mjibuji;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
 	public Mjinga getMjinga() {
 		return mjinga;
 	}
-
 
 	public void setMjinga(Mjinga mjinga) {
 		this.mjinga = mjinga;
 	}
 
-
 	public DateTime getTarehe() {
 		return tarehe;
 	}
-
 
 	public void setTarehe(DateTime tarehe) {
 		this.tarehe = tarehe;
 	}
 
-
 	public String getMaelezo() {
 		return maelezo;
 	}
-
 
 	public void setMaelezo(String maelezo) {
 		this.maelezo = maelezo;
 	}
 
-
 	public DateTime getTareheYaMajibu() {
 		return tareheYaMajibu;
 	}
-
 
 	public void setTareheYaMajibu(DateTime tareheYaMajibu) {
 		this.tareheYaMajibu = tareheYaMajibu;
 	}
 
-
 	public String getMaelezoYaJibu() {
 		return maelezoYaJibu;
 	}
-
 
 	public void setMaelezoYaJibu(String maelezoYaJibu) {
 		this.maelezoYaJibu = maelezoYaJibu;
 	}
 
-
 	public Mjinga getMjibuji() {
 		return mjibuji;
 	}
-
 
 	public void setMjibuji(Mjinga mjibuji) {
 		this.mjibuji = mjibuji;
@@ -133,27 +118,22 @@ public class OmbiLaMkopo {
 	public void setJibu(Jibu jibu) {
 		this.jibu = jibu;
 	}
-	
 
 	public Long getKiasi() {
 		return kiasi;
 	}
 
-
 	public void setKiasi(Long kiasi) {
 		this.kiasi = kiasi;
 	}
-
 
 	public Long getKiasiKilichokubaliwa() {
 		return kiasiKilichokubaliwa;
 	}
 
-
 	public void setKiasiKilichokubaliwa(Long kiasiKilichokubaliwa) {
 		this.kiasiKilichokubaliwa = kiasiKilichokubaliwa;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -171,7 +151,6 @@ public class OmbiLaMkopo {
 		result = prime * result + ((tareheYaMajibu == null) ? 0 : tareheYaMajibu.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -232,12 +211,11 @@ public class OmbiLaMkopo {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "OmbiLaMkopo [id=" + id + ", mjinga=" + mjinga + ", tarehe=" + tarehe + ", maelezo=" + maelezo
 				+ ", tareheYaMajibu=" + tareheYaMajibu + ", jibu=" + jibu + ", maelezoYaJibu=" + maelezoYaJibu
 				+ ", mjibuji=" + mjibuji + ", kiasi=" + kiasi + ", kiasiKilichokubaliwa=" + kiasiKilichokubaliwa + "]";
 	}
-	
+
 }

@@ -31,15 +31,15 @@ public class Encryption {
 		return secKey;
 	}
 
-	public String encrypt(String text)  {
+	public String encrypt(String text) {
 		try {
 			return encodePassword(text);
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			e.printStackTrace();
 			return null;
-		} 
+		}
 	}
-	
+
 	private static String encodePassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		int iterations = 1000;
 		byte[] salt = getSalt().getBytes();
@@ -69,7 +69,8 @@ public class Encryption {
 		}
 	}
 
-	public boolean validatePassword(String passwordAttempt, String encryptedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public boolean validatePassword(String passwordAttempt, String encryptedPassword)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		String[] parts = encryptedPassword.split(":");
 		int iterations = Integer.parseInt(parts[0]);
 		byte[] salt = fromHex(parts[1]);

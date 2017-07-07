@@ -6,17 +6,17 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable(detachable="true")
+@PersistenceCapable(detachable = "true")
 public class KipengeleChaKatiba {
 
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private String kichwa;
-	
-	@Column(allowsNull="false", jdbcType="CLOB")
+
+	@Column(allowsNull = "false", jdbcType = "CLOB")
 	private String maanisho;
 
 	public KipengeleChaKatiba(String kichwa, String maanisho) {
@@ -29,7 +29,6 @@ public class KipengeleChaKatiba {
 		super();
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -54,7 +53,6 @@ public class KipengeleChaKatiba {
 		this.maanisho = maanisho;
 	}
 
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

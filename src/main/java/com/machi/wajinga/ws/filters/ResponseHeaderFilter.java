@@ -15,7 +15,7 @@ public class ResponseHeaderFilter implements ContainerResponseFilter {
 		if (requestContext.getProperty("AuthorizationSid") != null) {
 			responseContext.getHeaders().add("AuthorizationSid", requestContext.getProperty("AuthorizationSid"));
 		}
-		
+
 		responseContext.getHeaders().add("Cache-Control", "no-cache");
 	}
 

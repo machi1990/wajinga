@@ -9,24 +9,23 @@ import javax.jdo.annotations.PrimaryKey;
 
 import org.joda.time.DateTime;
 
-
 @PersistenceCapable(detachable = "true")
-@FetchGroup(name = "Mkopo", members = { @Persistent(name = "mkopo")})
+@FetchGroup(name = "Mkopo", members = { @Persistent(name = "mkopo") })
 public class Rejesho {
 
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private DateTime tarehe;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private Double kiasi;
-	
-	@Column(allowsNull="false", name="MKOPO_ID")
+
+	@Column(allowsNull = "false", name = "MKOPO_ID")
 	private Mkopo mkopo;
-	
+
 	public Rejesho() {
 		super();
 	}
@@ -54,7 +53,7 @@ public class Rejesho {
 	public void setKiasi(Double kiasi) {
 		this.kiasi = kiasi;
 	}
-	
+
 	public Mkopo getMkopo() {
 		return mkopo;
 	}
@@ -105,7 +104,6 @@ public class Rejesho {
 			return false;
 		return true;
 	}
-
 
 	@Override
 	public String toString() {

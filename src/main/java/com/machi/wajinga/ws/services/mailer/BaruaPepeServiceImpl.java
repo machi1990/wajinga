@@ -25,17 +25,17 @@ import com.machi.wajinga.dao.wajiboost.WajiboostDao;
 @SuppressWarnings("deprecation")
 @Service
 @PerLookup
-public class BaruaPepeServiceImpl implements BaruaPepeService {	
+public class BaruaPepeServiceImpl implements BaruaPepeService {
 	private String smtp;
 	private Integer port;
 	private String mtumiaji;
 	private String nywira;
 	private String serverPort;
 	private String jibuKwa;
-	
+
 	@Inject
 	public BaruaPepeServiceImpl(WajingaDao wajingaDao, Properties props) {
-		WajiboostDao dao  = wajingaDao.getWajiboostDao();
+		WajiboostDao dao = wajingaDao.getWajiboostDao();
 		smtp = dao.tafutaUsanidi(Usanidi.SMTP_HOST);
 		port = Integer.valueOf(dao.tafutaUsanidi(Usanidi.SMTP_PORT));
 		mtumiaji = dao.tafutaUsanidi(Usanidi.SMTP_JINA);
@@ -44,32 +44,34 @@ public class BaruaPepeServiceImpl implements BaruaPepeService {
 		String jibuKwaUsanidi = dao.tafutaUsanidi(Usanidi.JIBU_BARUA_PEPE_KWA);
 		jibuKwa = StringUtils.isEmpty(jibuKwaUsanidi) ? "manyanda.chitimbo@gmail.com" : jibuKwaUsanidi;
 	}
-	
+
 	@Override
-	public Boolean tuma(List<String> emails, List<String> ccs, String subject, String message, List<com.machi.wajinga.ws.services.mailer.EmailAttachment> attachments) {
+	public Boolean tuma(List<String> emails, List<String> ccs, String subject, String message,
+			List<com.machi.wajinga.ws.services.mailer.EmailAttachment> attachments) {
 		if (emails == null || emails.isEmpty()) {
 			return false;
 		}
-		
+
 		if (attachments == null) {
 			attachments = new ArrayList<EmailAttachment>();
 		}
-		
+
 		ImageHtmlEmail email = new ImageHtmlEmail();
 		email.setHostName(smtp);
 		email.setAuthentication(mtumiaji, nywira);
 		email.setSmtpPort(port);
-		email.setSSLCheckServerIdentity(false);
-		email.setStartTLSEnabled(false);
+		email.setSSLCheckServerIdentity(true);
+		email.setStartTLSEnabled(true);
+		email.setSocketConnectionTimeout(120000);
+		email.setSocketTimeout(120000);
 		
 		try {
 			if (ccs != null && !ccs.isEmpty()) {
 				email.addCc(ccs.toArray(new String[] {}));
 			}
-			
+
 			/**
-			 * TODO
-			 * Pitia upya 
+			 * TODO Pitia upya
 			 */
 			{
 				email.addReplyTo(jibuKwa);
@@ -79,10 +81,11 @@ public class BaruaPepeServiceImpl implements BaruaPepeService {
 			email.setSubject(subject);
 			email.setHtmlMsg(message);
 			email.setDataSourceResolver(new DataSourceUrlResolver(new URL("https://localhost:" + serverPort + "/")));
-			
+
 			attachments.forEach(attachment -> {
 				try {
-					email.attach(new ByteArrayDataSource(attachment.getYaliyomo(), "application/*"), attachment.getJina(), "Kiambatanisho");
+					email.attach(new ByteArrayDataSource(attachment.getYaliyomo(), "application/*"),
+							attachment.getJina(), "Kiambatanisho");
 				} catch (EmailException | IOException e) {
 					e.printStackTrace();
 				}
@@ -92,11 +95,11 @@ public class BaruaPepeServiceImpl implements BaruaPepeService {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		/**
 		 * Log
 		 */
-		Logger.getGlobal().log(Level.INFO,"Barua pepe imetumwa kwa " + emails + " " + (ccs != null ? ccs : ""));
+		Logger.getGlobal().log(Level.INFO, "Barua pepe imetumwa kwa " + emails + " " + (ccs != null ? ccs : ""));
 		return true;
 	}
 

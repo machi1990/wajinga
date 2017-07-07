@@ -11,7 +11,8 @@ public class DataJanitor {
 
 	public static void clean() {
 		try {
-			Connection connection = DriverManager.getConnection(JDOHelper.getPersistenceManagerFactory("Wajinga-Test").getConnectionURL(), "SA", "");
+			Connection connection = DriverManager
+					.getConnection(JDOHelper.getPersistenceManagerFactory("Wajinga-Test").getConnectionURL(), "SA", "");
 			Statement stat = connection.createStatement();
 			stat.execute("SHUTDOWN");
 			connection.close();

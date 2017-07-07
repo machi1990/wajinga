@@ -13,30 +13,28 @@ import org.joda.time.DateTime;
 
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
-@PersistenceCapable(detachable="true")
+@PersistenceCapable(detachable = "true")
 public class Katiba {
-	
+
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-	
-	@Persistent(defaultFetchGroup="true", dependentElement="true")
+
+	@Persistent(defaultFetchGroup = "true", dependentElement = "true")
 	private List<KipengeleChaKatiba> vipengele = new ArrayList<KipengeleChaKatiba>();
-	
-	@Persistent(defaultFetchGroup="true")
+
+	@Persistent(defaultFetchGroup = "true")
 	@Join
 	private List<Mjinga> signatori = new ArrayList<Mjinga>();
-	
-	private DateTime  tarehe;
-		
+
+	private DateTime tarehe;
+
 	private Long adaYaUanachama;
-	
+
 	private Long malipoYaMwezi;
-	
+
 	private Boolean yaSasa;
-	
-		
-	
+
 	public Katiba(List<KipengeleChaKatiba> vipengele, List<Mjinga> signatori, DateTime tarehe, Long adaYaUanachama,
 			Long malipoYaMwezi, Boolean yaSasa) {
 		super();

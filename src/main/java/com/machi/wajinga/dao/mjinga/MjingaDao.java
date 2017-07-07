@@ -14,6 +14,7 @@ public interface MjingaDao extends IDao {
 
 	/**
 	 * Tafuta mjinga kwa jina
+	 * 
 	 * @param jina
 	 * @return Mjinga
 	 */
@@ -21,13 +22,15 @@ public interface MjingaDao extends IDao {
 
 	/**
 	 * Tafuta mjinga kwa jina
+	 * 
 	 * @param jina
 	 * @return Mjinga
 	 */
 	Mjinga tafutaMjingaKwaBaruaPepe(String baruaPepe);
-	
+
 	/**
 	 * Badili nywira ya mjinga
+	 * 
 	 * @param mjinga
 	 * @param nywiraMpya
 	 */
@@ -35,6 +38,7 @@ public interface MjingaDao extends IDao {
 
 	/**
 	 * Weka mjinga kwa database
+	 * 
 	 * @param mjinga
 	 * @return Boolean
 	 */
@@ -42,6 +46,7 @@ public interface MjingaDao extends IDao {
 
 	/**
 	 * Tafuta taarifa kamili za mjinga
+	 * 
 	 * @param id
 	 * @return Mjinga
 	 */
@@ -49,20 +54,23 @@ public interface MjingaDao extends IDao {
 
 	/**
 	 * Tafuta mikopo yote ya mjinga
+	 * 
 	 * @param id
 	 * @return List<Mkopo>
 	 */
 	List<Mkopo> tafutaMikopoYaMjinga(Long id);
-	
+
 	/**
 	 * Tafuta mikopo ya mjingwa iliyolipwa
+	 * 
 	 * @param id
 	 * @return List<Mkopo>
 	 */
 	List<Mkopo> tafutaMikopoIliyoLipwa(Long id);
-	
+
 	/**
 	 * Tafuta mikopo ya mjingwa isiyolipwa
+	 * 
 	 * @param id
 	 * @return List<Mkopo>
 	 */
@@ -70,20 +78,23 @@ public interface MjingaDao extends IDao {
 
 	/**
 	 * Rudisha maombi yote ya mikopo
+	 * 
 	 * @param id
 	 * @return List<OmbiLaMkopo>
 	 */
 	List<OmbiLaMkopo> tafutaOmbiLaMkopo(Long id);
-	
+
 	/**
 	 * Rudisha maombi ya mikopo yaliyokataliwa
+	 * 
 	 * @param id
 	 * @return List<OmbiLaMkopo>
 	 */
 	List<OmbiLaMkopo> tafutaOmbiLaMkopoYaliyokataliwa(Long id);
-	
+
 	/**
 	 * Rudisha maombi ya mikopo yaliyokubaliwa
+	 * 
 	 * @param id
 	 * @return List<OmbiLaMkopo>
 	 */
@@ -91,13 +102,15 @@ public interface MjingaDao extends IDao {
 
 	/**
 	 * Rudisha michambo
+	 * 
 	 * @param id
 	 * @return List<Mchambo>
 	 */
 	List<Mchambo> tafutaMichambo(Long id);
-	
+
 	/**
 	 * Rudisha maafa
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -105,9 +118,10 @@ public interface MjingaDao extends IDao {
 
 	/**
 	 * Weka tokeni ya uombaji nywira mpya
+	 * 
 	 * @param id
 	 * @param tokeni
-	 * @return Boolean - imewekwa 
+	 * @return Boolean - imewekwa
 	 */
 	Boolean wekaNywiraTokeni(Long id, String tokeni);
 

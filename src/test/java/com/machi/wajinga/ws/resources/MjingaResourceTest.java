@@ -17,14 +17,14 @@ public class MjingaResourceTest extends AbstractResourceTest {
 		Mjinga mjinga = getTarget("mjinga").request().get(Mjinga.class);
 		Assert.assertNotNull(mjinga);
 	}
-	
+
 	@Test
 	public void getMikopoYaMjinga() {
 		List<Mkopo> mikopo = getTarget("mjinga").path("mikopo").request().get(List.class);
 		Assert.assertNotNull("Haiwezi kuwa tupu", mikopo);
 		Assert.assertNotSame(1, mikopo.size());
 	}
-	
+
 	@Test
 	public void getOmbiYaMjinga() {
 		List<OmbiLaMkopo> mikopo = getTarget("mjinga").path("maombi-ya-mkopo").request().get(List.class);

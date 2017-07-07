@@ -10,32 +10,31 @@ import javax.jdo.annotations.PrimaryKey;
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @PersistenceCapable(detachable = "true")
-@FetchGroup(name = "Mjinga", members = { @Persistent(name = "mjinga")})
+@FetchGroup(name = "Mjinga", members = { @Persistent(name = "mjinga") })
 public class Maafa implements Comparable<Maafa> {
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
-	
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
+
 	private Long id;
-	@Column(allowsNull="false")
+	@Column(allowsNull = "false")
 	private String jinaLaTeam;
-	
+
 	private Integer nafasi;
-	@Column(allowsNull="false")
+	@Column(allowsNull = "false")
 	private String msimu;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private Long kiasi;
-	
-	@Column(name="MJINGA_ID")
+
+	@Column(name = "MJINGA_ID")
 	private Mjinga mjinga;
-	
+
 	private Long zawadi;
-	
+
 	public Maafa() {
 		super();
 	}
 
-	
 	public Maafa(String jinaLaTeam, Integer nafasi, String msimu, Long kiasi, Mjinga mjinga, Long zawadi) {
 		super();
 		this.jinaLaTeam = jinaLaTeam;
@@ -46,76 +45,61 @@ public class Maafa implements Comparable<Maafa> {
 		this.zawadi = zawadi;
 	}
 
-
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
 	public String getJinaLaTeam() {
 		return jinaLaTeam;
 	}
-
 
 	public void setJinaLaTeam(String jinaLaTeam) {
 		this.jinaLaTeam = jinaLaTeam;
 	}
 
-
 	public Integer getNafasi() {
 		return nafasi;
 	}
-
 
 	public void setNafasi(Integer nafasi) {
 		this.nafasi = nafasi;
 	}
 
-
 	public String getMsimu() {
 		return msimu;
 	}
-
 
 	public void setMsimu(String msimu) {
 		this.msimu = msimu;
 	}
 
-
 	public Long getKiasi() {
 		return kiasi;
 	}
-
 
 	public void setKiasi(Long kiasi) {
 		this.kiasi = kiasi;
 	}
 
-
 	public Mjinga getMjinga() {
 		return mjinga;
 	}
-
 
 	public void setMjinga(Mjinga mjinga) {
 		this.mjinga = mjinga;
 	}
 
-
 	public Long getZawadi() {
 		return zawadi;
 	}
 
-
 	public void setZawadi(Long zawadi) {
 		this.zawadi = zawadi;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -178,13 +162,11 @@ public class Maafa implements Comparable<Maafa> {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Maafa [id=" + id + ", jinaLaTeam=" + jinaLaTeam + ", nafasi=" + nafasi + ", msimu=" + msimu + ", kiasi="
 				+ kiasi + ", mjinga=" + mjinga + ", zawadi=" + zawadi + "]";
 	}
-
 
 	/**
 	 * Descending order of msimu
@@ -194,8 +176,8 @@ public class Maafa implements Comparable<Maafa> {
 		if (o.msimu != null) {
 			return o.msimu.compareTo(msimu);
 		}
-		
+
 		return 0;
 	}
-		
+
 }

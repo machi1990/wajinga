@@ -21,7 +21,7 @@ import com.machi.wajinga.dao.wajiboost.WajiboostDao;
 public class UsanidiResource {
 
 	private WajiboostDao wajiboostDao;
-	
+
 	@Inject
 	public UsanidiResource(WajingaDao wajingaDao) {
 		super();
@@ -35,9 +35,9 @@ public class UsanidiResource {
 	public String chukua(@PathParam("funguo") String funguo) {
 		return wajiboostDao.tafutaUsanidi(funguo);
 	}
-	
+
 	@POST
-	@RolesAllowed({"KATIBU", "MWENYEKITI"})
+	@RolesAllowed({ "KATIBU", "MWENYEKITI" })
 	@Path("{funguo}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response weka(Usanidi usanidi) {

@@ -1,6 +1,5 @@
 package com.machi.wajinga.dao;
 
-
 import javax.inject.Inject;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
@@ -21,7 +20,7 @@ public class WajingaDao {
 	private MalipoYaMweziDao malipoDao;
 	private MkopoDao mkopoDao;
 	private WajiboostDao wajiboostDao;
-	
+
 	@Inject
 	public WajingaDao(MjingaDao mjingaDao, MaafaDao maafaDao, MalipoYaMweziDao malipoDao, MkopoDao mkopoDao,
 			WajiboostDao wajiboostDao, ServerConfiguration config) throws Exception {
@@ -33,7 +32,6 @@ public class WajingaDao {
 		this.wajiboostDao = wajiboostDao;
 		setPmf(config.getPesistenceUnit());
 	}
-
 
 	public MaafaDao getMaafaDao() {
 		return maafaDao;
@@ -55,7 +53,7 @@ public class WajingaDao {
 		return wajiboostDao;
 	}
 
-	public void setPmf(String source){	
+	public void setPmf(String source) {
 		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory(source);
 		maafaDao.setPmf(pmf);
 		malipoDao.setPmf(pmf);

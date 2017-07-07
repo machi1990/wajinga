@@ -2,6 +2,7 @@ package com.machi.wajinga.dao.malipo;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -10,41 +11,43 @@ import org.joda.time.DateTime;
 
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
-@PersistenceCapable(detachable="true")
+@PersistenceCapable(detachable = "true")
 public class MalipoYaMwezi {
-	
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	@PrimaryKey
 	private Long id;
-	
-	@Persistent(defaultFetchGroup="true")
-	@Column(allowsNull="false", name="MJINGA_ID")
+
+	@Persistent(defaultFetchGroup = "true")
+	@Column(allowsNull = "false", name = "MJINGA_ID")
 	private Mjinga mjinga;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private Long kiasi;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private DateTime tarehe;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private DateTime mweziHusika;
-	
-	@Column(allowsNull="true", jdbcType="CLOB")
+
+	@Column(allowsNull = "true", jdbcType = "CLOB")
 	private String maelezo;
-	
+
+	@NotPersistent
+	private String jinaLaMjinga;
+
 	public MalipoYaMwezi() {
 		super();
 	}
-	
-	public MalipoYaMwezi(Mjinga mjinga, Long kiasi, DateTime tarehe, DateTime mweziHusika) {
+
+	public MalipoYaMwezi(Mjinga mjinga, Long kiasi, DateTime tarehe, DateTime mweziHusika, String maelezo) {
 		super();
 		this.mjinga = mjinga;
 		this.kiasi = kiasi;
-		this.tarehe = tarehe;
-		this.mweziHusika = mweziHusika;
+		setTarehe(tarehe);
+		setMweziHusika(mweziHusika);
+		this.maelezo = maelezo;
 	}
-
 
 	public Long getId() {
 		return id;
@@ -75,16 +78,50 @@ public class MalipoYaMwezi {
 	}
 
 	public void setTarehe(DateTime tarehe) {
-		this.tarehe = tarehe;
+		if (tarehe == null) {
+			return;
+		}
+
+		this.tarehe = tarehe.withMillisOfDay(0);
 	}
 
 	public DateTime getMweziHusika() {
 		return mweziHusika;
 	}
 
-
 	public void setMweziHusika(DateTime mweziHusika) {
-		this.mweziHusika = mweziHusika;
+		if (mweziHusika == null) {
+			return;
+		}
+
+		this.mweziHusika = mweziHusika.withDayOfMonth(1).withMillisOfDay(0);
+	}
+
+	public String getMaelezo() {
+		return maelezo;
+	}
+
+	public void setMaelezo(String maelezo) {
+		this.maelezo = maelezo;
+	}
+
+	public String getJinaLaMjinga() {
+		return jinaLaMjinga;
+	}
+
+	public void setJinaLaMjinga(String jinaLaMjinga) {
+		this.jinaLaMjinga = jinaLaMjinga;
+	}
+
+	public MalipoYaMwezi wipeMjinga(Boolean wote) {
+		if (wote) {
+			jinaLaMjinga = mjinga != null ? mjinga.getJinaLaUkoo() : null;
+			setMjinga(null);
+		} else if (mjinga != null) {
+			mjinga.wipe();
+		}
+
+		return this;
 	}
 
 	@Override
@@ -147,5 +184,5 @@ public class MalipoYaMwezi {
 		return "MalipoYaMwezi [id=" + id + ", mjinga=" + mjinga + ", kiasi=" + kiasi + ", tarehe=" + tarehe
 				+ ", mweziHusika=" + mweziHusika + ", maelezo=" + maelezo + "]";
 	}
-	
+
 }

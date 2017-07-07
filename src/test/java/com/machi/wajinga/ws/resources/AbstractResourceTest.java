@@ -39,70 +39,71 @@ public abstract class AbstractResourceTest extends JerseyTest {
 
 	public static class SecurityContainerFilter implements ContainerRequestFilter {
 
-		@Inject WajingaDao dao;
-		
+		@Inject
+		WajingaDao dao;
+
 		@Override
 		public void filter(ContainerRequestContext requestContext) throws IOException {
 			requestContext.setSecurityContext(new SecurityContext() {
-				
+
 				@Override
 				public boolean isUserInRole(String role) {
 					return true;
 				}
-				
+
 				@Override
 				public boolean isSecure() {
 					return false;
 				}
-				
+
 				@Override
 				public Principal getUserPrincipal() {
 					return dao.getMjingaDao().tafutaMjingaKwaJina("machi");
 				}
-				
+
 				@Override
 				public String getAuthenticationScheme() {
 					return "http";
 				}
 			});
 		}
-		
+
 	}
-	
-	@Service 
+
+	@Service
 	public static class BaruaPepeServiceTestImpl implements BaruaPepeService {
 		@Override
-		public Boolean tuma(List<String> emails, List<String> ccs, String subject, String message, List<EmailAttachment> attachments) {
+		public Boolean tuma(List<String> emails, List<String> ccs, String subject, String message,
+				List<EmailAttachment> attachments) {
 			return true;
 		}
 	}
-	
+
 	@Override
 	protected Application configure() {
 		DataJanitor.clean();
 		DataSet.generate("Wajinga-Test");
 		enable(TestProperties.LOG_TRAFFIC);
-        enable(TestProperties.DUMP_ENTITY);
-       	return new ResourceConfig().packages(true,"com.machi.wajinga.ws.resources")
-       		.register(Jackson1Feature.class).register(SecurityContainerFilter.class)
-       		.register(new AbstractBinder() {
-			@Override
-			protected void configure() {
-				bind(MaafaDaoImpl.class).to(MaafaDao.class);
-				bind(MjingaDaoImpl.class).to(MjingaDao.class);
-				bind(MalipoYaMweziDaoImpl.class).to(MalipoYaMweziDao.class);
-				bind(MkopoDaoImpl.class).to(MkopoDao.class);
-				bind(WajiboostDaoImpl.class).to(WajiboostDao.class);
-				bind(WajingaDao.class).to(WajingaDao.class);
-				bind(ServerConfiguration.class).to(ServerConfiguration.class);
-				Properties props = new Properties();
-				props.setProperty("persistence", "Wajinga-Test");
-				bind(props).to(Properties.class);
-				bind(BaruaPepeServiceTestImpl.class).to(BaruaPepeService.class);
-			}
-		});
+		enable(TestProperties.DUMP_ENTITY);
+		return new ResourceConfig().packages(true, "com.machi.wajinga.ws.resources").register(Jackson1Feature.class)
+				.register(SecurityContainerFilter.class).register(new AbstractBinder() {
+					@Override
+					protected void configure() {
+						bind(MaafaDaoImpl.class).to(MaafaDao.class);
+						bind(MjingaDaoImpl.class).to(MjingaDao.class);
+						bind(MalipoYaMweziDaoImpl.class).to(MalipoYaMweziDao.class);
+						bind(MkopoDaoImpl.class).to(MkopoDao.class);
+						bind(WajiboostDaoImpl.class).to(WajiboostDao.class);
+						bind(WajingaDao.class).to(WajingaDao.class);
+						bind(ServerConfiguration.class).to(ServerConfiguration.class);
+						Properties props = new Properties();
+						props.setProperty("persistence", "Wajinga-Test");
+						bind(props).to(Properties.class);
+						bind(BaruaPepeServiceTestImpl.class).to(BaruaPepeService.class);
+					}
+				});
 	}
-	
+
 	public WebTarget getTarget() {
 		return super.target().register(Jackson1Feature.class);
 	}

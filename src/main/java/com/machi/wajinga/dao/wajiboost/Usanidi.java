@@ -4,7 +4,7 @@ import javax.jdo.annotations.Column;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable(detachable="true")
+@PersistenceCapable(detachable = "true")
 public class Usanidi {
 	public static final String JIBU_BARUA_PEPE_KWA = "JIBU_BARUA_PEPE_KWA";
 	public static final String SMTP_HOST = "SMTP.HOST";
@@ -19,14 +19,13 @@ public class Usanidi {
 	public static final String AKAUNTI_KUFUNGWA_MESEJI = "AKAUNTI_KUFUNGWA_MESEJI";
 	public static final String AKAUNTI_KUFUNGULIWA = "AKAUNTI_KUFUNGULIWA";
 	public static final String AKAUNTI_KUFUNGULIWA_MESEJI = "AKAUNTI_KUFUNGULIWA_MESEJI";
-	
-	
+
 	@PrimaryKey
 	private String funguo;
-	
-	@Column(jdbcType="CLOB")
+
+	@Column(jdbcType = "CLOB")
 	private String kilichomo;
-	
+
 	public Usanidi(String funguo, String kilichomo) {
 		super();
 		this.funguo = funguo;
@@ -48,7 +47,6 @@ public class Usanidi {
 	public void setKilichomo(String kilichomo) {
 		this.kilichomo = kilichomo;
 	}
-	
 
 	@Override
 	public int hashCode() {

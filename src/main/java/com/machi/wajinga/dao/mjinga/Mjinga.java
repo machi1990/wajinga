@@ -28,107 +28,100 @@ import com.machi.wajinga.dao.mkopo.OmbiLaMkopo;
 import com.machi.wajinga.dao.tools.Encryption;
 
 @PersistenceCapable(detachable = "true")
-@FetchGroups(value = { 
-		@FetchGroup(name = "Malipo", members = { @Persistent(name = "malipo")}),
-		@FetchGroup(name = "Maafa", members = { @Persistent(name="maafa")}),
-		@FetchGroup(name = "Mikopo", members = { @Persistent(name="mikopo"), @Persistent(name="ombiMkopo")}),
-		@FetchGroup(name = "Michambo", members = { @Persistent(name="michambo")})
-})
+@FetchGroups(value = { @FetchGroup(name = "Malipo", members = { @Persistent(name = "malipo") }),
+		@FetchGroup(name = "Maafa", members = { @Persistent(name = "maafa") }),
+		@FetchGroup(name = "Mikopo", members = { @Persistent(name = "mikopo"), @Persistent(name = "ombiMkopo") }),
+		@FetchGroup(name = "Michambo", members = { @Persistent(name = "michambo") }) })
 public class Mjinga implements Chambable, Principal {
-	
+
 	public static enum Cheo {
-		MJUMBE("Mjinga wa kawaida"),
-		MWEKAHAZINA("Mjinga wa dawasco"),
-		MWENYEKITI("Mkubwa jinga"),
-		PASTOR("Kapigwa kidochi"),
-		KATIBU("Mtunza kumbukumbu wa ku star meseji za whatsapp");
-		
+		MJUMBE("Mjinga wa kawaida"), MWEKAHAZINA("Mjinga wa dawasco"), MWENYEKITI("Mkubwa jinga"), PASTOR(
+				"Kapigwa kidochi"), KATIBU("Mtunza kumbukumbu wa ku star meseji za whatsapp");
+
 		public String mealezo;
-		
+
 		Cheo(String maelezo) {
 			this.mealezo = maelezo;
 		}
-		
+
 		@Override
 		public String toString() {
 			return mealezo;
 		}
 	}
-	
+
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-	
+
 	@Unique
-	@Column(allowsNull="false")
+	@Column(allowsNull = "false")
 	private String jina;
-	
-	@Column(allowsNull="false")
-	private String jinaLaUkoo; 
-	
+
+	@Column(allowsNull = "false")
+	private String jinaLaUkoo;
+
 	@Unique
-	@Column(allowsNull="false")
+	@Column(allowsNull = "false")
 	private String baruaPepe;
-	
-	@Column(allowsNull="false")
-	protected  String nywira;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
+	protected String nywira;
+
+	@Column(allowsNull = "false")
 	private String nambaYaSimu;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private String kazi;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private Cheo cheo;
-	
-	@Column(allowsNull="false")
+
+	@Column(allowsNull = "false")
 	private DateTime tareheYaKuanzaUjinga;
-	
+
 	@Unique
-	@Column(allowsNull="true")
+	@Column(allowsNull = "true")
 	private String nywiraTokeni;
-	
+
 	private DateTime trhOmbiLaKubadiliNywira;
-	
-	@Persistent(mappedBy="mjinga")
+
+	@Persistent(mappedBy = "mjinga")
 	@Join
 	private List<MalipoYaMwezi> malipo = new ArrayList<MalipoYaMwezi>();
-	
+
 	@NotPersistent
 	private Integer idadiYaMalipo;
-	
-	@Persistent(mappedBy="mjinga")
+
+	@Persistent(mappedBy = "mjinga")
 	@Join
 	private List<Maafa> maafa = new ArrayList<Maafa>();
 	@NotPersistent
 	private Integer idadiYaMaafa;
-	
-	@Persistent(mappedBy="mkopaji")
+
+	@Persistent(mappedBy = "mkopaji")
 	@Join
 	private List<Mkopo> mikopo = new ArrayList<Mkopo>();
 	@NotPersistent
 	private Integer idadiYaMikopo;
-	
-	@Persistent(mappedBy="mjinga")
+
+	@Persistent(mappedBy = "mjinga")
 	@Join
 	private List<OmbiLaMkopo> ombiMkopo = new ArrayList<OmbiLaMkopo>();
 	@NotPersistent
 	private Integer idadiYaOmbiMkopo;
-	
+
 	@Join
 	private List<Mchambo> michambo = new ArrayList<Mchambo>();
 	@NotPersistent
 	private Integer idadiYaMichambo;
-	
-	
+
 	public Mjinga() {
 		super();
 	}
 
-	
 	public Mjinga(String jina, String jinaLaUkoo, String baruaPepe, String nywira, String nambaYaSimu, String kazi,
-			Cheo cheo, DateTime tareheYaKuanzaUjinga ){
+			Cheo cheo, DateTime tareheYaKuanzaUjinga) {
 		super();
 		this.jina = jina;
 		this.jinaLaUkoo = jinaLaUkoo;
@@ -139,7 +132,6 @@ public class Mjinga implements Chambable, Principal {
 		this.tareheYaKuanzaUjinga = tareheYaKuanzaUjinga;
 		this.nywira = ficha(nywira);
 	}
-
 
 	private String ficha(String password) {
 		return Encryption.instance().encrypt(password);
@@ -153,7 +145,7 @@ public class Mjinga implements Chambable, Principal {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public String chamba() {
 		return michambo.stream().map(Mchambo::chamba).collect(Collectors.joining(" "));
@@ -246,7 +238,7 @@ public class Mjinga implements Chambable, Principal {
 	public void setCheo(Cheo cheo) {
 		this.cheo = cheo;
 	}
-	
+
 	public DateTime getTareheYaKuanzaUjinga() {
 		return tareheYaKuanzaUjinga;
 	}
@@ -254,11 +246,11 @@ public class Mjinga implements Chambable, Principal {
 	public void setTareheYaKuanzaUjinga(DateTime tareheYaKuanzaUjinga) {
 		this.tareheYaKuanzaUjinga = tareheYaKuanzaUjinga;
 	}
-	
+
 	public void wekaNywira(String nywira) {
 		this.nywira = this.ficha(nywira);
 	}
-	
+
 	@JsonIgnore
 	public String getNywiraTokeni() {
 		return nywiraTokeni;
@@ -269,18 +261,16 @@ public class Mjinga implements Chambable, Principal {
 		this.nywiraTokeni = nywiraTokeni;
 	}
 
-
 	@JsonIgnore
 	public DateTime getTrhOmbiLaKubadiliNywira() {
 		return trhOmbiLaKubadiliNywira;
 	}
 
-
 	@JsonIgnore
 	public void setTrhOmbiLaKubadiliNywira(DateTime trhOmbiLaKubadiliNywira) {
 		this.trhOmbiLaKubadiliNywira = trhOmbiLaKubadiliNywira;
 	}
-	
+
 	public Integer getIdadiYaMalipo() {
 		return idadiYaMalipo;
 	}
@@ -296,40 +286,37 @@ public class Mjinga implements Chambable, Principal {
 	public Integer getIdadiYaMichambo() {
 		return idadiYaMichambo;
 	}
-	
-	
+
 	public Integer getIdadiYaOmbiMkopo() {
 		return idadiYaOmbiMkopo;
 	}
 
-	public Mjinga kokotoaIdadi() {		
+	public Mjinga kokotoaIdadi() {
 		idadiYaMikopo = Math.max(0, mikopo != null ? mikopo.size() : 0);
-		idadiYaOmbiMkopo = Math.max(0, ombiMkopo != null ? ombiMkopo.size(): 0);
+		idadiYaOmbiMkopo = Math.max(0, ombiMkopo != null ? ombiMkopo.size() : 0);
 		idadiYaMichambo = Math.max(0, michambo != null ? michambo.size() : 0);
-		idadiYaMalipo= Math.max(0, malipo != null ? malipo.size(): 0);
-		idadiYaMaafa = Math.max(0, maafa != null ? maafa.size(): 0 );
-		
+		idadiYaMalipo = Math.max(0, malipo != null ? malipo.size() : 0);
+		idadiYaMaafa = Math.max(0, maafa != null ? maafa.size() : 0);
+
 		return this.wipe();
 	}
-	
+
 	public List<OmbiLaMkopo> getOmbiMkopo() {
 		return ombiMkopo;
 	}
 
-
 	public void setOmbiMkopo(List<OmbiLaMkopo> ombiMikopo) {
 		this.ombiMkopo = ombiMikopo;
 	}
-	
 
 	public Boolean anaruhusiwa() {
 		if (cheo == null) {
 			return false;
 		}
-		
+
 		return !Cheo.PASTOR.equals(cheo);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -352,7 +339,7 @@ public class Mjinga implements Chambable, Principal {
 		result = prime * result + ((trhOmbiLaKubadiliNywira == null) ? 0 : trhOmbiLaKubadiliNywira.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -457,13 +444,12 @@ public class Mjinga implements Chambable, Principal {
 		return this.getJina();
 	}
 
-
 	public Mjinga wipe() {
 		setMaafa(null);
-        setMalipo(null);
-        setMichambo(null);
-        setMikopo(null);
-        setOmbiMkopo(null);
+		setMalipo(null);
+		setMichambo(null);
+		setMikopo(null);
+		setOmbiMkopo(null);
 		return this;
 	}
 }

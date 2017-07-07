@@ -5,9 +5,9 @@ import org.jvnet.hk2.annotations.Contract;
 import com.machi.wajinga.dao.IDao;
 
 @Contract
-public interface WajiboostDao  extends IDao {
+public interface WajiboostDao extends IDao {
 
 	String tafutaUsanidi(String string);
-	
+
 	Boolean tunzaUsanidi(Usanidi usanidi);
 }

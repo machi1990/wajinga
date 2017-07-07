@@ -57,10 +57,11 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 	private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
 			.entity("Forbidden to access this resource").type(MediaType.TEXT_PLAIN).build();
 
-	@Context private ResourceInfo resourceInfo;
+	@Context
+	private ResourceInfo resourceInfo;
 	private MjingaDao dao;
 	private ServerConfiguration config;
-	
+
 	@Inject
 	public BasicAuthenticationFilter(WajingaDao wajingaDao, ServerConfiguration config) {
 		dao = wajingaDao.getMjingaDao();
@@ -74,11 +75,11 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 		if (method.isAnnotationPresent(PermitAll.class)) {
 			return;
 		}
-		
+
 		final MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
 		final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
-		
+
 		if ((authorization == null || authorization.isEmpty())) {
 			requestContext.abortWith(ACCESS_DENIED);
 			return;
@@ -95,7 +96,7 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 
 		Mjinga mjinga_ = null;
 		String authorizationSid;
-		
+
 		if ("__sid__".equals(username)) {
 			if (!SESSION.containsKey(password)) {
 				if (method.isAnnotationPresent(PermitAll.class)) {
@@ -121,11 +122,10 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 				requestContext.abortWith(ACCESS_DENIED);
 				return;
 			}
-			
+
 			authorizationSid = UUID.randomUUID().toString();
 		}
-		
-		
+
 		final Mjinga mjinga = mjinga_;
 
 		requestContext.setSecurityContext(new SecurityContext() {
@@ -157,7 +157,7 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 		if (!method.isAnnotationPresent(RolesAllowed.class)) {
 			return;
 		}
-		
+
 		RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
 		Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
 

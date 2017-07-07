@@ -12,9 +12,9 @@ public class MjingaTest {
 
 	@Before
 	public void configure() {
-		
+
 	}
-	
+
 	@Test
 	public void encryptionTest() {
 		Mjinga mjinga = new Mjinga("", "", "", "nywira", "+33652003035", "Kazi", Cheo.KATIBU, DateTime.now());

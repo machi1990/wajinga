@@ -32,19 +32,19 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		Query query = persistenceManager.newQuery(Mjinga.class);
 		query.declareParameters("String username");
 		query.setFilter("jina == username");
-		
+
 		try {
 			List<Mjinga> detached = (List<Mjinga>) query.execute(username);
-			
+
 			if (detached.isEmpty()) {
 				return null;
 			}
-			
+
 			return persistenceManager.detachCopy(detached.get(0)).wipe();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		}finally {
+		} finally {
 			query.closeAll();
 			persistenceManager.close();
 		}
@@ -67,7 +67,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			if (transaction.isActive()) {
 				transaction.rollback();
 			}
-			
+
 			persistenceManager.close();
 		}
 	}
@@ -87,34 +87,34 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			if (transaction.isActive()) {
 				transaction.rollback();
 			}
-			
+
 			persistenceManager.close();
 		}
-		
+
 		return true;
 	}
 
 	@Override
 	public Mjinga tafutaTaarifaZaMjinga(Long id) {
 		PersistenceManager pm = getPmf().getPersistenceManager();
-		
+
 		try {
 			pm.getFetchPlan().addGroup("Mikopo");
 			pm.getFetchPlan().addGroup("Michambo");
 			pm.getFetchPlan().addGroup("Malipo");
 			pm.getFetchPlan().addGroup("Maafa");
-			
+
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
-			
+
 			if (mjinga == null) {
 				return null;
 			}
-			
+
 			return pm.detachCopy(mjinga).kokotoaIdadi();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		}finally {
+		} finally {
 			pm.close();
 		}
 	}
@@ -124,27 +124,27 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		try {
 			pm.getFetchPlan().addGroup("Mikopo");
-			
+
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
-			
+
 			if (mjinga == null) {
 				return new ArrayList<Mkopo>();
 			}
-			
-			List<Mkopo> mikopo  = pm.detachCopy(mjinga).getMikopo();
-			
+
+			List<Mkopo> mikopo = pm.detachCopy(mjinga).getMikopo();
+
 			mikopo.stream().forEach(mkopo -> {
 				mkopo.setMkopaji(null);
 				mkopo.setSignatori(null);
 				mkopo.setOmbi(null);
 				mkopo.setMarejesho(null);
 			});
-			
+
 			return mikopo;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<Mkopo>();
-		}finally {
+		} finally {
 			pm.close();
 		}
 	}
@@ -164,37 +164,39 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		try {
 			pm.getFetchPlan().addGroup("Mikopo");
-			
+
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
-			
+
 			if (mjinga == null) {
 				return new ArrayList<OmbiLaMkopo>();
 			}
-			
-			List<OmbiLaMkopo> maombi  = pm.detachCopy(mjinga).getOmbiMkopo();
-			
+
+			List<OmbiLaMkopo> maombi = pm.detachCopy(mjinga).getOmbiMkopo();
+
 			maombi.stream().forEach(ombi -> {
 				ombi.setMjibuji(null);
 				ombi.setMjinga(null);
 			});
-			
+
 			return maombi;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<OmbiLaMkopo>();
-		}finally {
+		} finally {
 			pm.close();
 		}
 	}
 
 	@Override
 	public List<OmbiLaMkopo> tafutaOmbiLaMkopoYaliyokataliwa(Long id) {
-		return tafutaOmbiLaMkopo(id).stream().filter(ombi -> Jibu.LIMEKATALIWA.equals(ombi.getJibu())).collect(Collectors.toCollection(ArrayList::new));
+		return tafutaOmbiLaMkopo(id).stream().filter(ombi -> Jibu.LIMEKATALIWA.equals(ombi.getJibu()))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override
 	public List<OmbiLaMkopo> tafutaOmbiLaMkopoLililokubaliwa(Long id) {
-		return tafutaOmbiLaMkopo(id).stream().filter(ombi -> Jibu.LIMEKUBALIWA.equals(ombi.getJibu())).collect(Collectors.toCollection(ArrayList::new));
+		return tafutaOmbiLaMkopo(id).stream().filter(ombi -> Jibu.LIMEKUBALIWA.equals(ombi.getJibu()))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override
@@ -202,18 +204,18 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		try {
 			pm.getFetchPlan().addGroup("Michambo");
-			
+
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
-			
+
 			if (mjinga == null) {
 				return new ArrayList<Mchambo>();
 			}
-			
+
 			return pm.detachCopy(mjinga).getMichambo();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<Mchambo>();
-		}finally {
+		} finally {
 			pm.close();
 		}
 	}
@@ -223,21 +225,21 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		try {
 			pm.getFetchPlan().addGroup("Maafa");
-			
+
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
-			
+
 			if (mjinga == null) {
 				return new ArrayList<Maafa>();
 			}
-			
+
 			List<Maafa> maafa = pm.detachCopy(mjinga).getMaafa();
 			maafa.stream().forEach(afa -> afa.setMjinga(null));
-			
+
 			return maafa;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<Maafa>();
-		}finally {
+		} finally {
 			pm.close();
 		}
 	}
@@ -248,14 +250,14 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		Query query = persistenceManager.newQuery(Mjinga.class);
 		query.declareParameters("String email");
 		query.setFilter("baruaPepe == email");
-		
+
 		try {
 			List<Mjinga> detached = (List<Mjinga>) query.execute(baruaPepe);
-			
+
 			if (detached.isEmpty()) {
 				return null;
 			}
-			
+
 			return persistenceManager.detachCopy(detached.get(0)).wipe();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -268,24 +270,24 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 
 	@Override
 	public Boolean wekaNywiraTokeni(Long id, String tokeni) {
-		if (StringUtils.isEmpty(tokeni) || id == null ) {
+		if (StringUtils.isEmpty(tokeni) || id == null) {
 			return false;
 		}
-		
+
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		try {
-			
-			Mjinga  mjinga = persistenceManager.getObjectById(Mjinga.class, id);
+
+			Mjinga mjinga = persistenceManager.getObjectById(Mjinga.class, id);
 			mjinga.setNywiraTokeni(tokeni);
 			mjinga.setTrhOmbiLaKubadiliNywira(DateTime.now());
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		} finally {
 			persistenceManager.close();
 		}
-		
+
 		return true;
 	}
 
@@ -305,10 +307,10 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			if (transaction.isActive()) {
 				transaction.rollback();
 			}
-			
+
 			persistenceManager.close();
 		}
-		
+
 		return true;
 	}
 

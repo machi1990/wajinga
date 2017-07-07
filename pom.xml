@@ -33,8 +33,8 @@
 	</repositories>
 
 	<dependencies>
-
-		<dependency>
+	
+    		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-declarative-linking</artifactId>
 		</dependency>
@@ -55,6 +55,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-api</artifactId>
+		    <version>3.4.0</version>
+		</dependency>
+				
 		<dependency>
 			<groupId>org.glassfish.jersey.test-framework</groupId>
 			<artifactId>jersey-test-framework-core</artifactId>
@@ -229,7 +235,13 @@
 			<artifactId>commons-email</artifactId>
 			<version>1.4</version>
 		</dependency>
-
+		
+<dependency>
+    <groupId>com.opencsv</groupId>
+    <artifactId>opencsv</artifactId>
+    <version>3.10</version>
+</dependency>
+		
 	</dependencies>
 
 	<build>

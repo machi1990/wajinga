@@ -12,13 +12,13 @@ import javax.jdo.annotations.PrimaryKey;
 
 import org.joda.time.DateTime;
 
-@PersistenceCapable(detachable="true")
+@PersistenceCapable(detachable = "true")
 public class Lengo {
 
 	public static enum Hali {
 		PENDEKEZO, LINAJADILIWA, LIMEPITISHWA, LIMEPIGWA, LIMETIMIZWA;
 	}
-	
+
 	public static class Historia implements Serializable {
 		/**
 		 * 
@@ -28,8 +28,7 @@ public class Lengo {
 		public String maelezo;
 		public DateTime tarehe;
 		public String mwekaHistoria;
-		
-		
+
 		public Historia(Hali hali, String maelezo, DateTime tarehe, String mwekaHistoria) {
 			super();
 			this.hali = hali;
@@ -41,8 +40,7 @@ public class Lengo {
 		public Historia() {
 			super();
 		}
-		
-		
+
 		@Override
 		public String toString() {
 			return "Historia [hali=" + hali + ", maelezo=" + maelezo + ", tarehe=" + tarehe + ", mwekaHistoria="
@@ -59,6 +57,7 @@ public class Lengo {
 			result = prime * result + ((tarehe == null) ? 0 : tarehe.hashCode());
 			return result;
 		}
+
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj)
@@ -90,29 +89,27 @@ public class Lengo {
 	}
 
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-	
+
 	private String maelezoYaZiada;
-	
+
 	@NotPersistent
 	private Historia haliYaSasa;
 
-	@Persistent(defaultFetchGroup="true", dependentElement="true")
+	@Persistent(defaultFetchGroup = "true", dependentElement = "true")
 	private List<Historia> historia = new ArrayList<Historia>();
 
 	public Lengo() {
 		super();
 	}
 
-	
 	public Lengo(String maelezoYaZiada, Historia haliYaSasa, List<Historia> historia) {
 		super();
 		this.maelezoYaZiada = maelezoYaZiada;
 		this.haliYaSasa = haliYaSasa;
 		this.historia = historia;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -155,5 +152,5 @@ public class Lengo {
 		} else if (!maelezoYaZiada.equals(other.maelezoYaZiada))
 			return false;
 		return true;
-	}	
+	}
 }

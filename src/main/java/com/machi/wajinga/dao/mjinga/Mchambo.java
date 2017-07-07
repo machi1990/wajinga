@@ -7,19 +7,19 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable(detachable = "true")
-public class Mchambo implements Chambable{
-	
-	@Persistent(valueStrategy=IdGeneratorStrategy.NATIVE)
+public class Mchambo implements Chambable {
+
+	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	@PrimaryKey
 	private Long id;
-	
-	@Column(jdbcType="CLOB", allowsNull="false")
+
+	@Column(jdbcType = "CLOB", allowsNull = "false")
 	private String mchambo;
-		
+
 	public Mchambo() {
 		super();
 	}
-	
+
 	public Mchambo(String mchambo) {
 		super();
 		this.mchambo = mchambo;
@@ -32,8 +32,7 @@ public class Mchambo implements Chambable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	
+
 	public String getMchambo() {
 		return mchambo;
 	}
@@ -82,5 +81,5 @@ public class Mchambo implements Chambable{
 	public String toString() {
 		return "Mchambo [id=" + id + ", mchambo=" + mchambo + "]";
 	}
-	
+
 }

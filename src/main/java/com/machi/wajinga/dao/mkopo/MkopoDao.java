@@ -5,6 +5,6 @@ import org.jvnet.hk2.annotations.Contract;
 import com.machi.wajinga.dao.IDao;
 
 @Contract
-public interface MkopoDao extends IDao{
+public interface MkopoDao extends IDao {
 
 }
