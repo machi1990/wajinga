@@ -47,12 +47,6 @@ public class HomeResource {
 		wajiboostDao = wajingaDao.getWajiboostDao();
 	}
 
-	/**
-	 * Method handling HTTP GET requests. The returned object will be sent to the
-	 * client as "text/plain" media type.
-	 *
-	 * @return String that will be returned as a text/plain response.
-	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Mjinga ingia() {

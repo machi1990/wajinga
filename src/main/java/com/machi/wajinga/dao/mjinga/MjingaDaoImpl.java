@@ -314,4 +314,22 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		return true;
 	}
 
+	@Override
+	public void wekaMuda(Mjinga mjinga) {
+		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
+		Transaction transaction = persistenceManager.currentTransaction();
+		try {
+			transaction.begin();
+			mjinga = persistenceManager.getObjectById(Mjinga.class, mjinga.getId());
+			mjinga.setMudaWaMwishoKutumia(DateTime.now());
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+		}
+
+	}
 }

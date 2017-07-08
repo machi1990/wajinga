@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @PersistenceCapable(detachable = "true")
-public class MalipoYaMwezi {
+public class MalipoYaMwezi implements Comparable<MalipoYaMwezi> {
 	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	@PrimaryKey
 	private Long id;
@@ -113,6 +113,10 @@ public class MalipoYaMwezi {
 		this.jinaLaMjinga = jinaLaMjinga;
 	}
 
+	public MalipoYaMwezi wipeMjinga() {
+		return wipeMjinga(true);
+	}
+	
 	public MalipoYaMwezi wipeMjinga(Boolean wote) {
 		if (wote) {
 			jinaLaMjinga = mjinga != null ? mjinga.getJinaLaUkoo() : null;
@@ -183,6 +187,12 @@ public class MalipoYaMwezi {
 	public String toString() {
 		return "MalipoYaMwezi [id=" + id + ", mjinga=" + mjinga + ", kiasi=" + kiasi + ", tarehe=" + tarehe
 				+ ", mweziHusika=" + mweziHusika + ", maelezo=" + maelezo + "]";
+	}
+
+	@Override
+	public int compareTo(MalipoYaMwezi lipo) {
+		int mweziComparison = mweziHusika.compareTo(lipo.mweziHusika);
+		return mweziComparison == 0 ? tarehe.compareTo(lipo.tarehe) : mweziComparison;
 	}
 
 }

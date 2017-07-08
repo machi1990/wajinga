@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -47,6 +48,8 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 @Path("malipo")
 public class MalipoResource {
+	private static final DateTimeFormatter mweziFormat = DateTimeFormat.forPattern("MM/yyyy");
+	private static final DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd");
 
 	private MalipoYaMweziDao malipoDao;
 	private MjingaDao mjingaDao;
@@ -58,22 +61,12 @@ public class MalipoResource {
 		mjingaDao = wajingaDao.getMjingaDao();
 	}
 
-	/**
-	 * Method handling HTTP GET requests. The returned object will be sent to the
-	 * client as "text/plain" media type.
-	 *
-	 * @return String that will be returned as a text/plain response.
-	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<MalipoYaMwezi> malipo(@Context UriInfo info) {
 		List<MalipoYaMwezi> malipo = malipoDao.tafutaMalipo(info.getQueryParameters());
-
-		malipo.forEach(lipo -> {
-			lipo.wipeMjinga(true);
-		});
-
-		return malipo;
+		return malipo.parallelStream().sorted()
+				.collect(Collectors.mapping(MalipoYaMwezi::wipeMjinga, Collectors.toList()));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -81,7 +74,7 @@ public class MalipoResource {
 	@Path("csv")
 	public Response malipoKatikaCSV(@Context UriInfo info) {
 		final List<MalipoKontena> malipoKontena = malipoDao.tafutaMalipo(info.getQueryParameters()).parallelStream()
-				.collect(Collectors.mapping(MalipoKontena::getMalipo, Collectors.toList()));
+				.sorted().collect(Collectors.mapping(MalipoKontena::getMalipo, Collectors.toList()));
 		final Long total = malipoKontena.stream().mapToLong(MalipoKontena::kiasi).sum();
 		final MalipoKontena jumla = new MalipoKontena(null, "JUMLA =" + total, null, null);
 		malipoKontena.add(jumla);
@@ -113,7 +106,7 @@ public class MalipoResource {
 
 	@SuppressWarnings("unchecked")
 	@POST
-	@RolesAllowed({"MWENYEKITI", "KATIBU", "MWEKAHAZINA"})
+	@RolesAllowed({ "MWENYEKITI", "KATIBU", "MWEKAHAZINA" })
 	@Path("csv")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response malipoKatikaCSV(String csv) {
@@ -125,28 +118,27 @@ public class MalipoResource {
 		List<MalipoYaMwezi> malipo = new ArrayList<MalipoYaMwezi>();
 		malipoKontena.forEach(kontena -> {
 			Mjinga mjinga = null;
-			
+
 			if (kontena.getMJINGA_MLIPAJI() != null) {
 				mjinga = mjingaDao.tafutaMjingaKwaJina(kontena.getMJINGA_MLIPAJI().trim());
-			} 
-			
+			}
+
 			if (mjinga == null && kontena.getBARUA_PEPE() != null) {
 				mjinga = mjingaDao.tafutaMjingaKwaBaruaPepe(kontena.getBARUA_PEPE().trim());
 			}
-			
+
 			if (mjinga == null) {
 				kontena.setSABABU("Weka taarifa sahihi za mlipaji");
 				majibu.add(kontena);
 				return;
 			}
-			
 
 			MalipoYaMwezi lipo = new MalipoYaMwezi(mjinga, kontena.getKIASI_KILICHOLIPWA(),
-					DateTime.parse(kontena.getTAREHE_YA_MALIPO().trim()), DateTime.parse(kontena.getMWEZI_HUSIKA().trim()),
-					kontena.getMAELEZO());
-			
+					DateTime.parse(kontena.getTAREHE_YA_MALIPO().trim()),
+					DateTime.parse(kontena.getMWEZI_HUSIKA().trim()), kontena.getMAELEZO());
+
 			malipo.add(lipo);
-			
+
 		});
 
 		malipoDao.tunza(malipo);
@@ -169,7 +161,8 @@ public class MalipoResource {
 			}
 		};
 
-		return Response.status(Status.PRECONDITION_FAILED).entity(output).header("Content-Disposition", "attachment; filename=hajakubaliwa.csv").build();
+		return Response.status(Status.PRECONDITION_FAILED).entity(output)
+				.header("Content-Disposition", "attachment; filename=hajakubaliwa.csv").build();
 	}
 
 	@DELETE
@@ -196,19 +189,43 @@ public class MalipoResource {
 		return lipo.wipeMjinga(false);
 	}
 
-	private static final DateTimeFormatter mweziFormat = DateTimeFormat.forPattern("MM/yyyy");
-	private static final DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd");
+	@POST
+	@RolesAllowed({ "KATIBU", "MWEKAHAZINA", "MWENYEKITI" })
+	@Path("mjinga/{mjinga-id: \\d+}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response lipa(@PathParam("mjinga-id") Long mlipaji, MalipoYaMwezi lipo) {
+		if (lipo.getMweziHusika() == null) {
+			throw new BadRequestException(" Mwezi wa malipo unatakiwa");
+		}
+
+		if (lipo.getTarehe() == null) {
+			lipo.setTarehe(DateTime.now());
+		}
+
+		if (lipo.getMaelezo() == null) {
+			lipo.setMaelezo("Malipo ya mwezi " + mweziFormat.print(lipo.getMweziHusika()));
+		}
+
+		lipo.setId(null);
+		Mjinga mjinga = new Mjinga();
+		mjinga.setId(mlipaji);
+		lipo.setMjinga(mjinga);
+
+		return malipoDao.lipa(lipo) ? Response.ok("Malipo yamefanyika").build()
+				: Response.status(Status.BAD_REQUEST).entity("Malipo hayajafanyika").build();
+
+	}
 
 	public static class MalipoKontena {
 		@CsvBindByName(column = "MJINGA MLIPAJI")
 		public final String MJINGA_MLIPAJI;
-		
+
 		@CsvBindByName(column = "KIASI KILICHOLIPWA")
 		public final Object KIASI_KILICHOLIPWA;
-		
+
 		@CsvBindByName(column = "TAREHE YA MALIPO")
 		public final String TAREHE_YA_MALIPO; // ISO format yyyy-mm-dd
-		
+
 		@CsvBindByName(column = "MWEZI HUSIKA")
 		public final String MWEZI_HUSIKA; // ISO format yyyy-mm-dd
 
@@ -248,25 +265,25 @@ public class MalipoResource {
 	}
 
 	public static class MalipoKontenaInput {
-		@CsvBindByName(column="MJINGA MLIPAJI")
+		@CsvBindByName(column = "MJINGA MLIPAJI")
 		public String MJINGA_MLIPAJI;
-		
-		@CsvBindByName(column="BARUA PEPE")
+
+		@CsvBindByName(column = "BARUA PEPE")
 		public String BARUA_PEPE;
-		
-		@CsvBindByName(column="KIASI KILICHOLIPWA")
+
+		@CsvBindByName(column = "KIASI KILICHOLIPWA")
 		public Long KIASI_KILICHOLIPWA;
-		
-		@CsvBindByName(column="TAREHE YA MALIPO")
+
+		@CsvBindByName(column = "TAREHE YA MALIPO")
 		public String TAREHE_YA_MALIPO; // ISO format yyyy-mm-dd
-		
-		@CsvBindByName(column="MWEZI HUSIKA")
+
+		@CsvBindByName(column = "MWEZI HUSIKA")
 		public String MWEZI_HUSIKA; // ISO format yyyy-mm-dd
-		
-		@CsvBindByName(column="SABABU")
+
+		@CsvBindByName(column = "SABABU")
 		public String SABABU;
-		
-		@CsvBindByName(column="MAELEZO")
+
+		@CsvBindByName(column = "MAELEZO")
 		public String MAELEZO = "";
 
 		public MalipoKontenaInput(String mJINGA_MLIPAJI, String bARUA_PEPE, Long kIASI_KILICHOLIPWA,
@@ -351,7 +368,7 @@ public class MalipoResource {
 					+ ", KIASI_KILICHOLIPWA=" + KIASI_KILICHOLIPWA + ", TAREHE_YA_MALIPO=" + TAREHE_YA_MALIPO
 					+ ", MWEZI_HUSIKA=" + MWEZI_HUSIKA + ", SABABU=" + SABABU + ", MAELEZO=" + MAELEZO + "]";
 		}
-		
+
 	}
 
 }

@@ -13,7 +13,7 @@ public class EntranceFilter implements ContainerRequestFilter {
 				requestContext.getHeaders().containsKey("Accept-Encoding")
 						? requestContext.getHeaderString("Accept-Encoding")
 						: "");
-		requestContext.setProperty("timestamp", System.nanoTime());
+		requestContext.setProperty("timestamp", System.currentTimeMillis());
 	}
 
 }

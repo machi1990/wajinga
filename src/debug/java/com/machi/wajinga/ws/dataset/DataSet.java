@@ -123,8 +123,8 @@ public class DataSet {
 		visanidi.add(new Usanidi(Usanidi.MSIMU, "2016/2017"));
 		visanidi.add(new Usanidi(Usanidi.SMTP_HOST, "smtp.gmail.com"));
 		visanidi.add(new Usanidi(Usanidi.SMTP_PORT, "587"));
-		visanidi.add(new Usanidi(Usanidi.SMTP_JINA, "wajiboost@gmail.com"));
-		visanidi.add(new Usanidi(Usanidi.SMTP_NYWIRA, "WajingaGroup"));
+		visanidi.add(new Usanidi(Usanidi.SMTP_JINA, "wajiboost.dev@gmail.com"));
+		visanidi.add(new Usanidi(Usanidi.SMTP_NYWIRA, "Wajiboost-dev@2017"));
 		visanidi.add(new Usanidi(Usanidi.SEVA, "http://localhost:8080"));
 		visanidi.add(new Usanidi(Usanidi.BADILI_NYWIRA, "RE: OMBI LA KUBADILI NYWIRA"));
 		visanidi.add(new Usanidi(Usanidi.BADILI_NYWIRA_MESEJI,

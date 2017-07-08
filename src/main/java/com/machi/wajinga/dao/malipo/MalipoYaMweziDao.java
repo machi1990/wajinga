@@ -26,7 +26,24 @@ public interface MalipoYaMweziDao extends IDao {
 	 */
 	MalipoYaMwezi tafutaLipo(Long lipoId);
 
+	/**
+	 * Futa lipo 
+	 * @param lipoId
+	 * @return Boolean
+	 */
 	Boolean futaLipo(Long lipoId);
 
+	/**
+	 * Tunza malipo ya wajinga
+	 * @param malipo
+	 * @return Boolean
+	 */
 	Boolean tunza(List<MalipoYaMwezi> malipo);
+
+	/**
+	 * Fanya malipo ya mjinga
+	 * @param lipo
+	 * @return Boolean
+	 */
+	Boolean lipa(MalipoYaMwezi lipo);
 }

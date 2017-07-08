@@ -116,6 +116,8 @@ public class Mjinga implements Chambable, Principal {
 	@NotPersistent
 	private Integer idadiYaMichambo;
 
+	private DateTime mudaWaMwishoKutumia;
+	
 	public Mjinga() {
 		super();
 	}
@@ -131,6 +133,7 @@ public class Mjinga implements Chambable, Principal {
 		this.cheo = cheo;
 		this.tareheYaKuanzaUjinga = tareheYaKuanzaUjinga;
 		this.nywira = ficha(nywira);
+		mudaWaMwishoKutumia = DateTime.now();
 	}
 
 	private String ficha(String password) {
@@ -309,6 +312,14 @@ public class Mjinga implements Chambable, Principal {
 		this.ombiMkopo = ombiMikopo;
 	}
 
+	public DateTime getMudaWaMwishoKutumia() {
+		return mudaWaMwishoKutumia;
+	}
+
+	public void setMudaWaMwishoKutumia(DateTime mudaWaMwishoKutumia) {
+		this.mudaWaMwishoKutumia = mudaWaMwishoKutumia;
+	}
+	
 	public Boolean anaruhusiwa() {
 		if (cheo == null) {
 			return false;

@@ -1,6 +1,7 @@
 package com.machi.wajinga.dao.malipo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -134,4 +135,8 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 		}
 	}
 
+	@Override
+	public Boolean lipa(MalipoYaMwezi lipo) {
+		return tunza(Arrays.asList(lipo));
+	}
 }

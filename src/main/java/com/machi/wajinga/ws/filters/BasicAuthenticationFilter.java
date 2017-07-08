@@ -127,12 +127,16 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 		}
 
 		final Mjinga mjinga = mjinga_;
-
+		
+		/**
+		 * Update access time
+		 */
+		dao.wekaMuda(mjinga);
+		
 		requestContext.setSecurityContext(new SecurityContext() {
-
 			@Override
 			public boolean isUserInRole(String role) {
-				return mjinga != null && mjinga.getCheo().name().equals(role);
+				return mjinga.getCheo().name().equals(role);
 			}
 
 			@Override
@@ -152,6 +156,7 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 		});
 
 		requestContext.setProperty("AuthorizationSid", authorizationSid);
+		requestContext.setProperty("mjinga", mjinga.getJina());
 		SESSION.put(authorizationSid, new SessionObject(DateTime.now(), mjinga));
 
 		if (!method.isAnnotationPresent(RolesAllowed.class)) {

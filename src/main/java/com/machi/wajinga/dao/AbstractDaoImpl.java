@@ -4,7 +4,7 @@ import javax.jdo.PersistenceManagerFactory;
 
 public abstract class AbstractDaoImpl implements IDao {
 	private PersistenceManagerFactory pmf;
-
+	
 	public AbstractDaoImpl() {
 		super();
 	}
