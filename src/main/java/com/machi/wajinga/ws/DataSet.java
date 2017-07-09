@@ -1,4 +1,4 @@
-package com.machi.wajinga.ws.dataset;
+package com.machi.wajinga.ws;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import javax.jdo.PersistenceManagerFactory;
 import org.joda.time.DateTime;
 
 import com.machi.wajinga.dao.maafa.Maafa;
+import com.machi.wajinga.dao.maafa.Maafa.Zawadi;
 import com.machi.wajinga.dao.malipo.MalipoYaMwezi;
 import com.machi.wajinga.dao.mjinga.Mchambo;
 import com.machi.wajinga.dao.mjinga.Mjinga;
@@ -48,32 +49,56 @@ public class DataSet {
 		wajinga.add(new Mjinga("ruvilo.mwananchi", "Denis Ruvilo", "ruvilo.denis@gmail.com", "password", "+33652003035",
 				"Banker", Cheo.MJUMBE, DateTime.now().minusYears(1)));
 
-		Maafa afa = new Maafa("Buffalo", 4, "2016/2017", 100000l, wajinga.get(3), 90000l);
+		wajinga.add(new Mjinga("pastor.mjeda", "Kleberson Mhere", "kleberson@gmail.com", "password", "+33652003035",
+				"Mjeda", Cheo.PASTOR, DateTime.now().minusYears(1)));
+
+		wajinga.add(new Mjinga("lipuli", "Sir Mboka", "lipuli@gmail.com", "password", "+33652003035", "Banker",
+				Cheo.PASTOR, DateTime.now().minusYears(1)));
+
+		Maafa afa = new Maafa("Buffalo", 1l, 3, "2016/2017", 100000l, wajinga.get(3));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa tatu"));
+		afa.getZawadi().add(new Zawadi(3, 50000l, Maafa.Aina.JUMLA, "Mshindi wa jumla nafasi tatu"));
 		wajinga.get(3).getMaafa().add(afa);
 		pm.makePersistent(afa);
-		afa = new Maafa("Kibo", 8, "2016/2017", 100000l, wajinga.get(0), 0l);
+
+		afa = new Maafa("Kibo", 2l, 8, "2016/2017", 100000l, wajinga.get(0));
 		wajinga.get(0).getMaafa().add(afa);
 		pm.makePersistent(afa);
-		afa = new Maafa("Tchwaa FC", 4, "2016/2017", 100000l, wajinga.get(5), 40000l);
+
+		afa = new Maafa("Tchwaa FC", 3l, 4, "2016/2017", 100000l, wajinga.get(5));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa kumi"));
 		wajinga.get(5).getMaafa().add(afa);
 		pm.makePersistent(afa);
 
-		afa = new Maafa("El Nino Maravilla", 1, "2016/2017", 100000l, wajinga.get(1), 370000l);
+		afa = new Maafa("El Nino Maravilla", 1l, 1, "2016/2017", 100000l, wajinga.get(1));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa tisa"));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa tano"));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa desemba"));
+		afa.getZawadi().add(new Zawadi(1, 250000l, Maafa.Aina.JUMLA, "Mshindi wa jumla nafasi ya kwanza"));
+
 		wajinga.get(1).getMaafa().add(afa);
 		pm.makePersistent(afa);
 
-		afa = new Maafa("Pochettino", 2, "2016/2017", 100000l, wajinga.get(2), 220000l);
+		afa = new Maafa("Pochettino", 2l, 1, "2016/2017", 100000l, wajinga.get(2));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa kwanza"));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa pili"));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa nne"));
+		afa.getZawadi().add(new Zawadi(1, 100000l, Maafa.Aina.JUMLA, "Mshindi wa jumla nafasi ya pili"));
 		wajinga.get(2).getMaafa().add(afa);
 		pm.makePersistent(afa);
-		afa = new Maafa("Born Town", 7, "2016/2017", 100000l, wajinga.get(4), 40000l);
+
+		afa = new Maafa("Born Town", 7l, 7, "2016/2017", 100000l, wajinga.get(4));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi novemba"));
+
 		afa.setMjinga(wajinga.get(4));
 		wajinga.get(4).getMaafa().add(afa);
 
 		pm.makePersistent(afa);
 		pm.makePersistentAll(wajinga);
 
-		afa = new Maafa("Born Town", 7, "2016/2017", 100000l, wajinga.get(4), 40000l);
-		pm.makePersistent(afa);
+		afa = new Maafa("Kleberson FC", 5l, 5, "2016/2017", 100000l, wajinga.get(7));
+		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi nane"));
+		wajinga.get(7).getMaafa().add(afa);
 		pm.makePersistent(afa);
 
 		Mchambo mchambo = new Mchambo("Busha bashite");
@@ -137,6 +162,10 @@ public class DataSet {
 		visanidi.add(new Usanidi(Usanidi.AKAUNTI_KUFUNGULIWA_MESEJI,
 				"<div><strong>%s</strong> Akaunti yako ya Wajinga ipo hewani kuanzia leo tarehe <strong>%s</strong>. Tumia nywra hii <strong>%</strong> kuibadilisha. Wasiliana na Uongozi wa Wajinga kwa taarifa zaidi</div>"));
 
+		visanidi.add(new Usanidi(Usanidi.MAAFA, "MAAFA YAKO YAMEKUBALIWA"));
+		visanidi.add(new Usanidi(Usanidi.MAAFA_MESEJI,
+				"<div> <strong>%s</strong> maafa yako ya msimu <strong>%s</strong> yamepokelewa leo tarehe <strong>%s</strong> na <strong>%s</strong>. Tunashukuru kwa kuchangia maafa. Anza kuchamba</div>"));
+
 		pm.makePersistentAll(visanidi);
 
 		Tukio tukio = new Tukio(Aina.TAFRIJA, new ArrayList<Oni>(), "Mbuzi John",
@@ -166,7 +195,7 @@ public class DataSet {
 		katiba.getVipengele().addAll(vipengeleVyaKatiba);
 		pm.makePersistent(katiba);
 
-		afa = new Maafa("Tekkers+++", 1, "2017/2018", 200000l, wajinga.get(1), 1400000l);
+		afa = new Maafa("Tekkers+++", 1l, 1, "2017/2018", 200000l, wajinga.get(1));
 		wajinga.get(1).getMaafa().add(afa);
 		pm.makePersistentAll(wajinga);
 	}

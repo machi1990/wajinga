@@ -31,36 +31,37 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 			List<String> queryParams = new ArrayList<String>();
 			List<String> queryFilters = new ArrayList<String>();
 			List<Object> values = new ArrayList<Object>();
-			
+
 			filters.forEach((key, value) -> {
-				if ("tarehe".equalsIgnoreCase(key)) {
+				if ("tarehe".equals(key)) {
 					queryParams.add("DateTime TAREHE");
 					queryFilters.add("tarehe == TAREHE");
 					DateTime tarehe = new DateTime(Long.valueOf(value.get(0))).withMillisOfDay(0);
 					values.add(tarehe);
-				} else if ("mwezi".equalsIgnoreCase(key)) {
+				} else if ("mwezi".equals(key)) {
 					DateTime mwezi = DateTime.parse(value.get(0)).withDayOfMonth(1).withMillisOfDay(0);
 					values.add(mwezi);
 					queryParams.add("DateTime MWEZI");
 					queryFilters.add("MWEZI == mweziHusika");
-				} else if ("wajinga".equalsIgnoreCase(key)) {
+				} else if ("wajinga".equals(key)) {
 					List<String> mjingaFilter = new ArrayList<String>();
 					value.forEach(v -> {
 						mjingaFilter.add("mjinga.jina == \"" + v + "\"");
 					});
 					queryFilters.add(mjingaFilter.stream().collect(Collectors.joining(" || ")));
-				} else if ("maelezo".equalsIgnoreCase(key)) {
+				} else if ("maelezo".equals(key)) {
 					queryParams.add("String ELEZO");
 					queryFilters.add("maelezo.matches(ELEZO)");
 					values.add("(.*)" + value.get(0) + "(.*)");
 				}
 			});
-			
+
 			query.setFilter(queryFilters.parallelStream().collect(Collectors.joining(" && ")));
 			query.declareParameters(queryParams.parallelStream().collect(Collectors.joining(",")));
 			query.declareImports("import " + DateTime.class.getCanonicalName());
-			List<MalipoYaMwezi> malipo = (List<MalipoYaMwezi>) query.executeWithArray(values.toArray());;
-		
+			List<MalipoYaMwezi> malipo = (List<MalipoYaMwezi>) query.executeWithArray(values.toArray());
+			;
+
 			return (List<MalipoYaMwezi>) persistenceManager.detachCopyAll(malipo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,12 +76,12 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 	public MalipoYaMwezi tafutaLipo(Long lipoId) {
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		try {
-			
+
 			MalipoYaMwezi malipoYaMwezi = persistenceManager.getObjectById(MalipoYaMwezi.class, lipoId);
 			if (malipoYaMwezi == null) {
 				return null;
 			}
-			
+
 			return persistenceManager.detachCopy(malipoYaMwezi).wipeMjinga(false);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,13 +92,21 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 	}
 
 	@Override
-	public Boolean futaLipo(Long lipoId) {
+	public Boolean futaLipo(Long lipoId, Long mjingaId) {
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		try {
 			MalipoYaMwezi malipoYaMwezi = persistenceManager.getObjectById(MalipoYaMwezi.class, lipoId);
 			if (malipoYaMwezi == null) {
 				return false;
 			}
+
+			persistenceManager.getFetchPlan().addGroup("Malipo");
+			Mjinga mjinga = persistenceManager.getObjectById(Mjinga.class, mjingaId);
+
+			if (mjinga != null) {
+				mjinga.getMalipo().removeIf(lipo -> lipo.getId().equals(lipoId));
+			}
+
 			persistenceManager.deletePersistent(malipoYaMwezi);
 			return true;
 		} catch (Exception e) {
@@ -112,7 +121,7 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 	public Boolean tunza(List<MalipoYaMwezi> malipo) {
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		Transaction transaction = persistenceManager.currentTransaction();
-		
+
 		try {
 			transaction.begin();
 			malipo.forEach(lipo -> {

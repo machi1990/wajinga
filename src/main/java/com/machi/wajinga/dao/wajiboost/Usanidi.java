@@ -19,6 +19,9 @@ public class Usanidi {
 	public static final String AKAUNTI_KUFUNGWA_MESEJI = "AKAUNTI_KUFUNGWA_MESEJI";
 	public static final String AKAUNTI_KUFUNGULIWA = "AKAUNTI_KUFUNGULIWA";
 	public static final String AKAUNTI_KUFUNGULIWA_MESEJI = "AKAUNTI_KUFUNGULIWA_MESEJI";
+	public static final String MAAFA = "MAAFA";
+	public static final String MAAFA_MESEJI = "MAAFA_MESEJI";
+	public static final String FPL_ENDPOINT = "FPL_ENDPOINT";
 
 	@PrimaryKey
 	private String funguo;

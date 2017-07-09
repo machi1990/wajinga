@@ -1,5 +1,9 @@
 package com.machi.wajinga.dao.maafa;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -7,19 +11,58 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.joda.time.DateTime;
+
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @PersistenceCapable(detachable = "true")
 @FetchGroup(name = "Mjinga", members = { @Persistent(name = "mjinga") })
 public class Maafa implements Comparable<Maafa> {
+
+	public static enum Aina {
+		MWEZI, JUMLA, H2H
+	}
+
+	public static class Zawadi implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 789898989l;
+
+		public Integer rank;
+		public Long kiasi;
+		public Aina aina;
+		public String elezo; // Some details if applicable e.g corresponding month
+
+		public Zawadi(Integer rank, Long kiasi, Aina aina, String elezo) {
+			super();
+			this.rank = rank;
+			this.kiasi = kiasi;
+			this.aina = aina;
+			this.elezo = elezo;
+		}
+
+		@Override
+		public String toString() {
+			return "Zawadi [rank=" + rank + ", kiasi=" + kiasi + ", aina=" + aina + ", elezo=" + elezo + "]";
+		}
+
+	}
+
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
-
 	private Long id;
+	
+	private DateTime tarehe;
+	
 	@Column(allowsNull = "false")
-	private String jinaLaTeam;
+	private String timu;
+
+	@Column(allowsNull = "false")
+	private Long fplTimuId;
 
 	private Integer nafasi;
+
 	@Column(allowsNull = "false")
 	private String msimu;
 
@@ -29,20 +72,23 @@ public class Maafa implements Comparable<Maafa> {
 	@Column(name = "MJINGA_ID")
 	private Mjinga mjinga;
 
-	private Long zawadi;
+	@Persistent(defaultFetchGroup = "true")
+	@Column(allowsNull = "false")
+	private List<Zawadi> zawadi = new ArrayList<Zawadi>();
 
 	public Maafa() {
 		super();
 	}
 
-	public Maafa(String jinaLaTeam, Integer nafasi, String msimu, Long kiasi, Mjinga mjinga, Long zawadi) {
+	public Maafa(String timu, Long fplTimuId, Integer nafasi, String msimu, Long kiasi, Mjinga mjinga) {
 		super();
-		this.jinaLaTeam = jinaLaTeam;
+		this.timu = timu;
+		this.fplTimuId = fplTimuId;
 		this.nafasi = nafasi;
 		this.msimu = msimu;
 		this.kiasi = kiasi;
 		this.mjinga = mjinga;
-		this.zawadi = zawadi;
+		tarehe = DateTime.now();
 	}
 
 	public Long getId() {
@@ -53,12 +99,20 @@ public class Maafa implements Comparable<Maafa> {
 		this.id = id;
 	}
 
-	public String getJinaLaTeam() {
-		return jinaLaTeam;
+	public String getTimu() {
+		return timu;
 	}
 
-	public void setJinaLaTeam(String jinaLaTeam) {
-		this.jinaLaTeam = jinaLaTeam;
+	public void setTimu(String timu) {
+		this.timu = timu;
+	}
+
+	public Long getFplTimuId() {
+		return fplTimuId;
+	}
+
+	public void setFplTimuId(Long fplTimuId) {
+		this.fplTimuId = fplTimuId;
 	}
 
 	public Integer getNafasi() {
@@ -93,24 +147,34 @@ public class Maafa implements Comparable<Maafa> {
 		this.mjinga = mjinga;
 	}
 
-	public Long getZawadi() {
+	public List<Zawadi> getZawadi() {
 		return zawadi;
 	}
 
-	public void setZawadi(Long zawadi) {
+	public void setZawadi(List<Zawadi> zawadi) {
 		this.zawadi = zawadi;
+	}
+	
+	public DateTime getTarehe() {
+		return tarehe;
+	}
+
+	public void setTarehe(DateTime tarehe) {
+		this.tarehe = tarehe;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((fplTimuId == null) ? 0 : fplTimuId.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((jinaLaTeam == null) ? 0 : jinaLaTeam.hashCode());
 		result = prime * result + ((kiasi == null) ? 0 : kiasi.hashCode());
 		result = prime * result + ((mjinga == null) ? 0 : mjinga.hashCode());
 		result = prime * result + ((msimu == null) ? 0 : msimu.hashCode());
 		result = prime * result + ((nafasi == null) ? 0 : nafasi.hashCode());
+		result = prime * result + ((tarehe == null) ? 0 : tarehe.hashCode());
+		result = prime * result + ((timu == null) ? 0 : timu.hashCode());
 		result = prime * result + ((zawadi == null) ? 0 : zawadi.hashCode());
 		return result;
 	}
@@ -124,15 +188,15 @@ public class Maafa implements Comparable<Maafa> {
 		if (getClass() != obj.getClass())
 			return false;
 		Maafa other = (Maafa) obj;
+		if (fplTimuId == null) {
+			if (other.fplTimuId != null)
+				return false;
+		} else if (!fplTimuId.equals(other.fplTimuId))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
-		if (jinaLaTeam == null) {
-			if (other.jinaLaTeam != null)
-				return false;
-		} else if (!jinaLaTeam.equals(other.jinaLaTeam))
 			return false;
 		if (kiasi == null) {
 			if (other.kiasi != null)
@@ -154,6 +218,16 @@ public class Maafa implements Comparable<Maafa> {
 				return false;
 		} else if (!nafasi.equals(other.nafasi))
 			return false;
+		if (tarehe == null) {
+			if (other.tarehe != null)
+				return false;
+		} else if (!tarehe.equals(other.tarehe))
+			return false;
+		if (timu == null) {
+			if (other.timu != null)
+				return false;
+		} else if (!timu.equals(other.timu))
+			return false;
 		if (zawadi == null) {
 			if (other.zawadi != null)
 				return false;
@@ -162,10 +236,11 @@ public class Maafa implements Comparable<Maafa> {
 		return true;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "Maafa [id=" + id + ", jinaLaTeam=" + jinaLaTeam + ", nafasi=" + nafasi + ", msimu=" + msimu + ", kiasi="
-				+ kiasi + ", mjinga=" + mjinga + ", zawadi=" + zawadi + "]";
+		return "Maafa [id=" + id + ", tarehe=" + tarehe + ", timu=" + timu + ", fplTimuId=" + fplTimuId + ", nafasi="
+				+ nafasi + ", msimu=" + msimu + ", kiasi=" + kiasi + ", mjinga=" + mjinga + ", zawadi=" + zawadi + "]";
 	}
 
 	/**

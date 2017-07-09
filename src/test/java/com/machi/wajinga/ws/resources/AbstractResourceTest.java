@@ -30,8 +30,8 @@ import com.machi.wajinga.dao.mkopo.MkopoDao;
 import com.machi.wajinga.dao.mkopo.MkopoDaoImpl;
 import com.machi.wajinga.dao.wajiboost.WajiboostDao;
 import com.machi.wajinga.dao.wajiboost.WajiboostDaoImpl;
+import com.machi.wajinga.ws.DataSet;
 import com.machi.wajinga.ws.ServerConfiguration;
-import com.machi.wajinga.ws.dataset.DataSet;
 import com.machi.wajinga.ws.services.mailer.BaruaPepeService;
 import com.machi.wajinga.ws.services.mailer.EmailAttachment;
 

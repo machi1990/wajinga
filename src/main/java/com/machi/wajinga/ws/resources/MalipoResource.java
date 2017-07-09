@@ -167,10 +167,10 @@ public class MalipoResource {
 
 	@DELETE
 	@RolesAllowed({ "MWEKAHAZINA" })
-	@Path("{lipo-id: \\d+}")
+	@Path("{lipo-id: \\d+} / {mjinga-id: \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response futaMalipo(@PathParam("lipo-id") Long lipoId) {
-		Boolean limefutwa = malipoDao.futaLipo(lipoId);
+	public Response futaMalipo(@PathParam("lipo-id") Long lipoId, @PathParam("mjinga-id") Long mjingaId) {
+		Boolean limefutwa = malipoDao.futaLipo(lipoId, mjingaId);
 		return limefutwa ? Response.ok("Lipo limefutwa").build()
 				: Response.status(Status.BAD_REQUEST)
 						.entity("Tatizo limetokea, ombi lako la kufuta lipo halijatekelezwa").build();

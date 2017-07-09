@@ -41,15 +41,17 @@ import com.machi.wajinga.ws.services.mailer.BaruaPepeService;
 
 @Path("mjinga")
 public class MjingaResource {
-	private final static DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd Hh:mm");
+	private final static DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-mm-dd hh:mm");
 	
-	private MjingaDao dao;
 	@Context
 	private SecurityContext context;
+	
+	private MjingaDao dao;
+	private WajiboostDao wajiboostDao;
+	
 	@Inject
 	private BaruaPepeService hudumaYaBaruaPepe;
-	private WajiboostDao wajiboostDao;
-
+	
 	@Inject
 	public MjingaResource(WajingaDao wajingaDao) {
 		dao = wajingaDao.getMjingaDao();

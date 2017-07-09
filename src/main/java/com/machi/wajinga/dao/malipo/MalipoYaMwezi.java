@@ -116,7 +116,7 @@ public class MalipoYaMwezi implements Comparable<MalipoYaMwezi> {
 	public MalipoYaMwezi wipeMjinga() {
 		return wipeMjinga(true);
 	}
-	
+
 	public MalipoYaMwezi wipeMjinga(Boolean wote) {
 		if (wote) {
 			jinaLaMjinga = mjinga != null ? mjinga.getJinaLaUkoo() : null;
