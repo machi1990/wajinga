@@ -38,6 +38,7 @@ import com.machi.wajinga.dao.mkopo.OmbiLaMkopo;
 import com.machi.wajinga.dao.wajiboost.Usanidi;
 import com.machi.wajinga.dao.wajiboost.WajiboostDao;
 import com.machi.wajinga.ws.services.mailer.BaruaPepeService;
+import com.machi.wajinga.ws.services.mailer.EmailAttachment;
 
 @Path("mjinga")
 public class MjingaResource {
@@ -170,7 +171,7 @@ public class MjingaResource {
 				wajiboostDao.tafutaUsanidi(Usanidi.AKAUNTI_KUFUNGULIWA),
 				String.format(wajiboostDao.tafutaUsanidi(Usanidi.AKAUNTI_KUFUNGULIWA_MESEJI), mjinga.getJina(),
 						format.print(DateTime.now()), nywiraMpya),
-				null);
+				Arrays.asList(new EmailAttachment(Usanidi.KATIKA_PDF, wajiboostDao.tafutaUsanidi(Usanidi.KATIKA_PDF).getBytes())));
 
 		return Response.ok().entity("Mjinga kaongezwa").build();
 	}

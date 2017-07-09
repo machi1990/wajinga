@@ -332,4 +332,96 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		}
 
 	}
+
+	@Override
+	public List<Mchambo> tafutaMichambo(Long tarehe, String elezo) {
+		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
+		Query query = persistenceManager.newQuery(Mchambo.class);
+		try {
+			List<String> filters = new ArrayList<String>();
+			if (elezo != null) {
+				filters.add("mchambo.matches((.*)\"" + elezo +"\"(.*))");
+			}
+			
+			List<DateTime> tarehes = new ArrayList<DateTime>();
+			if (tarehe != null) {
+				DateTime muda = new DateTime(tarehe).withMillisOfDay(0);
+				tarehes.add(muda);
+				tarehes.add(muda.plusDays(1));
+				List<String> params = new ArrayList<String>();
+				params.add("DateTime TAREHE");
+				params.add("DateTime KESHO");
+				filters.add("tarehe >= TAREHE && tarehe <= KESHO");
+				query.declareImports("import " + DateTime.class.getCanonicalName());
+			}
+			
+			query.setFilter(filters.stream().collect(Collectors.joining(" && ")));
+			List<Mchambo> michambo = (List<Mchambo>) query.executeWithArray(tarehes.toArray());
+			return (List<Mchambo>) persistenceManager.detachCopyAll(michambo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Mchambo>();
+		} finally {
+			persistenceManager.close();
+		}
+	}
+
+	@Override
+	public Boolean ongezaMchamboKwaMjinga(Mjinga mjinga, Mchambo mchambo) {
+		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
+		Transaction transaction = persistenceManager.currentTransaction();
+		
+		try {
+			transaction.begin();
+			persistenceManager.getFetchPlan().addGroup("Michambo");
+			mjinga = persistenceManager.getObjectById(Mjinga.class, mjinga.getId());
+			mjinga.getMichambo().add(mchambo);
+			transaction.commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			
+			persistenceManager.close();
+		}
+	}
+
+	@Override
+	public Mchambo tafutaMchambo(Long mchamboId) {
+		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
+		try {
+			return persistenceManager.detachCopy(persistenceManager.getObjectById(Mchambo.class, mchamboId));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			persistenceManager.close();
+		}
+	}
+
+	@Override
+	public Boolean ongezaMchambo(Mchambo mchambo) {
+		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
+		Transaction transaction = persistenceManager.currentTransaction();
+		
+		try {
+			transaction.begin();
+			persistenceManager.makePersistent(mchambo);
+			transaction.commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			
+			persistenceManager.close();
+		}
+	}
 }

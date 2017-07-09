@@ -132,5 +132,39 @@ public interface MjingaDao extends IDao {
 	 */
 	Boolean badiliCheo(Mjinga mjinga);
 
+	/**
+	 * Badili muda - access time
+	 * @param mjinga
+	 */
 	void wekaMuda(Mjinga mjinga);
+
+	/**
+	 * Tafuta michambo
+	 * @param tarehe
+	 * @param elezo
+	 * @return List<Mchambo>
+	 */
+	List<Mchambo> tafutaMichambo(Long tarehe, String elezo);
+
+	/**
+	 * Ongeza mchambo kwa mjinga
+	 * @param mjinga
+	 * @param mchambo
+	 * @return Boolean - limekubaliwa au hapana
+	 */
+	Boolean ongezaMchamboKwaMjinga(Mjinga mjinga, Mchambo mchambo);
+
+	/**
+	 * Tafuta mchambo kwa id ya mchambo
+	 * @param mchamboId
+	 * @return Mchambo
+	 */
+	Mchambo tafutaMchambo(Long mchamboId);
+
+	/**
+	 * Ongeza mchambo mpya
+	 * @param mchambo
+	 * @return Boolean -limekubaliwa au hapana
+	 */
+	Boolean ongezaMchambo(Mchambo mchambo);
 }

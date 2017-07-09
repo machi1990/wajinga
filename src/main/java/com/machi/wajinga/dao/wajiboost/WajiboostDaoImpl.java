@@ -38,15 +38,19 @@ public class WajiboostDaoImpl extends AbstractDaoImpl implements WajiboostDao {
 
 	@Override
 	public Boolean tunzaUsanidi(Usanidi usanidi) {
-		if (usanidi == null) {
-			return false;
-		}
-
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		Transaction transaction = persistenceManager.currentTransaction();
 
 		try {
 			transaction.begin();
+			try {
+				Usanidi usanidi_ = persistenceManager.getObjectById(Usanidi.class, usanidi.getFunguo());
+				if (usanidi_ != null) {
+					usanidi.getMabadiliko().putAll(usanidi_.getMabadiliko());
+				}
+			} catch (Exception e) {
+			}
+
 			persistenceManager.makePersistent(usanidi);
 			transaction.commit();
 		} catch (Exception e) {

@@ -17,8 +17,6 @@ import com.machi.wajinga.dao.mjinga.Mchambo;
 import com.machi.wajinga.dao.mjinga.Mjinga;
 import com.machi.wajinga.dao.mjinga.Mjinga.Cheo;
 import com.machi.wajinga.dao.mkopo.OmbiLaMkopo;
-import com.machi.wajinga.dao.wajiboost.Katiba;
-import com.machi.wajinga.dao.wajiboost.KipengeleChaKatiba;
 import com.machi.wajinga.dao.wajiboost.Lengo;
 import com.machi.wajinga.dao.wajiboost.Lengo.Hali;
 import com.machi.wajinga.dao.wajiboost.Lengo.Historia;
@@ -54,7 +52,7 @@ public class DataSet {
 
 		wajinga.add(new Mjinga("lipuli", "Sir Mboka", "lipuli@gmail.com", "password", "+33652003035", "Banker",
 				Cheo.PASTOR, DateTime.now().minusYears(1)));
-
+		
 		Maafa afa = new Maafa("Buffalo", 1l, 3, "2016/2017", 100000l, wajinga.get(3));
 		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa tatu"));
 		afa.getZawadi().add(new Zawadi(3, 50000l, Maafa.Aina.JUMLA, "Mshindi wa jumla nafasi tatu"));
@@ -165,7 +163,11 @@ public class DataSet {
 		visanidi.add(new Usanidi(Usanidi.MAAFA, "MAAFA YAKO YAMEKUBALIWA"));
 		visanidi.add(new Usanidi(Usanidi.MAAFA_MESEJI,
 				"<div> <strong>%s</strong> maafa yako ya msimu <strong>%s</strong> yamepokelewa leo tarehe <strong>%s</strong> na <strong>%s</strong>. Tunashukuru kwa kuchangia maafa. Anza kuchamba</div>"));
+		visanidi.add(new Usanidi(Usanidi.MCHAMBO_MPYA, "Umepata mchambo mpya kutoka kwa  %s"));
 
+		visanidi.add(new Usanidi(Usanidi.KATIKA_PDF, "KATIBA in pdf"));
+		visanidi.add(new Usanidi(Usanidi.KATIBA_WORD, "Katiba in pdf"));
+		
 		pm.makePersistentAll(visanidi);
 
 		Tukio tukio = new Tukio(Aina.TAFRIJA, new ArrayList<Oni>(), "Mbuzi John",
@@ -185,15 +187,6 @@ public class DataSet {
 		signatori.add(wajinga.get(0));
 		signatori.add(wajinga.get(4));
 		signatori.add(wajinga.get(2));
-
-		Katiba katiba = new Katiba(new ArrayList<>(), signatori, DateTime.now().minusMonths(7), 50000l, 50000l, true);
-		List<KipengeleChaKatiba> vipengeleVyaKatiba = new ArrayList<KipengeleChaKatiba>();
-
-		IntStream.range(0, 4)
-				.forEach(i -> vipengeleVyaKatiba.add(new KipengeleChaKatiba("Kichwa - " + i, "Kichwa cha katiba")));
-
-		katiba.getVipengele().addAll(vipengeleVyaKatiba);
-		pm.makePersistent(katiba);
 
 		afa = new Maafa("Tekkers+++", 1l, 1, "2017/2018", 200000l, wajinga.get(1));
 		wajinga.get(1).getMaafa().add(afa);
