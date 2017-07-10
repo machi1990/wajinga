@@ -18,7 +18,7 @@ import com.machi.wajinga.dao.mkopo.MkopoDao;
 import com.machi.wajinga.dao.mkopo.OmbiLaMkopo;
 import com.machi.wajinga.dao.mkopo.Mkopo;
 
-@Path("mkopo")
+@Path("mikopo")
 public class MkopoResource {
 	
 	private MkopoDao mkopoDao;
@@ -31,14 +31,14 @@ public class MkopoResource {
 
 	@GET
 	@RolesAllowed({"KATIBU", "MWEKAHAZINA", "MWENYEKITI"})
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<Mkopo> mikopo(@Context UriInfo info) {
 		return mkopoDao.tafutaMikopo(info.getQueryParameters());
 	}
 	
 	@GET
 	@Path("mikopo-yangu")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<Mkopo> mikopoYangu(@Context UriInfo info, @Context SecurityContext context) {
 		MultivaluedMap<String, String> filters = info.getQueryParameters();
 		filters.putSingle("mjinga", context.getUserPrincipal().getName());
@@ -49,14 +49,14 @@ public class MkopoResource {
 	@GET
 	@RolesAllowed({"KATIBU", "MWEKAHAZINA", "MWENYEKITI"})
 	@Path("maombi")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<OmbiLaMkopo> ombiLaMikopo(@Context UriInfo info) {
 		return mkopoDao.tafutaOmbiLaMkopo(info.getQueryParameters());
 	}
 	
 	@GET
 	@Path("maombi-yangu")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<OmbiLaMkopo> ombiLaMikopoYangu(@Context UriInfo info, @Context SecurityContext context) {
 		MultivaluedMap<String, String> filters = info.getQueryParameters();
 		filters.putSingle("mjinga", context.getUserPrincipal().getName());

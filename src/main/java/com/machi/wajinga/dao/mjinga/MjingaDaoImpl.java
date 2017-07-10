@@ -329,7 +329,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		try {
 			List<String> filters = new ArrayList<String>();
 			if (elezo != null) {
-				filters.add("mchambo.matches((.*)\"" + elezo +"\"(.*))");
+				filters.add("mchambo.matches(\"(.*)" + elezo +"(.*)\")");
 			}
 			
 			List<DateTime> tarehes = new ArrayList<DateTime>();

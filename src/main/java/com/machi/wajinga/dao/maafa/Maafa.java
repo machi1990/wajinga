@@ -18,7 +18,7 @@ import com.machi.wajinga.dao.mjinga.Mjinga;
 @PersistenceCapable(detachable = "true")
 @FetchGroup(name = "Mjinga", members = { @Persistent(name = "mjinga") })
 public class Maafa implements Comparable<Maafa> {
-
+	
 	public static enum Aina {
 		MWEZI, JUMLA, H2H
 	}

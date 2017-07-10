@@ -27,7 +27,7 @@ public class OmbiLaMkopo {
 
 	private DateTime tarehe;
 
-	@Column(allowsNull = "true", jdbcType = "CLOB")
+	@Column(allowsNull = "false", jdbcType = "CLOB")
 	private String maelezo;
 
 	private DateTime tareheYaMajibu;

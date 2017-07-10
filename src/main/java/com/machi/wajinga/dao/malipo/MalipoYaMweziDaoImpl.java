@@ -60,8 +60,7 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 			query.declareParameters(queryParams.parallelStream().collect(Collectors.joining(",")));
 			query.declareImports("import " + DateTime.class.getCanonicalName());
 			List<MalipoYaMwezi> malipo = (List<MalipoYaMwezi>) query.executeWithArray(values.toArray());
-			;
-
+			
 			return (List<MalipoYaMwezi>) persistenceManager.detachCopyAll(malipo);
 		} catch (Exception e) {
 			e.printStackTrace();

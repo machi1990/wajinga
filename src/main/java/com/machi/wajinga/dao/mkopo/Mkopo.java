@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -15,8 +16,11 @@ import org.joda.time.DateTime;
 import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @PersistenceCapable(detachable = "true")
-@FetchGroup(name = "Maelezo", members = { @Persistent(name = "ombi"), @Persistent(name = "signatori"),
-		@Persistent(name = "mkopaji"), @Persistent(name = "marejesho") })
+@FetchGroups({
+		@FetchGroup(name = "MaelezoMjinga", members = { @Persistent(name = "signatori"),
+				@Persistent(name = "mkopaji") }),
+		@FetchGroup(name = "MaelezoMkopo", members = { @Persistent(name = "ombi"), @Persistent(name = "marejesho") }) 
+})
 public class Mkopo {
 
 	@PrimaryKey
@@ -36,6 +40,7 @@ public class Mkopo {
 	private DateTime mwishoWaRejesho;
 
 	private Double deni;
+	
 	@Column(allowsNull = "false", name = "MJINGA_ID")
 	private Mjinga mkopaji;
 
@@ -132,12 +137,20 @@ public class Mkopo {
 
 	public Boolean isUmeLipwa() {
 		if (marejesho == null) {
-			return false;
+			return null;
 		}
 
 		return marejesho.stream().mapToDouble(Rejesho::getKiasi).sum() >= deni;
 	}
 
+	public Boolean isUmepitilizwa() {
+		if (marejesho == null) {
+			return null;
+		}
+		
+		return !isUmeLipwa() && DateTime.now().withMillisOfDay(0).plusDays(1).isAfter(mwishoWaRejesho);
+	}
+	
 	public Double getDeni() {
 		return deni;
 	}

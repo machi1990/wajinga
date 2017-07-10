@@ -20,7 +20,7 @@ public class ResponseHeaderFilter implements ContainerResponseFilter {
 
 		responseContext.getHeaders().add("Cache-Control", "no-cache");
 
-		final Long muda = System.currentTimeMillis() - (Long) requestContext.getProperty("timestamp");
+		final Long muda = requestContext.getProperty("timestamp") != null ? System.currentTimeMillis() - (Long) requestContext.getProperty("timestamp") : 0;
 		final String method = requestContext.getRequest().getMethod();
 		final String uri = requestContext.getUriInfo().getRequestUri().toString();
 		final String mjinga = requestContext.getProperty("mjinga") != null
