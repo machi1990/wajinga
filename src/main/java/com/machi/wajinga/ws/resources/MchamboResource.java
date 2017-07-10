@@ -75,7 +75,7 @@ public class MchamboResource {
 		
 		if (umeongezwa) {
 			Mjinga mjinga_ = (Mjinga) context.getUserPrincipal();
-			hudumaYaBaruaPepe.tuma(Arrays.asList(mjinga.getBaruaPepe()), null , String.format(wajiboostDao.tafutaUsanidi(Usanidi.MCHAMBO_MPYA), mjinga_.getJinaLaUkoo()), mchambo.getMchambo(), null);
+			hudumaYaBaruaPepe.tuma(Arrays.asList(mjinga.getBaruaPepe()), null , String.format(wajiboostDao.tafutaUsanidi(Usanidi.MCHAMBO_MPYA), mjinga_.getJinaLaUkoo()), String.format("<div>%s</div>",mchambo.getMchambo()), null);
 		}
 		
 		return umeongezwa ? Response.noContent().build() : Response.status(Status.BAD_GATEWAY).build();
@@ -83,7 +83,7 @@ public class MchamboResource {
 	
 	
 	@GET
-	@Path("{mchambo-id}")
+	@Path("{mchambo-id: \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Mchambo tafutaMchambo(@PathParam("mchambo-id") Long mchamboId ) {
 		return mjingaDao.tafutaMchambo(mchamboId);
@@ -105,7 +105,7 @@ public class MchamboResource {
 		
 		if (umeongezwa) {
 			Mjinga mjinga_ = (Mjinga) context.getUserPrincipal();
-			hudumaYaBaruaPepe.tuma(Arrays.asList(mjinga.getBaruaPepe()), null , String.format(wajiboostDao.tafutaUsanidi(Usanidi.MCHAMBO_MPYA), mjinga_.getJinaLaUkoo()), mchambo.getMchambo(), null);
+			hudumaYaBaruaPepe.tuma(Arrays.asList(mjinga.getBaruaPepe()), null , String.format(wajiboostDao.tafutaUsanidi(Usanidi.MCHAMBO_MPYA), mjinga_.getJinaLaUkoo()), String.format("<div>%s</div>",mchambo.getMchambo()), null);
 		}
 		
 		return umeongezwa ? Response.noContent().build() : Response.status(Status.BAD_GATEWAY).build();

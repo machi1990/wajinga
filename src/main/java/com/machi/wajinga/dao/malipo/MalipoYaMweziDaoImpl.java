@@ -76,12 +76,7 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 	public MalipoYaMwezi tafutaLipo(Long lipoId) {
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		try {
-
 			MalipoYaMwezi malipoYaMwezi = persistenceManager.getObjectById(MalipoYaMwezi.class, lipoId);
-			if (malipoYaMwezi == null) {
-				return null;
-			}
-
 			return persistenceManager.detachCopy(malipoYaMwezi).wipeMjinga(false);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,11 +91,8 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		try {
 			MalipoYaMwezi malipoYaMwezi = persistenceManager.getObjectById(MalipoYaMwezi.class, lipoId);
-			if (malipoYaMwezi == null) {
-				return false;
-			}
-
 			persistenceManager.getFetchPlan().addGroup("Malipo");
+
 			Mjinga mjinga = persistenceManager.getObjectById(Mjinga.class, mjingaId);
 
 			if (mjinga != null) {

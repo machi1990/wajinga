@@ -32,15 +32,16 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		Query query = persistenceManager.newQuery(Mjinga.class);
 		query.declareParameters("String username");
 		query.setFilter("jina == username");
-
+		query.setUnique(true);
+		
 		try {
-			List<Mjinga> detached = (List<Mjinga>) query.execute(username);
-
-			if (detached.isEmpty()) {
+			Mjinga mjinga = (Mjinga) query.execute(username);
+			
+			if (mjinga == null) {
 				return null;
 			}
-
-			return persistenceManager.detachCopy(detached.get(0)).wipe();
+			
+			return persistenceManager.detachCopy(mjinga).wipe();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -106,10 +107,6 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
 
-			if (mjinga == null) {
-				return null;
-			}
-
 			return pm.detachCopy(mjinga).kokotoaIdadi();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,13 +124,9 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
 
-			if (mjinga == null) {
-				return new ArrayList<Mkopo>();
-			}
-
 			List<Mkopo> mikopo = pm.detachCopy(mjinga).getMikopo();
 
-			mikopo.stream().forEach(mkopo -> {
+			mikopo.forEach(mkopo -> {
 				mkopo.setMkopaji(null);
 				mkopo.setSignatori(null);
 				mkopo.setOmbi(null);
@@ -166,14 +159,10 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			pm.getFetchPlan().addGroup("Mikopo");
 
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
-
-			if (mjinga == null) {
-				return new ArrayList<OmbiLaMkopo>();
-			}
-
+			
 			List<OmbiLaMkopo> maombi = pm.detachCopy(mjinga).getOmbiMkopo();
 
-			maombi.stream().forEach(ombi -> {
+			maombi.forEach(ombi -> {
 				ombi.setMjibuji(null);
 				ombi.setMjinga(null);
 			});
@@ -233,7 +222,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			}
 
 			List<Maafa> maafa = pm.detachCopy(mjinga).getMaafa();
-			maafa.stream().forEach(afa -> afa.setMjinga(null));
+			maafa.forEach(afa -> afa.setMjinga(null));
 
 			return maafa;
 		} catch (Exception e) {

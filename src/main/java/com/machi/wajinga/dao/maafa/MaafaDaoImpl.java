@@ -99,11 +99,6 @@ public class MaafaDaoImpl extends AbstractDaoImpl implements MaafaDao {
 		try {
 			persistenceManager.getFetchPlan().addGroup("Mjinga");
 			Maafa maafa = persistenceManager.getObjectById(Maafa.class, afaId);
-
-			if (maafa == null) {
-				return null;
-			}
-
 			maafa = persistenceManager.detachCopy(maafa);
 
 			if (maafa.getMjinga() != null) {
@@ -149,11 +144,8 @@ public class MaafaDaoImpl extends AbstractDaoImpl implements MaafaDao {
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		try {
 			Maafa afa = persistenceManager.getObjectById(Maafa.class, afaId);
-			if (afa == null) {
-				return false;
-			}
-
 			persistenceManager.getFetchPlan().addGroup("Maafa");
+
 			Mjinga mjinga = persistenceManager.getObjectById(Mjinga.class, mjingaId);
 
 			if (mjinga != null) {
