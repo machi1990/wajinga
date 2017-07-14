@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.joda.time.DateTime;
 import org.jvnet.hk2.annotations.Contract;
 
 import com.machi.wajinga.dao.IDao;
+import com.machi.wajinga.dao.mjinga.Mjinga;
 
 @Contract
 public interface MkopoDao extends IDao {
@@ -24,4 +26,55 @@ public interface MkopoDao extends IDao {
 	 * @return
 	 */
 	List<OmbiLaMkopo> tafutaOmbiLaMkopo(MultivaluedMap<String, String> filters);
+	
+	/**
+	 * 
+	 * @param ombi
+	 * @return Boolean - tunzwa au hapana
+	 */
+	Boolean omba(OmbiLaMkopo ombi);
+
+	/**
+	 * Cheki ka mjinga ana deni
+	 * @param mjinga
+	 * @return
+	 */
+	Boolean anaDeni(Mjinga mjinga);
+
+	/**
+	 * Tafuta ombi la mkopo kwa id yake
+	 * @param ombiId
+	 * @return
+	 */
+	OmbiLaMkopo tafutaOmbiLaMkopo(Long ombiId);
+
+	/**
+	 * Tafuta mkopo
+	 * @param mkopoId
+	 * @return Mkopo
+	 */
+	Mkopo tafutaMkopo(Long mkopoId);
+	
+	/**
+	 * 
+	 * @param ombi
+	 * @return Boolean
+	 */
+	Boolean kataaOmbi(OmbiLaMkopo ombi);
+
+	/**
+	 * 
+	 * @param ombi
+	 * @param dateTime - mwisho wa rejesho
+	 * @return Boolean
+	 */
+	Boolean kubaliOmbi(OmbiLaMkopo ombi, DateTime dateTime);
+
+	/**
+	 * 
+	 * @param mkopo
+	 * @param rejesho
+	 * @return Boolean
+	 */
+	Boolean rejesha(Mkopo mkopo, Rejesho rejesho);
 }

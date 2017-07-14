@@ -121,7 +121,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		try {
 			pm.getFetchPlan().addGroup("Mikopo");
-
+			
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
 
 			List<Mkopo> mikopo = pm.detachCopy(mjinga).getMikopo();

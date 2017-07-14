@@ -7,12 +7,14 @@ import java.util.stream.Stream;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.jdo.Transaction;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.joda.time.DateTime;
 import org.jvnet.hk2.annotations.Service;
 
 import com.machi.wajinga.dao.AbstractDaoImpl;
+import com.machi.wajinga.dao.mjinga.Mjinga;
 import com.machi.wajinga.dao.mkopo.OmbiLaMkopo.Jibu;
 
 @Service
@@ -179,6 +181,161 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 		} finally {
 			query.closeAll();
 			persistenceManager.close();
+		}
+	}
+
+	@Override
+	public Boolean omba(OmbiLaMkopo ombi) {
+		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
+		Transaction transaction = persistenceManager.currentTransaction();
+		
+		try {
+			persistenceManager.getFetchPlan().addGroup("Mikopo");
+			Mjinga mjinga = persistenceManager.getObjectById(Mjinga.class, ombi.getMjinga().getId());
+			transaction.begin();
+			ombi.setMjinga(mjinga);
+			mjinga.getOmbiMkopo().add(ombi);
+			persistenceManager.makePersistent(ombi);
+			transaction.commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			persistenceManager.close();
+		}
+	}
+
+	@Override
+	public Boolean anaDeni(Mjinga mjinga) {
+		PersistenceManager pm = getPmf().getPersistenceManager();
+		try {
+			pm.getFetchPlan().addGroup("Mikopo");
+			pm.getFetchPlan().addGroup("MaelezoMkopo");			
+			mjinga = pm.getObjectById(Mjinga.class, mjinga.getId());
+
+			List<Mkopo> mikopo = pm.detachCopy(mjinga).getMikopo();
+
+			return mikopo.parallelStream().filter(mkopo -> !mkopo.isUmeLipwa() || !mkopo.isUmepitilizwa()).count() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			pm.close();
+		}
+	}
+
+	@Override
+	public OmbiLaMkopo tafutaOmbiLaMkopo(Long ombiId) {
+		PersistenceManager pm = getPmf().getPersistenceManager();
+		try {
+			OmbiLaMkopo ombi = pm.getObjectById(OmbiLaMkopo.class, ombiId);
+			
+			ombi =  pm.detachCopy(ombi);
+			ombi.getMjinga().wipe();
+			ombi.setMjibuji(null);
+			return ombi;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			pm.close();
+		}
+	}
+
+	@Override
+	public Mkopo tafutaMkopo(Long mkopoId) {
+		PersistenceManager pm = getPmf().getPersistenceManager();
+		try {
+			pm.getFetchPlan().addGroup("MaelezoMkopo");			
+			pm.getFetchPlan().addGroup("MaelezoMjinga");
+			
+			Mkopo mkopo = pm.getObjectById(Mkopo.class, mkopoId);
+			
+			mkopo =  pm.detachCopy(mkopo);
+			mkopo.getMkopaji().wipe();
+			mkopo.getSignatori().wipe();
+			
+			return mkopo;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			pm.close();
+		}
+	}
+
+	@Override
+	public Boolean kataaOmbi(OmbiLaMkopo ombi) {
+		PersistenceManager pm = getPmf().getPersistenceManager();
+		try {
+			OmbiLaMkopo ombi_ = pm.getObjectById(OmbiLaMkopo.class, ombi.getId());
+			Mjinga mjibuji = pm.getObjectById(Mjinga.class, ombi.getMjibuji().getId());
+			ombi_.setJibu(Jibu.LIMEKATALIWA);
+			ombi_.setTareheYaMajibu(DateTime.now());
+			ombi_.setMaelezoYaJibu(ombi.getMaelezoYaJibu());
+			ombi_.setMjibuji(mjibuji);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			pm.close();
+		}
+	}
+
+	@Override
+	public Boolean kubaliOmbi(OmbiLaMkopo ombi, DateTime mwisho) {
+		PersistenceManager pm = getPmf().getPersistenceManager();
+		try {
+			OmbiLaMkopo ombi_ = pm.getObjectById(OmbiLaMkopo.class, ombi.getId());
+			Mjinga mjibuji = pm.getObjectById(Mjinga.class, ombi.getMjibuji().getId());
+			ombi_.setJibu(Jibu.LIMEKUBALIWA);
+			ombi_.setTareheYaMajibu(DateTime.now());
+			ombi_.setMaelezoYaJibu(ombi.getMaelezoYaJibu());
+			ombi_.setMjibuji(mjibuji);
+			ombi_.setKiasiKilichokubaliwa(ombi.getKiasiKilichokubaliwa());
+			
+			Mkopo mkopo = new Mkopo(ombi_.getKiasi(), DateTime.now(), 10.0, mwisho, 1.1* ombi_.getKiasiKilichokubaliwa(), null, mjibuji, ombi_, new ArrayList<Rejesho>());
+			pm.makePersistent(mkopo);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			pm.close();
+		}
+	}
+
+	@Override
+	public Boolean rejesha(Mkopo mkopo, Rejesho rejesho) {
+		PersistenceManager pm = getPmf().getPersistenceManager();
+		Transaction transaction = pm.currentTransaction();
+		
+		try {
+			pm.getFetchPlan().addGroup("MaelezoMkopo");			
+			pm.getFetchPlan().addGroup("MaelezoMjinga");
+			mkopo = pm.getObjectById(Mkopo.class, mkopo.getId());
+
+			rejesho.setId(null);
+			rejesho.setTarehe(DateTime.now());
+			transaction.begin();
+			mkopo.getMarejesho().add(rejesho);
+			rejesho.setMkopo(mkopo);
+			pm.makePersistent(rejesho);
+			transaction.commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			pm.close();
 		}
 	}
 
