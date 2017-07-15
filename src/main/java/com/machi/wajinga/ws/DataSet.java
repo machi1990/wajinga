@@ -1,7 +1,9 @@
 package com.machi.wajinga.ws;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import javax.jdo.JDOHelper;
@@ -52,7 +54,7 @@ public class DataSet {
 
 		wajinga.add(new Mjinga("lipuli", "Sir Mboka", "lipuli@gmail.com", "password", "+33652003035", "Banker",
 				Cheo.PASTOR, DateTime.now().minusYears(1)));
-		
+
 		Maafa afa = new Maafa("Buffalo", 1l, 3, "2016/2017", 100000l, wajinga.get(3));
 		afa.getZawadi().add(new Zawadi(1, 40000l, Maafa.Aina.MWEZI, "Mshindi wa mwezi wa tatu"));
 		afa.getZawadi().add(new Zawadi(3, 50000l, Maafa.Aina.JUMLA, "Mshindi wa jumla nafasi tatu"));
@@ -167,7 +169,7 @@ public class DataSet {
 
 		visanidi.add(new Usanidi(Usanidi.KATIKA_PDF, "KATIBA in pdf"));
 		visanidi.add(new Usanidi(Usanidi.KATIBA_WORD, "Katiba in pdf"));
-		
+
 		pm.makePersistentAll(visanidi);
 
 		Tukio tukio = new Tukio(Aina.TAFRIJA, new ArrayList<Oni>(), "Mbuzi John",
@@ -179,10 +181,11 @@ public class DataSet {
 		List<Lengo> malengo = new ArrayList<Lengo>();
 		Historia pendokezo = new Historia(Hali.PENDEKEZO, "Napendekeza tuongeze siku za mbuzi john", DateTime.now(),
 				"machi");
-		List<Historia> historia = new ArrayList<Historia>();
+		Set<Historia> historia = new HashSet<Historia>();
 		historia.add(pendokezo);
 		malengo.add(new Lengo("Halijatimia", pendokezo, historia));
-
+		pm.makePersistentAll(malengo);
+		
 		List<Mjinga> signatori = new ArrayList<Mjinga>();
 		signatori.add(wajinga.get(0));
 		signatori.add(wajinga.get(4));

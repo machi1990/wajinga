@@ -22,14 +22,63 @@ public class Tukio {
 		TAFRIJA, KIKAO
 	};
 
-	public class Oni implements Serializable {
+	public static class Oni implements Serializable {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -8000664693634861465L;
-		String maelezo;
-		String mtoaOni;
-		DateTime tarehe;
+		public String maelezo;
+		public String mtoaOni;
+		public DateTime tarehe;
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((maelezo == null) ? 0 : maelezo.hashCode());
+			result = prime * result + ((mtoaOni == null) ? 0 : mtoaOni.hashCode());
+			result = prime * result + ((tarehe == null) ? 0 : tarehe.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Oni other = (Oni) obj;
+			if (maelezo == null) {
+				if (other.maelezo != null)
+					return false;
+			} else if (!maelezo.equals(other.maelezo))
+				return false;
+			if (mtoaOni == null) {
+				if (other.mtoaOni != null)
+					return false;
+			} else if (!mtoaOni.equals(other.mtoaOni))
+				return false;
+			if (tarehe == null) {
+				if (other.tarehe != null)
+					return false;
+			} else if (!tarehe.equals(other.tarehe))
+				return false;
+			return true;
+		}
+
+		public Oni() {
+			super();
+		}
+
+		public Oni(String maelezo, String mtoaOni, DateTime tarehe) {
+			super();
+			this.maelezo = maelezo;
+			this.mtoaOni = mtoaOni;
+			this.tarehe = tarehe;
+		}
+
 	}
 
 	@PrimaryKey
@@ -74,6 +123,18 @@ public class Tukio {
 		this.kichwa = kichwa;
 		this.maelezoYaTukio = maelezoYaTukio;
 		this.maelezoBaadaYaTukio = maelezoBaadaYaTukio;
+		this.mahali = mahali;
+		this.tarehe = tarehe;
+		this.muandaaji = muandaaji;
+		this.tareheYaKutengenezwa = tareheYaKutengenezwa;
+	}
+
+	public Tukio(Aina aina, String kichwa, String maelezoYaTukio, String mahali, DateTime tarehe, Mjinga muandaaji,
+			DateTime tareheYaKutengenezwa) {
+		super();
+		this.aina = aina;
+		this.kichwa = kichwa;
+		this.maelezoYaTukio = maelezoYaTukio;
 		this.mahali = mahali;
 		this.tarehe = tarehe;
 		this.muandaaji = muandaaji;
@@ -259,6 +320,25 @@ public class Tukio {
 		return "Tukio [id=" + id + ", aina=" + aina + ", maoni=" + maoni + ", kichwa=" + kichwa + ", maelezoYaTukio="
 				+ maelezoYaTukio + ", maelezoBaadaYaTukio=" + maelezoBaadaYaTukio + ", mahali=" + mahali + ", tarehe="
 				+ tarehe + ", muandaaji=" + muandaaji + ", tareheYaKutengenezwa=" + tareheYaKutengenezwa + "]";
+	}
+
+	/**
+	 * Angalia kama tukio limefanyika
+	 * 
+	 * @return Boolean
+	 */
+	public Boolean isLimefanyika() {
+		return tarehe.isBeforeNow();
+	}
+
+	/**
+	 * Angalia ka mjinga ni mshiriki
+	 * 
+	 * @param mjinga
+	 * @return Boolean
+	 */
+	public Boolean isMshiriki(Mjinga mjinga) {
+		return washiriki.stream().anyMatch(mshiriki -> mjinga.getId().equals(mshiriki.getId()));
 	}
 
 }

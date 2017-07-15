@@ -1,8 +1,8 @@
 package com.machi.wajinga.dao.wajiboost;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.NotPersistent;
@@ -52,9 +52,6 @@ public class Lengo {
 			final int prime = 31;
 			int result = 1;
 			result = prime * result + ((hali == null) ? 0 : hali.hashCode());
-			result = prime * result + ((maelezo == null) ? 0 : maelezo.hashCode());
-			result = prime * result + ((mwekaHistoria == null) ? 0 : mwekaHistoria.hashCode());
-			result = prime * result + ((tarehe == null) ? 0 : tarehe.hashCode());
 			return result;
 		}
 
@@ -68,21 +65,6 @@ public class Lengo {
 				return false;
 			Historia other = (Historia) obj;
 			if (hali != other.hali)
-				return false;
-			if (maelezo == null) {
-				if (other.maelezo != null)
-					return false;
-			} else if (!maelezo.equals(other.maelezo))
-				return false;
-			if (mwekaHistoria == null) {
-				if (other.mwekaHistoria != null)
-					return false;
-			} else if (!mwekaHistoria.equals(other.mwekaHistoria))
-				return false;
-			if (tarehe == null) {
-				if (other.tarehe != null)
-					return false;
-			} else if (!tarehe.equals(other.tarehe))
 				return false;
 			return true;
 		}
@@ -98,13 +80,13 @@ public class Lengo {
 	private Historia haliYaSasa;
 
 	@Persistent(defaultFetchGroup = "true", dependentElement = "true")
-	private List<Historia> historia = new ArrayList<Historia>();
+	private Set<Historia> historia = new HashSet<Historia>(5);
 
 	public Lengo() {
 		super();
 	}
 
-	public Lengo(String maelezoYaZiada, Historia haliYaSasa, List<Historia> historia) {
+	public Lengo(String maelezoYaZiada, Historia haliYaSasa, Set<Historia> historia) {
 		super();
 		this.maelezoYaZiada = maelezoYaZiada;
 		this.haliYaSasa = haliYaSasa;
@@ -153,4 +135,41 @@ public class Lengo {
 			return false;
 		return true;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getMaelezoYaZiada() {
+		return maelezoYaZiada;
+	}
+
+	public void setMaelezoYaZiada(String maelezoYaZiada) {
+		this.maelezoYaZiada = maelezoYaZiada;
+	}
+
+	public Historia getHaliYaSasa() {
+		if (historia.isEmpty()) {
+			return null;
+		}
+
+		return historia.stream().skip(historia.size() - 1).findFirst().orElse(null);
+	}
+
+	public void setHaliYaSasa(Historia haliYaSasa) {
+		this.haliYaSasa = haliYaSasa;
+	}
+
+	public Set<Historia> getHistoria() {
+		return historia;
+	}
+
+	public void setHistoria(Set<Historia> historia) {
+		this.historia = historia;
+	}
+
 }
