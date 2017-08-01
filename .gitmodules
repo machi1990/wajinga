@@ -1,0 +1,3 @@
+[submodule "src/main/webapp/wajinga-ui"]
+	path = src/main/webapp/wajinga-ui
+	url = https://chitson1990@bitbucket.org/chitson1990/wajinga-ui.git
