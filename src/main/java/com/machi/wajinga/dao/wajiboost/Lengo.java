@@ -153,10 +153,6 @@ public class Lengo {
 	}
 
 	public Historia getHaliYaSasa() {
-		if (historia.isEmpty()) {
-			return null;
-		}
-
 		return historia.stream().skip(historia.size() - 1).findFirst().orElse(null);
 	}
 

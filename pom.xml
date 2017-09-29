@@ -6,7 +6,7 @@
 	<groupId>com.machi</groupId>
 	<artifactId>wajinga</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>wajinga</name>
 
 	<dependencyManagement>
@@ -33,8 +33,8 @@
 	</repositories>
 
 	<dependencies>
-	
-    		<dependency>
+
+		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-declarative-linking</artifactId>
 		</dependency>
@@ -56,11 +56,11 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.seleniumhq.selenium</groupId>
-		    <artifactId>selenium-api</artifactId>
-		    <version>3.4.0</version>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-api</artifactId>
+			<version>3.4.0</version>
 		</dependency>
-				
+
 		<dependency>
 			<groupId>org.glassfish.jersey.test-framework</groupId>
 			<artifactId>jersey-test-framework-core</artifactId>
@@ -225,23 +225,23 @@
 
 		<!-- apache commons -->
 		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.6</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
 		</dependency>
-				
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-email</artifactId>
 			<version>1.4</version>
 		</dependency>
-		
-<dependency>
-    <groupId>com.opencsv</groupId>
-    <artifactId>opencsv</artifactId>
-    <version>3.10</version>
-</dependency>
-		
+
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>3.10</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -269,9 +269,9 @@
 				</executions>
 				<configuration>
 					<mainClass>com.machi.wajinga.ws.MainDev</mainClass>
-<!-- 					<arguments> -->
-<!-- 						<argument>-Xbootclasspath/p:/Users/machi/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.11.v20170118/alpn-boot-8.1.11.v20170118.jar</argument> -->
-<!-- 					</arguments> -->
+					<!-- <arguments> -->
+					<!-- <argument>-Xbootclasspath/p:/Users/machi/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.11.v20170118/alpn-boot-8.1.11.v20170118.jar</argument> -->
+					<!-- </arguments> -->
 				</configuration>
 			</plugin>
 			<plugin>
