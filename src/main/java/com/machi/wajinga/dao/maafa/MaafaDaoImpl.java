@@ -34,31 +34,7 @@ public class MaafaDaoImpl extends AbstractDaoImpl implements MaafaDao {
 			List<String> queryFilters = new ArrayList<String>();
 			List<Object> values = new ArrayList<Object>();
 
-			filters.forEach((key, value) -> {
-				if ("msimu".equals(key)) {
-					List<String> msimuFilter = new ArrayList<String>();
-					value.forEach(v -> {
-						msimuFilter.add("msimu == \"" + v + "\"");
-					});
-					queryFilters.add(msimuFilter.stream().collect(Collectors.joining(" || ")));
-				} else if ("tarehe".equals(key)) {
-					DateTime yesterday = new DateTime(Long.valueOf(value.get(0))).withMillis(0);
-					DateTime tomorrow = yesterday.plusDays(1);
-					queryParams.add("DateTime YESTERDAY");
-					queryParams.add("DateTime TOMORROW");
-					values.add(yesterday);
-					values.add(tomorrow);
-					queryFilters.add("tarehe >= YESTERDAY && tarehe <= TOMORROW");
-				} else if ("wajinga".equals(key)) {
-					List<String> mjingaFilter = new ArrayList<String>();
-					value.forEach(v -> {
-						mjingaFilter.add("mjinga.jina == \"" + v + "\"");
-					});
-					queryFilters.add(mjingaFilter.stream().collect(Collectors.joining(" || ")));
-				} else if ("timu".equals(key)) {
-					queryFilters.add("timu == \"" + value.get(0) + "\"");
-				}
-			});
+			tengenezaVigezo(filters, queryParams, queryFilters, values);
 
 			if (!filters.containsKey("msimu")) {
 				try {
@@ -91,6 +67,35 @@ public class MaafaDaoImpl extends AbstractDaoImpl implements MaafaDao {
 			query.closeAll();
 			persistenceManager.close();
 		}
+	}
+
+	private void tengenezaVigezo(MultivaluedMap<String, String> filters, List<String> queryParams,
+			List<String> queryFilters, List<Object> values) {
+		filters.forEach((key, value) -> {
+			if ("msimu".equals(key)) {
+				List<String> msimuFilter = new ArrayList<String>();
+				value.forEach(v -> {
+					msimuFilter.add("msimu == \"" + v + "\"");
+				});
+				queryFilters.add(msimuFilter.stream().collect(Collectors.joining(" || ")));
+			} else if ("tarehe".equals(key)) {
+				DateTime yesterday = new DateTime(Long.valueOf(value.get(0))).withMillis(0);
+				DateTime tomorrow = yesterday.plusDays(1);
+				queryParams.add("DateTime YESTERDAY");
+				queryParams.add("DateTime TOMORROW");
+				values.add(yesterday);
+				values.add(tomorrow);
+				queryFilters.add("tarehe >= YESTERDAY && tarehe <= TOMORROW");
+			} else if ("wajinga".equals(key)) {
+				List<String> mjingaFilter = new ArrayList<String>();
+				value.forEach(v -> {
+					mjingaFilter.add("mjinga.jina == \"" + v + "\"");
+				});
+				queryFilters.add(mjingaFilter.stream().collect(Collectors.joining(" || ")));
+			} else if ("timu".equals(key)) {
+				queryFilters.add("timu == \"" + value.get(0) + "\"");
+			}
+		});
 	}
 
 	@Override

@@ -32,29 +32,7 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 			List<String> queryFilters = new ArrayList<String>();
 			List<Object> values = new ArrayList<Object>();
 
-			filters.forEach((key, value) -> {
-				if ("tarehe".equals(key)) {
-					queryParams.add("DateTime TAREHE");
-					queryFilters.add("tarehe == TAREHE");
-					DateTime tarehe = new DateTime(Long.valueOf(value.get(0))).withMillisOfDay(0);
-					values.add(tarehe);
-				} else if ("mwezi".equals(key)) {
-					DateTime mwezi = DateTime.parse(value.get(0)).withDayOfMonth(1).withMillisOfDay(0);
-					values.add(mwezi);
-					queryParams.add("DateTime MWEZI");
-					queryFilters.add("MWEZI == mweziHusika");
-				} else if ("wajinga".equals(key)) {
-					List<String> mjingaFilter = new ArrayList<String>();
-					value.forEach(v -> {
-						mjingaFilter.add("mjinga.jina == \"" + v + "\"");
-					});
-					queryFilters.add(mjingaFilter.stream().collect(Collectors.joining(" || ")));
-				} else if ("maelezo".equals(key)) {
-					queryParams.add("String ELEZO");
-					queryFilters.add("maelezo.matches(ELEZO)");
-					values.add("(.*)" + value.get(0) + "(.*)");
-				}
-			});
+			tengenezaVigezo(filters, queryParams, queryFilters, values);
 
 			query.setFilter(queryFilters.parallelStream().collect(Collectors.joining(" && ")));
 			query.declareParameters(queryParams.parallelStream().collect(Collectors.joining(",")));
@@ -69,6 +47,33 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 			query.closeAll();
 			persistenceManager.close();
 		}
+	}
+
+	private void tengenezaVigezo(MultivaluedMap<String, String> filters, List<String> queryParams,
+			List<String> queryFilters, List<Object> values) {
+		filters.forEach((key, value) -> {
+			if ("tarehe".equals(key)) {
+				queryParams.add("DateTime TAREHE");
+				queryFilters.add("tarehe == TAREHE");
+				DateTime tarehe = new DateTime(Long.valueOf(value.get(0))).withMillisOfDay(0);
+				values.add(tarehe);
+			} else if ("mwezi".equals(key)) {
+				DateTime mwezi = DateTime.parse(value.get(0)).withDayOfMonth(1).withMillisOfDay(0);
+				values.add(mwezi);
+				queryParams.add("DateTime MWEZI");
+				queryFilters.add("MWEZI == mweziHusika");
+			} else if ("wajinga".equals(key)) {
+				List<String> mjingaFilter = new ArrayList<String>();
+				value.forEach(v -> {
+					mjingaFilter.add("mjinga.jina == \"" + v + "\"");
+				});
+				queryFilters.add(mjingaFilter.stream().collect(Collectors.joining(" || ")));
+			} else if ("maelezo".equals(key)) {
+				queryParams.add("String ELEZO");
+				queryFilters.add("maelezo.matches(ELEZO)");
+				values.add("(.*)" + value.get(0) + "(.*)");
+			}
+		});
 	}
 
 	@Override
