@@ -75,6 +75,7 @@ public class MalipoResource {
 	public Response malipoKatikaCSV(@Context UriInfo info) {
 		final List<MalipoKontena> malipoKontena = malipoDao.tafutaMalipo(info.getQueryParameters()).parallelStream()
 				.sorted().collect(Collectors.mapping(MalipoKontena::getMalipo, Collectors.toList()));
+		
 		final Long total = malipoKontena.stream().mapToLong(MalipoKontena::kiasi).sum();
 		final MalipoKontena jumla = new MalipoKontena(null, "JUMLA =" + total, null, null);
 		malipoKontena.add(jumla);
@@ -115,6 +116,40 @@ public class MalipoResource {
 		List<MalipoKontenaInput> malipoKontena = new CsvToBeanBuilder<MalipoKontenaInput>(reader)
 				.withType(MalipoKontenaInput.class).build().parse(), majibu = new ArrayList<MalipoKontenaInput>();
 
+		List<MalipoYaMwezi> malipo = tengenezaMalipo(malipoKontena, majibu);
+
+		malipoDao.tunza(malipo);
+
+		StreamingOutput output = wekaKamaCSVFile(majibu);
+
+		return Response.status(Status.PRECONDITION_FAILED).entity(output)
+				.header("Content-Disposition", "attachment; filename=hajakubaliwa.csv").build();
+	}
+
+	@SuppressWarnings("unchecked")
+	private StreamingOutput wekaKamaCSVFile(List<MalipoKontenaInput> majibu) {
+		StreamingOutput output = new StreamingOutput() {
+			@Override
+			public void write(OutputStream output) throws IOException, WebApplicationException {
+				Writer writer = new PrintWriter(output);
+				StatefulBeanToCsv<MalipoKontenaInput> malipoToCsv = new StatefulBeanToCsvBuilder<MalipoKontenaInput>(
+						writer).build();
+				try {
+					malipoToCsv.write(majibu);
+				} catch (CsvDataTypeMismatchException e) {
+					e.printStackTrace();
+				} catch (CsvRequiredFieldEmptyException e) {
+					e.printStackTrace();
+				}
+				writer.close();
+				output.close();
+			}
+		};
+		return output;
+	}
+
+	private List<MalipoYaMwezi> tengenezaMalipo(List<MalipoKontenaInput> malipoKontena,
+			List<MalipoKontenaInput> majibu) {
 		List<MalipoYaMwezi> malipo = new ArrayList<MalipoYaMwezi>();
 		malipoKontena.forEach(kontena -> {
 			Mjinga mjinga = null;
@@ -140,29 +175,7 @@ public class MalipoResource {
 			malipo.add(lipo);
 
 		});
-
-		malipoDao.tunza(malipo);
-
-		StreamingOutput output = new StreamingOutput() {
-			@Override
-			public void write(OutputStream output) throws IOException, WebApplicationException {
-				Writer writer = new PrintWriter(output);
-				StatefulBeanToCsv<MalipoKontenaInput> malipoToCsv = new StatefulBeanToCsvBuilder<MalipoKontenaInput>(
-						writer).build();
-				try {
-					malipoToCsv.write(majibu);
-				} catch (CsvDataTypeMismatchException e) {
-					e.printStackTrace();
-				} catch (CsvRequiredFieldEmptyException e) {
-					e.printStackTrace();
-				}
-				writer.close();
-				output.close();
-			}
-		};
-
-		return Response.status(Status.PRECONDITION_FAILED).entity(output)
-				.header("Content-Disposition", "attachment; filename=hajakubaliwa.csv").build();
+		return malipo;
 	}
 
 	@DELETE

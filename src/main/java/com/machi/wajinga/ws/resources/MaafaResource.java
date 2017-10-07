@@ -116,7 +116,7 @@ public class MaafaResource {
 					null);
 			return Response.noContent().build();
 		} else {
-			return Response.status(Status.BAD_REQUEST).entity("Ombi limegoma").build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Ombi limegoma").build();
 		}
 	}
 }

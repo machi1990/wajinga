@@ -28,7 +28,7 @@ import com.machi.wajinga.dao.wajiboost.WajiboostDao;
 import com.machi.wajinga.ws.services.mailer.BaruaPepeService;
 
 /**
- * Root resource (exposed at "home" path)
+ * Root resource (exposed at "ingia" path)
  */
 @Path("ingia")
 public class HomeResource {

@@ -78,7 +78,7 @@ public class MchamboResource {
 			hudumaYaBaruaPepe.tuma(Arrays.asList(mjinga.getBaruaPepe()), null , String.format(wajiboostDao.tafutaUsanidi(Usanidi.MCHAMBO_MPYA), mjinga_.getJinaLaUkoo()), String.format("<div>%s</div>",mchambo.getMchambo()), null);
 		}
 		
-		return umeongezwa ? Response.noContent().build() : Response.status(Status.BAD_GATEWAY).build();
+		return umeongezwa ? Response.noContent().build() : Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
 	
 	
@@ -108,7 +108,7 @@ public class MchamboResource {
 			hudumaYaBaruaPepe.tuma(Arrays.asList(mjinga.getBaruaPepe()), null , String.format(wajiboostDao.tafutaUsanidi(Usanidi.MCHAMBO_MPYA), mjinga_.getJinaLaUkoo()), String.format("<div>%s</div>",mchambo.getMchambo()), null);
 		}
 		
-		return umeongezwa ? Response.noContent().build() : Response.status(Status.BAD_GATEWAY).build();
+		return umeongezwa ? Response.noContent().build() : Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
 	
 
@@ -119,6 +119,6 @@ public class MchamboResource {
 		mchambo.setId(null);
 		mchambo.setTarehe(DateTime.now());
 		Boolean umeongezwa = mjingaDao.ongezaMchambo(mchambo);		
-		return umeongezwa ? Response.noContent().build() : Response.status(Status.BAD_GATEWAY).build();
+		return umeongezwa ? Response.noContent().build() : Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
 }

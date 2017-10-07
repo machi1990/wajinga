@@ -167,13 +167,18 @@ public class MjingaResource {
 		mjinga.setMalipo(new ArrayList<MalipoYaMwezi>());
 		mjinga.setCheo(Cheo.MJUMBE);
 		dao.tunzaMjinga(mjinga);
+		
+		tumaBaruaKwaMjingaMpya(mjinga, nywiraMpya);
+
+		return Response.ok().entity("Mjinga kaongezwa").build();
+	}
+
+	private void tumaBaruaKwaMjingaMpya(Mjinga mjinga, String nywiraMpya) {
 		hudumaYaBaruaPepe.tuma(Arrays.asList(mjinga.getBaruaPepe()), null,
 				wajiboostDao.tafutaUsanidi(Usanidi.AKAUNTI_KUFUNGULIWA),
 				String.format(wajiboostDao.tafutaUsanidi(Usanidi.AKAUNTI_KUFUNGULIWA_MESEJI), mjinga.getJina(),
 						format.print(DateTime.now()), nywiraMpya),
 				Arrays.asList(new EmailAttachment(Usanidi.KATIKA_PDF, wajiboostDao.tafutaUsanidi(Usanidi.KATIKA_PDF).getBytes())));
-
-		return Response.ok().entity("Mjinga kaongezwa").build();
 	}
 
 	@POST

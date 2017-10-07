@@ -12,6 +12,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.PATCH;
@@ -282,7 +283,7 @@ public class WajiboostResource {
 		Mjinga mjinga = (Mjinga) context.getUserPrincipal();
 		
 		if (!tukio.isMshiriki(mjinga)) {
-			throw new BadRequestException("Huwezi toa oni ka si mshiriki wa tukio");		
+			throw new ForbiddenException("Huwezi toa oni ka si mshiriki wa tukio");		
 		}
 	
 		oni.mtoaOni = mjinga.getJina();

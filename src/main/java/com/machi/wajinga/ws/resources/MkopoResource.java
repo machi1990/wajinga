@@ -169,7 +169,7 @@ public class MkopoResource {
 		OmbiLaMkopo ombi = mkopoDao.tafutaOmbiLaMkopo(ombiId);
 
 		if (ombi == null ) {
-			throw new BadRequestException("Hakuna ombi kama hilo");
+			throw new NotFoundException("Hakuna ombi kama hilo");
 		}
 		
 		if (ombi.getJibu() != null) {
