@@ -48,45 +48,30 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Main class.
- *
- */
 public class Main {
-	// private static Logger logger = Logger.getLogger(Main.class);
 	private static final String BASE_URL = "127.0.0.1";
 
-	/**
-	 * Starts HTTP server exposing JAX-RS resources defined in this application.
-	 * 
-	 * @return HTTP server.
-	 */
 	public static void configureAndStartServer(Properties props) {
 		Server server = createServer(props);
 
-		ResourceConfig resources = new ResourceConfig();
-		resources.packages(true, "com.machi.wajinga.ws.resources");
-		resources.register(Jackson1Feature.class);
-		resources.register(CustomObjectMapper.class);
-		resources.register(BasicAuthenticationFilter.class);
-		resources.register(LoggingFeature.class);
-		resources.register(EntranceFilter.class);
-		resources.register(GzipWriteInterceptor.class);
-		resources.register(ResponseHeaderFilter.class);
-		resources.register(new AbstractBinder() {
-			@Override
-			protected void configure() {
-				bind(MaafaDaoImpl.class).to(MaafaDao.class);
-				bind(MjingaDaoImpl.class).to(MjingaDao.class);
-				bind(MalipoYaMweziDaoImpl.class).to(MalipoYaMweziDao.class);
-				bind(MkopoDaoImpl.class).to(MkopoDao.class);
-				bind(WajiboostDaoImpl.class).to(WajiboostDao.class);
-				bind(WajingaDao.class).to(WajingaDao.class);
-				bind(ServerConfiguration.class).to(ServerConfiguration.class);
-				bind(props).to(Properties.class);
-				bind(BaruaPepeServiceImpl.class).to(BaruaPepeService.class);
-			}
-		});
+		ResourceConfig resources = new ResourceConfig().packages(true, "com.machi.wajinga.ws.resources")
+				.register(Jackson1Feature.class).register(CustomObjectMapper.class)
+				.register(BasicAuthenticationFilter.class).register(LoggingFeature.class).register(EntranceFilter.class)
+				.register(GzipWriteInterceptor.class).register(ResponseHeaderFilter.class)
+				.register(new AbstractBinder() {
+					@Override
+					protected void configure() {
+						bind(MaafaDaoImpl.class).to(MaafaDao.class);
+						bind(MjingaDaoImpl.class).to(MjingaDao.class);
+						bind(MalipoYaMweziDaoImpl.class).to(MalipoYaMweziDao.class);
+						bind(MkopoDaoImpl.class).to(MkopoDao.class);
+						bind(WajiboostDaoImpl.class).to(WajiboostDao.class);
+						bind(WajingaDao.class).to(WajingaDao.class);
+						bind(ServerConfiguration.class).to(ServerConfiguration.class);
+						bind(props).to(Properties.class);
+						bind(BaruaPepeServiceImpl.class).to(BaruaPepeService.class);
+					}
+				});
 
 		ServletHolder servletHolder = new ServletHolder(new ServletContainer(resources));
 		ServletContextHandler webServices = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -169,12 +154,6 @@ public class Main {
 		return server;
 	}
 
-	/**
-	 * Main method.
-	 * 
-	 * @param args
-	 * @throws Exception
-	 */
 	public static void main(String[] args) throws Exception {
 		InputStream in;
 		if (args.length > 0) {
