@@ -45,14 +45,18 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 			}
 
 			query.declareImports("import " + DateTime.class.getCanonicalName());
-			query.setFilter(queryFilters.stream().collect(Collectors.joining(" && ")));
+			if (!queryFilters.isEmpty()) {
+				query.setFilter(queryFilters.parallelStream().collect(Collectors.joining(" && ", " ( ", " ) ")));
+			}
 			query.declareParameters(queryParams.stream().collect(Collectors.joining(" , ")));
 			List<Mkopo> mikopo = (List<Mkopo>) query.executeWithArray(values.toArray());
 			mikopo = (List<Mkopo>) persistenceManager.detachCopyAll(mikopo);
 
 			Stream<Mkopo> filter = umepitilizwa ? mikopo.stream().filter(Mkopo::isUmepitilizwa) : mikopo.stream();
 
-			filter.forEach(mkopo -> {
+			mikopo = filter.collect(Collectors.toList());
+			
+			mikopo.forEach(mkopo -> {
 				mkopo.setMarejesho(null);
 				mkopo.setOmbi(null);
 				mkopo.setMkopaji(mkopo.getMkopaji().wipe());
@@ -120,17 +124,17 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 					+ DateTime.class.getCanonicalName());
 			query.setFilter(queryFilters.stream().collect(Collectors.joining(" && ")));
 			query.declareParameters(queryParams.stream().collect(Collectors.joining(" , ")));
-			
+
 			List<OmbiLaMkopo> maombi = (List<OmbiLaMkopo>) query.executeWithArray(values.toArray());
 			maombi = (List<OmbiLaMkopo>) persistenceManager.detachCopyAll(maombi);
-			
+
 			maombi.forEach(ombi -> {
 				ombi.setMjinga(ombi.getMjinga().wipe());
-				if (ombi.getMjibuji() != null ) {
-					ombi.setMjibuji( ombi.getMjibuji().wipe());
+				if (ombi.getMjibuji() != null) {
+					ombi.setMjibuji(ombi.getMjibuji().wipe());
 				}
 			});
-			
+
 			return maombi;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -158,6 +162,12 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 					mjingaFilter.add("mjinga.jina == \"" + v + "\"");
 				});
 				queryFilters.add(mjingaFilter.stream().collect(Collectors.joining(" || ")));
+			} else if ("mkopaji".equals(key)) {
+				List<String> mjingaFilter = new ArrayList<String>();
+				value.forEach(v -> {
+					mjingaFilter.add("mkopaji.jina == \"" + v + "\"");
+				});
+				queryFilters.add(mjingaFilter.stream().collect(Collectors.joining(" || ")));
 			} else if ("mjibuji".equals(key)) {
 				List<String> mjingaFilter = new ArrayList<String>();
 				value.forEach(v -> {
@@ -165,13 +175,13 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 				});
 				queryFilters.add(mjingaFilter.stream().collect(Collectors.joining(" || ")));
 			} else if ("kiasi".equals(key)) {
-			   queryParams.add("Long KIASI");
-			   queryFilters.add("kiasi <= KIASI");
-			   values.add(Long.valueOf(value.get(0)));
-			}  else if ("kiasi_jibu".equals(key)) {
-			   queryParams.add("Long KIASI_JIBU");
-			   queryFilters.add("kiasiKilichokubaliwa <= KIASI_JIBU");
-			   values.add(Long.valueOf(value.get(0)));
+				queryParams.add("Long KIASI");
+				queryFilters.add("kiasi <= KIASI");
+				values.add(Long.valueOf(value.get(0)));
+			} else if ("kiasi_jibu".equals(key)) {
+				queryParams.add("Long KIASI_JIBU");
+				queryFilters.add("kiasiKilichokubaliwa <= KIASI_JIBU");
+				values.add(Long.valueOf(value.get(0)));
 			} else if ("tarehe".equals(key)) {
 				DateTime tarehe = new DateTime(Long.valueOf(value.get(0)));
 				queryParams.add("DateTime TAREHE");
@@ -198,7 +208,7 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 	public Boolean omba(OmbiLaMkopo ombi) {
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		Transaction transaction = persistenceManager.currentTransaction();
-		
+
 		try {
 			persistenceManager.getFetchPlan().addGroup("Mikopo");
 			Mjinga mjinga = persistenceManager.getObjectById(Mjinga.class, ombi.getMjinga().getId());
@@ -224,7 +234,7 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		try {
 			pm.getFetchPlan().addGroup("Mikopo");
-			pm.getFetchPlan().addGroup("MaelezoMkopo");			
+			pm.getFetchPlan().addGroup("MaelezoMkopo");
 			mjinga = pm.getObjectById(Mjinga.class, mjinga.getId());
 
 			List<Mkopo> mikopo = pm.detachCopy(mjinga).getMikopo();
@@ -243,8 +253,8 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		try {
 			OmbiLaMkopo ombi = pm.getObjectById(OmbiLaMkopo.class, ombiId);
-			
-			ombi =  pm.detachCopy(ombi);
+
+			ombi = pm.detachCopy(ombi);
 			ombi.getMjinga().wipe();
 			ombi.setMjibuji(null);
 			return ombi;
@@ -260,15 +270,15 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 	public Mkopo tafutaMkopo(Long mkopoId) {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		try {
-			pm.getFetchPlan().addGroup("MaelezoMkopo");			
+			pm.getFetchPlan().addGroup("MaelezoMkopo");
 			pm.getFetchPlan().addGroup("MaelezoMjinga");
-			
+
 			Mkopo mkopo = pm.getObjectById(Mkopo.class, mkopoId);
-			
-			mkopo =  pm.detachCopy(mkopo);
+
+			mkopo = pm.detachCopy(mkopo);
 			mkopo.getMkopaji().wipe();
 			mkopo.getSignatori().wipe();
-			
+
 			return mkopo;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -308,8 +318,9 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 			ombi_.setMaelezoYaJibu(ombi.getMaelezoYaJibu());
 			ombi_.setMjibuji(mjibuji);
 			ombi_.setKiasiKilichokubaliwa(ombi.getKiasiKilichokubaliwa());
-			
-			Mkopo mkopo = new Mkopo(ombi_.getKiasi(), DateTime.now(), 10.0, mwisho, 1.1* ombi_.getKiasiKilichokubaliwa(), null, mjibuji, ombi_, new ArrayList<Rejesho>());
+
+			Mkopo mkopo = new Mkopo(ombi_.getKiasi(), DateTime.now(), 10.0, mwisho,
+					1.1 * ombi_.getKiasiKilichokubaliwa(), null, mjibuji, ombi_, new ArrayList<Rejesho>());
 			pm.makePersistent(mkopo);
 			return true;
 		} catch (Exception e) {
@@ -324,9 +335,9 @@ public class MkopoDaoImpl extends AbstractDaoImpl implements MkopoDao {
 	public Boolean rejesha(Mkopo mkopo, Rejesho rejesho) {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		Transaction transaction = pm.currentTransaction();
-		
+
 		try {
-			pm.getFetchPlan().addGroup("MaelezoMkopo");			
+			pm.getFetchPlan().addGroup("MaelezoMkopo");
 			pm.getFetchPlan().addGroup("MaelezoMjinga");
 			mkopo = pm.getObjectById(Mkopo.class, mkopo.getId());
 

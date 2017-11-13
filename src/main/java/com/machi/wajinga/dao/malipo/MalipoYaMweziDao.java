@@ -27,15 +27,19 @@ public interface MalipoYaMweziDao extends IDao {
 	MalipoYaMwezi tafutaLipo(Long lipoId);
 
 	/**
-	 * Futa lipo 
-	 * @param lipoId - lipo id
-	 * @param mjingaId - mjinga id
+	 * Futa lipo
+	 * 
+	 * @param lipoId
+	 *            - lipo id
+	 * @param mjingaId
+	 *            - mjinga id
 	 * @return Boolean - ombi limekubaliwa au hapan
 	 */
 	Boolean futaLipo(Long lipoId, Long mjingaId);
 
 	/**
 	 * Tunza malipo ya wajinga
+	 * 
 	 * @param malipo
 	 * @return Boolean
 	 */
@@ -43,6 +47,7 @@ public interface MalipoYaMweziDao extends IDao {
 
 	/**
 	 * Fanya malipo ya mjinga
+	 * 
 	 * @param lipo
 	 * @return Boolean
 	 */

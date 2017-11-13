@@ -33,14 +33,14 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		query.declareParameters("String username");
 		query.setFilter("jina == username");
 		query.setUnique(true);
-		
+
 		try {
 			Mjinga mjinga = (Mjinga) query.execute(username);
-			
+
 			if (mjinga == null) {
 				return null;
 			}
-			
+
 			return persistenceManager.detachCopy(mjinga).wipe();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,7 +121,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		PersistenceManager pm = getPmf().getPersistenceManager();
 		try {
 			pm.getFetchPlan().addGroup("Mikopo");
-			
+
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
 
 			List<Mkopo> mikopo = pm.detachCopy(mjinga).getMikopo();
@@ -159,7 +159,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			pm.getFetchPlan().addGroup("Mikopo");
 
 			Mjinga mjinga = pm.getObjectById(Mjinga.class, id);
-			
+
 			List<OmbiLaMkopo> maombi = pm.detachCopy(mjinga).getOmbiMkopo();
 
 			maombi.forEach(ombi -> {
@@ -329,9 +329,9 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 		try {
 			List<String> filters = new ArrayList<String>();
 			if (elezo != null) {
-				filters.add("mchambo.matches(\"(.*)" + elezo +"(.*)\")");
+				filters.add("mchambo.matches(\"(.*)" + elezo + "(.*)\")");
 			}
-			
+
 			List<DateTime> tarehes = new ArrayList<DateTime>();
 			if (tarehe != null) {
 				DateTime muda = new DateTime(tarehe).withMillisOfDay(0);
@@ -343,8 +343,10 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 				filters.add("tarehe >= TAREHE && tarehe <= KESHO");
 				query.declareImports("import " + DateTime.class.getCanonicalName());
 			}
-			
-			query.setFilter(filters.stream().collect(Collectors.joining(" && ")));
+
+			if (!filters.isEmpty()) {
+				query.setFilter(filters.parallelStream().collect(Collectors.joining(" && ", " ( ", " ) ")));
+			}
 			List<Mchambo> michambo = (List<Mchambo>) query.executeWithArray(tarehes.toArray());
 			return (List<Mchambo>) persistenceManager.detachCopyAll(michambo);
 		} catch (Exception e) {
@@ -359,7 +361,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 	public Boolean ongezaMchamboKwaMjinga(Mjinga mjinga, Mchambo mchambo) {
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		Transaction transaction = persistenceManager.currentTransaction();
-		
+
 		try {
 			transaction.begin();
 			persistenceManager.getFetchPlan().addGroup("Michambo");
@@ -374,7 +376,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			if (transaction.isActive()) {
 				transaction.rollback();
 			}
-			
+
 			persistenceManager.close();
 		}
 	}
@@ -396,7 +398,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 	public Boolean ongezaMchambo(Mchambo mchambo) {
 		PersistenceManager persistenceManager = getPmf().getPersistenceManager();
 		Transaction transaction = persistenceManager.currentTransaction();
-		
+
 		try {
 			transaction.begin();
 			persistenceManager.makePersistent(mchambo);
@@ -409,7 +411,7 @@ public class MjingaDaoImpl extends AbstractDaoImpl implements MjingaDao {
 			if (transaction.isActive()) {
 				transaction.rollback();
 			}
-			
+
 			persistenceManager.close();
 		}
 	}

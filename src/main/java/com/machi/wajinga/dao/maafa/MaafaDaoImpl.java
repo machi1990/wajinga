@@ -48,7 +48,9 @@ public class MaafaDaoImpl extends AbstractDaoImpl implements MaafaDao {
 				}
 			}
 
-			query.setFilter(queryFilters.parallelStream().collect(Collectors.joining(" && ")));
+			if (!queryFilters.isEmpty()) {
+				query.setFilter(queryFilters.parallelStream().collect(Collectors.joining(" && ", " ( ", " ) ")));
+			}
 			query.declareParameters(queryParams.parallelStream().collect(Collectors.joining(",")));
 			query.declareImports("import " + DateTime.class.getCanonicalName());
 

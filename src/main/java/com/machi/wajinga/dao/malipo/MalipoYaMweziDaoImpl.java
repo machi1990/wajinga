@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -34,11 +35,13 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 
 			tengenezaVigezo(filters, queryParams, queryFilters, values);
 
-			query.setFilter(queryFilters.parallelStream().collect(Collectors.joining(" && ")));
+			if (!queryFilters.isEmpty()) {
+				query.setFilter(queryFilters.parallelStream().collect(Collectors.joining(" && ", " ( ", " ) ")));
+			}
 			query.declareParameters(queryParams.parallelStream().collect(Collectors.joining(",")));
 			query.declareImports("import " + DateTime.class.getCanonicalName());
 			List<MalipoYaMwezi> malipo = (List<MalipoYaMwezi>) query.executeWithArray(values.toArray());
-			
+
 			return (List<MalipoYaMwezi>) persistenceManager.detachCopyAll(malipo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,23 +57,23 @@ public class MalipoYaMweziDaoImpl extends AbstractDaoImpl implements MalipoYaMwe
 		filters.forEach((key, value) -> {
 			if ("tarehe".equals(key)) {
 				queryParams.add("DateTime TAREHE");
-				queryFilters.add("tarehe == TAREHE");
+				queryFilters.add("(tarehe == TAREHE)");
 				DateTime tarehe = new DateTime(Long.valueOf(value.get(0))).withMillisOfDay(0);
 				values.add(tarehe);
 			} else if ("mwezi".equals(key)) {
 				DateTime mwezi = DateTime.parse(value.get(0)).withDayOfMonth(1).withMillisOfDay(0);
 				values.add(mwezi);
 				queryParams.add("DateTime MWEZI");
-				queryFilters.add("MWEZI == mweziHusika");
+				queryFilters.add("(MWEZI == mweziHusika)");
 			} else if ("wajinga".equals(key)) {
 				List<String> mjingaFilter = new ArrayList<String>();
 				value.forEach(v -> {
-					mjingaFilter.add("mjinga.jina == \"" + v + "\"");
+					mjingaFilter.add("(mjinga.jina == \"" + v + "\")");
 				});
 				queryFilters.add(mjingaFilter.stream().collect(Collectors.joining(" || ")));
 			} else if ("maelezo".equals(key)) {
 				queryParams.add("String ELEZO");
-				queryFilters.add("maelezo.matches(ELEZO)");
+				queryFilters.add("(maelezo.matches(ELEZO))");
 				values.add("(.*)" + value.get(0) + "(.*)");
 			}
 		});
