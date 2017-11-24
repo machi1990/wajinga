@@ -23,7 +23,7 @@ public class ServerConfiguration {
 		return !getScheme().equals("http");
 	}
 
-	public String getPesistenceUnit() {
+	public String getPersistenceUnit() {
 		return props.getProperty("persistence", "Wajinga-Dev");
 	}
 }

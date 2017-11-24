@@ -13,68 +13,69 @@ import com.machi.wajinga.dao.mjinga.Mjinga;
 @Contract
 public interface MkopoDao extends IDao {
 
-	/**
-	 * Tafuta mikopo
-	 * @param queryParameters
-	 * @return List<Mikopo>
-	 */
-	List<Mkopo> tafutaMikopo(MultivaluedMap<String, String> queryParameters);
+    /**
+     * Tafuta mikopo
+     *
+     * @param queryParameters
+     * @return List<Mikopo>
+     */
+    List<Mkopo> tafutaMikopo(MultivaluedMap<String, String> queryParameters);
 
-	/**
-	 * Tafuta ombi la mkopo
-	 * @param filters
-	 * @return
-	 */
-	List<OmbiLaMkopo> tafutaOmbiLaMkopo(MultivaluedMap<String, String> filters);
-	
-	/**
-	 * 
-	 * @param ombi
-	 * @return Boolean - tunzwa au hapana
-	 */
-	Boolean omba(OmbiLaMkopo ombi);
+    /**
+     * Tafuta ombi la mkopo
+     *
+     * @param filters
+     * @return
+     */
+    List<OmbiLaMkopo> tafutaOmbiLaMkopo(MultivaluedMap<String, String> filters);
 
-	/**
-	 * Cheki ka mjinga ana deni
-	 * @param mjinga
-	 * @return
-	 */
-	Boolean anaDeni(Mjinga mjinga);
+    /**
+     * @param ombi
+     * @return Boolean - tunzwa au hapana
+     */
+    Boolean omba(OmbiLaMkopo ombi);
 
-	/**
-	 * Tafuta ombi la mkopo kwa id yake
-	 * @param ombiId
-	 * @return
-	 */
-	OmbiLaMkopo tafutaOmbiLaMkopo(Long ombiId);
+    /**
+     * Cheki ka mjinga ana deni
+     *
+     * @param mjinga
+     * @return
+     */
+    Boolean anaDeni(Mjinga mjinga);
 
-	/**
-	 * Tafuta mkopo
-	 * @param mkopoId
-	 * @return Mkopo
-	 */
-	Mkopo tafutaMkopo(Long mkopoId);
-	
-	/**
-	 * 
-	 * @param ombi
-	 * @return Boolean
-	 */
-	Boolean kataaOmbi(OmbiLaMkopo ombi);
+    /**
+     * Tafuta ombi la mkopo kwa id yake
+     *
+     * @param ombiId
+     * @return
+     */
+    OmbiLaMkopo tafutaOmbiLaMkopo(Long ombiId);
 
-	/**
-	 * 
-	 * @param ombi
-	 * @param dateTime - mwisho wa rejesho
-	 * @return Boolean
-	 */
-	Boolean kubaliOmbi(OmbiLaMkopo ombi, DateTime dateTime);
+    /**
+     * Tafuta mkopo
+     *
+     * @param mkopoId
+     * @return Mkopo
+     */
+    Mkopo tafutaMkopo(Long mkopoId);
 
-	/**
-	 * 
-	 * @param mkopo
-	 * @param rejesho
-	 * @return Boolean
-	 */
-	Boolean rejesha(Mkopo mkopo, Rejesho rejesho);
+    /**
+     * @param ombi
+     * @return Boolean
+     */
+    Boolean kataaOmbi(OmbiLaMkopo ombi);
+
+    /**
+     * @param ombi
+     * @param dateTime - mwisho wa rejesho
+     * @return Boolean
+     */
+    Boolean kubaliOmbi(OmbiLaMkopo ombi, DateTime dateTime);
+
+    /**
+     * @param mkopo
+     * @param rejesho
+     * @return Boolean
+     */
+    Boolean rejesha(Mkopo mkopo, Rejesho rejesho);
 }

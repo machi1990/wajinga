@@ -30,7 +30,7 @@ public class WajingaDao {
 		this.malipoDao = malipoDao;
 		this.mkopoDao = mkopoDao;
 		this.wajiboostDao = wajiboostDao;
-		setPmf(config.getPesistenceUnit());
+		setPmf(config.getPersistenceUnit());
 	}
 
 	public MaafaDao getMaafaDao() {

@@ -88,13 +88,13 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 		final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
 		String usernameAndPassword = new String(Base64.getDecoder().decode(encodedUserPassword.getBytes()));
-		;
+
 
 		final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
 		final String username = tokenizer.nextToken();
 		final String password = tokenizer.nextToken();
 
-		Mjinga mjinga_ = null;
+		Mjinga mjinga_;
 		String authorizationSid;
 
 		if ("__sid__".equals(username)) {
